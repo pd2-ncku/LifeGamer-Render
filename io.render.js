@@ -3,10 +3,9 @@
 /* And Using Socket.io to update client   */
 const express = require('express');
 const app = express();
-const io = require('socket.io');
+const url = require('url');
 const path = require('path');
 const bodyParser = require('body-parser');
-
 /* core */
 // const logger = require('./back-end/logger');
 
@@ -46,14 +45,19 @@ app.get('/pixi',function(req,res){
     });
 });
 
-app.get('/socket.io',function(req,res){
-    /* Use for Testing socket io */
-    // logger.record('io.render','[io.render] Get Socket io request.');
-    console.log('[io.render] Get Socket io request.');
-    res.render('socket',{
-        title: "Socket Test"
+/* Get Command */
+app.get('/game_start', function(req,res){
+    console.log('[io.render] Game Start.');
+    // using get parameter
+    var players = url.parse(req.url , true);
+    console.log('[io.render] Match Player 1: ' + players.query.p1 + "; Match Player 2: " + players.query.p2);
+    res.render('arena_game',{
+        p1: players.query.p1,
+        p2: players.query.p2
     });
-});
+    var connect_manager = require('./player_channel');
+    connect_manager.player_channel(players.query.p1+players.query.p2,server);
+})
 
 // Listen url request
 server.listen(process.env.npm_package_config_portiorender, function(){
@@ -63,36 +67,15 @@ server.listen(process.env.npm_package_config_portiorender, function(){
     console.log("[io.render] Example app listening at "+host+" : "+port);
 });
 
-var io_render = io.listen(server);
-
-io_render.sockets.on('connection', function(socket){
-  /* Connection build and send message */
-  /* Receive error case from client */
-  socket.on("er", function (error) {
-      // we received a tweet from the browser
-      // logger.record('io.render','[io.render - Error] Error Case: ' + error.case + '. [Client] ' + socket.request.connection.remoteAddress,'error');
-      console.log('[io.render - Error] Error Case: ' + error.case + '. [Client] ' + socket.request.connection.remoteAddress);
-  });
-
-  socket.on("disconnect",function(){
-      // logger.record('io.render','[io.render] Client: ' + socket.request.connection.remoteAddress + ' , disconnect.');
-      console.log('[io.render] Client: ' + socket.request.connection.remoteAddress + ' , disconnect.');
-      clearInterval(update);
-  });
-
-  /* Record client info */
-  // logger.record('io.render','[io.render] New connection from ' + socket.request.connection.remoteAddress);
-  console.log('[io.render] New connection from ' + socket.request.connection.remoteAddress);
-
-  /* Start filter */
-  var update = setInterval(function() {
-    // When command receive from target source , emit command to client to update status
-    if(cmd_flag){
-      socket.emit('raw', {
-    		'cmd': battle_cmd.cmd
-    	});
-      cmd_flag = false;
-    }
-}, 1000);
-
+/*var io_render = io.listen(server);
+var nsp = io_render.of('/game');
+nsp.on('connection',function(socket){
+    console.log('[io.render] New Connection from ' + socket.request.connection.remoteAddress);
+    var update = setInterval(function() {
+        // When command receive from target source , emit command to client to update status
+        socket.emit('raw', {
+        	'cmd': battle_cmd.cmd
+        });
+    }, 1000);
 });
+*/
