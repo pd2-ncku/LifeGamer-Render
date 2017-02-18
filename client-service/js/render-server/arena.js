@@ -2,7 +2,7 @@
 var est = document.getElementById('socket.io.nsp').value;
 const socket = io(est);
 socket.on('raw',function(data){
-    console.log(data.cmd);
+    console.log(data);
 });
 /* Battle field Initialize */
 // Scene Part
@@ -133,8 +133,6 @@ function play(){
 
 var tick = 0;
 setInterval(function() {
-	// man 1 update
-	console.log("tick : "+ tick);
 	minion.forEach(function(each_mini){
         /* Change Direction */
         if(tick%20 == 0){

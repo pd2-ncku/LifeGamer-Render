@@ -8,6 +8,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 /* core */
 // const logger = require('./back-end/logger');
+var connection_list = [];
 
 /* Redirect views path */
 app.set('views',path.join(__dirname,'client-service/views'));
@@ -55,9 +56,26 @@ app.get('/game_start', function(req,res){
         p1: players.query.p1,
         p2: players.query.p2
     });
-    var connect_manager = require('./player_channel');
-    connect_manager.player_channel(players.query.p1+players.query.p2,server);
-})
+    var player_channel = require('./player_channel.js');
+    var cm = new player_channel(players.query.p1+players.query.p2,server);
+    cm.cmd = 'start';
+    cm.setup();
+    /* Push this connect manager into queue */
+    connection_list.push(cm);
+});
+
+app.get('/game_cmd', function(req,res){
+    console.log('[io.render] Cmd send from battle server');
+    var players = url.parse(req.url , true);
+    console.log('[io.render] Denote: ' + players.query.p1+players.query.p2+ "; Cmd is " + players.query.cmd);
+    /* Maintain Connection channel */
+    connection_list.forEach(function(connection_node){
+        if(connection_node.find(players.query.p1+players.query.p2) == true){
+            connection_node.get_cmd(players.query.cmd);
+        }
+    });
+    res.end("OK , connection number: " + connection_list.length);
+});
 
 // Listen url request
 server.listen(process.env.npm_package_config_portiorender, function(){
@@ -66,16 +84,3 @@ server.listen(process.env.npm_package_config_portiorender, function(){
     // logger.record('io.render',"[io.render] Example app listening at "+host+" : "+port);
     console.log("[io.render] Example app listening at "+host+" : "+port);
 });
-
-/*var io_render = io.listen(server);
-var nsp = io_render.of('/game');
-nsp.on('connection',function(socket){
-    console.log('[io.render] New Connection from ' + socket.request.connection.remoteAddress);
-    var update = setInterval(function() {
-        // When command receive from target source , emit command to client to update status
-        socket.emit('raw', {
-        	'cmd': battle_cmd.cmd
-        });
-    }, 1000);
-});
-*/
