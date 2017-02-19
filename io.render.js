@@ -46,7 +46,7 @@ app.get('/pixi',function(req,res){
     });
 });
 
-/* Get Command */
+/* Get start Command */
 app.get('/game_start', function(req,res){
     console.log('[io.render] Game Start.');
     // using get parameter
@@ -60,18 +60,23 @@ app.get('/game_start', function(req,res){
     var cm = new player_channel(players.query.p1+players.query.p2,server);
     cm.cmd = 'start';
     cm.setup();
+    /* TODO : Open a file to record this battle */
+
     /* Push this connect manager into queue */
     connection_list.push(cm);
 });
 
+/* Get Battle Command (In Game) */
 app.get('/game_cmd', function(req,res){
     console.log('[io.render] Cmd send from battle server');
     var players = url.parse(req.url , true);
     console.log('[io.render] Denote: ' + players.query.p1+players.query.p2+ "; Cmd is " + players.query.cmd);
+    /* Parsing command here */
+    var json_obj = JSON.parse(players.query.cmd);
     /* Maintain Connection channel */
     connection_list.forEach(function(connection_node){
         if(connection_node.find(players.query.p1+players.query.p2) == true){
-            connection_node.get_cmd(players.query.cmd);
+            connection_node.get_cmd(json_obj);
         }
     });
     res.end("OK , connection number: " + connection_list.length);

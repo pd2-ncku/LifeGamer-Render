@@ -1,10 +1,12 @@
 /* Declare Orge minion */
-var ORGE = function( char_w,char_h, object_No ){
+var ORGE = function( char_w,char_h, object_No ,max_w,max_h){
     // Measurement by manual => FIXME automatical
     this.src_frame_w = 96;
     this.src_frame_h = 96;
     this.picture_frame = 7;
     this.scale = 2;
+    this.boundary_x = max_w;
+    this.boundary_y = max_h;
     //
     this.direction = -1; // Stop
     this.vx = 0;
@@ -97,13 +99,49 @@ ORGE.prototype.walking = function(current_tick){
             this.vx = (0.707)*this.basic_velocity;
             this.vy = (0.707)*this.basic_velocity;
             break;
+        case 8:
+            /* Attack */
+
+            break;
+        case 9:
+            /* Stop (face right) */
+            var right_texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/orge.png"));
+            right_texture.frame = (new PIXI.Rectangle(0+(this.src_frame_w)*(current_tick%this.picture_frame),0,this.src_frame_w,this.src_frame_h));
+            this.obj.setTexture(right_texture);
+            this.vx = 0;
+            this.vy = 0;
+            break;
+        case 10:
+            /* Stop (face left) */
+            var left_texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/orge.png"));
+            left_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),this.src_frame_h*this.picture_frame,this.src_frame_w,this.src_frame_h));
+            this.obj.setTexture(left_texture);
+            this.vx = 0;
+            this.vy = 0;
+            break;
         default:
             // None, just stop and do nothing
+            this.vx = 0;
+            this.vy = 0;
             break;
     }
 }
 
 ORGE.prototype.change_direction = function(new_direction){
+    // Moving x
+	if(this.obj.x+this.obj.width >= this.boundary_x){
+		this.obj.x -= 5;
+    }
+	else if(this.obj.x <= 0){
+		this.obj.x += 5;
+    }
+	// Moving y
+	if(this.obj.y+this.obj.height >= this.boundary_y){
+        this.obj.y -= 5;
+    }
+	else if(this.obj.y <= 0){
+		this.obj.y += 5;
+    }
     this.direction = new_direction;
 }
 
@@ -111,9 +149,9 @@ ORGE.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
 }
 
-ORGE.prototype.check_boundary = function( bx,by ){
+ORGE.prototype.check_boundary = function(){
     // x
-	if(this.obj.x+this.obj.width >= bx){
+	if(this.obj.x+this.obj.width >= this.boundary_x){
 		this.vx = 0;
         this.direction = -1;
     }
@@ -122,7 +160,7 @@ ORGE.prototype.check_boundary = function( bx,by ){
         this.direction = -1;
     }
 	// y
-	if(this.obj.y+this.obj.height >= by){
+	if(this.obj.y+this.obj.height >= this.boundary_y){
 		this.vy = 0;
         this.direction = -1;
     }

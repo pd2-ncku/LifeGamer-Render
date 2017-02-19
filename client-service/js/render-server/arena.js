@@ -1,15 +1,99 @@
-/* Connection establish */
-var est = document.getElementById('socket.io.nsp').value;
-const socket = io(est);
-socket.on('raw',function(data){
-    console.log(data);
-});
-/* Battle field Initialize */
+/* Global variable */
+// Maintain all minions in queue
+var minion = [];
 // Scene Part
 var main_stage = new PIXI.Container();
 // Render part
 var size_adapter = document.getElementById('arena');
 var renderer = PIXI.autoDetectRenderer(size_adapter.offsetWidth,size_adapter.offsetHeight);
+
+var cmd_prototype = {
+    'cmd': 'battle',
+    'current_minion' : [
+        {
+            'name': 'orge1',
+            'status': '50',
+            'move': '2',
+            'loc_x': '200',
+            'loc_y': '200'
+        }
+    ] ,
+    'new_minion': [
+        {
+            'name': 'orge1',
+            'type': 'orge',
+            'move': '1',
+            'loc_x': '300',
+            'loc_y': '300'
+        }
+    ]
+}
+console.log(JSON.stringify(cmd_prototype));
+
+/* Connection establish */
+var est = document.getElementById('socket.io.nsp').value;
+const socket = io(est);
+socket.on('raw',function(data){
+    /* Receive the message and parse it */
+    var raw_data = data;
+    /* Get current type of message */
+    var cmd_type = raw_data.cmd;
+    var current_minion_list = raw_data.current_minion;
+    var new_minion_list = raw_data.new_minion;
+    if(cmd_type == "battle"){
+        /* Battle field Ongoing */
+        if(current_minion_list.length > 0 ){
+            /* Do new checking */
+            if(minion.length == 0){
+                /* TODO Notice that this user need to replot the battle field */
+            }
+            else{
+                /* Control those minion */
+                current_minion_list.forEach(function(current_minion){
+                    console.log("Control minion!");
+                    console.dir(current_minion);
+                    control_minion(current_minion.name,current_minion.status,current_minion.move);
+                });
+            }
+        }
+        if(new_minion_list.length > 0){
+            /* Add new minion */
+            new_minion_list.forEach(function(new_minion){
+                add_minion(new_minion.name,new_minion.type,new_minion.move,new_minion.loc_x,new_minion.loc_y);
+            });
+        }
+    }
+});
+window.addEventListener("beforeunload", function(e){
+    socket.emit('disconnect');
+}, false);
+
+function control_minion(obj_name,status,direction){
+    minion.forEach(function(each_minion){
+        if(each_minion.object_No == obj_name){
+            /* FIXME : add status */
+            console.log("Match");
+            each_minion.change_direction(parseInt(direction));
+        }
+    })
+}
+
+function add_minion(name,type,direction,loc_x,loc_y){
+    switch (type) {
+        case 'orge':
+            /* Summon new orge minion */
+            var orge = new ORGE( x_unit , y_unit , name ,max_w,max_h);
+            orge.change_direction(parseInt(direction));
+            orge.setpos(parseInt(loc_x),parseInt(loc_y));
+            main_stage.addChild(orge.obj);
+            minion.push(orge);
+            break;
+        default:
+
+    }
+}
+
+/* Battle field Initialize */
 // Setup Game Frame Measurement
 const max_w = size_adapter.offsetWidth;
 const max_h = size_adapter.offsetHeight;
@@ -53,9 +137,6 @@ var ground;
 var bridge_top;
 var bridge_down;
 var river;
-
-// Maintain all minions in queue
-var minion = [];
 
 // Show Loading (Waiting) Message
 function loadProgressHandler(loader, resource) {
@@ -104,12 +185,12 @@ function setup() {
     bridge_down.position.set(22*x_unit,13*y_unit);
 
     // Debug
-    var orge = new ORGE( x_unit , y_unit );
-    orge.change_direction(1);
+    /*var orge = new ORGE( x_unit , y_unit );
+    orge.change_direction(9);
     orge.setpos(500,300);
     main_stage.addChild(orge.obj);
 
-    minion.push(orge);
+    minion.push(orge);*/
 
     battle_gameLoop();
 }
@@ -127,26 +208,26 @@ function play(){
     minion.forEach(function(each_mini){
 		each_mini.obj.x += each_mini.vx;
         each_mini.obj.y += each_mini.vy;
-        each_mini.check_boundary(max_w,max_h);
+        each_mini.check_boundary();
 	});
 }
 
 var tick = 0;
 setInterval(function() {
 	minion.forEach(function(each_mini){
-        /* Change Direction */
-        if(tick%20 == 0){
+        /* Random Change Direction */
+        /*if(tick%20 == 0){
             each_mini.change_direction(Math.floor((Math.random() * 8)));
-        }
+        }*/
 		each_mini.walking(tick);
 	});
     tick++;
     /* Debug: Dynamic add minion by time */
-    if(tick%50 == 0){
+    /*if(tick%50 == 0){
         var new_orge = new ORGE( x_unit , y_unit );
         new_orge.change_direction(1);
         new_orge.setpos(Math.floor((Math.random()*500) + 1));
         main_stage.addChild(new_orge.obj);
         minion.push(new_orge);
-    }
+    }*/
 }, 100);

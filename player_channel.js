@@ -3,7 +3,7 @@
     player_channel : constructor
     setup : setup connection
     get_cmd : get and receive new command , and then open writable flag to let socket send
-    find : compare whether is target channel or not    
+    find : compare whether is target channel or not
 */
 
 function player_channel(denote , main_server , channel_obj){
@@ -27,6 +27,9 @@ player_channel.prototype.setup = function(){
                 self.writeable = 0;
             }
         },10);
+        socket.on("disconnect",function(){
+            socket.disconnect();
+        });
     });
 }
 
