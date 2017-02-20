@@ -12,6 +12,7 @@ var cmd_prototype = {
     'current_minion' : [
         {
             'name': 'orge1',
+            'type': 'orge',
             'status': '50',
             'move': '2',
             'loc_x': '200',
@@ -33,6 +34,11 @@ console.log(JSON.stringify(cmd_prototype));
 /* Connection establish */
 var est = document.getElementById('socket.io.nsp').value;
 const socket = io(est);
+// disconnect from server
+window.addEventListener("beforeunload", function(e){
+    socket.emit('disconnect');
+}, false);
+// Command/Data receive
 socket.on('raw',function(data){
     /* Receive the message and parse it */
     var raw_data = data;
@@ -46,12 +52,13 @@ socket.on('raw',function(data){
             /* Do new checking */
             if(minion.length == 0){
                 /* TODO Notice that this user need to replot the battle field */
+                current_minion_list.forEach(function(current_minion){
+                    recover_minion(current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
+                });
             }
             else{
                 /* Control those minion */
                 current_minion_list.forEach(function(current_minion){
-                    console.log("Control minion!");
-                    console.dir(current_minion);
                     control_minion(current_minion.name,current_minion.status,current_minion.move);
                 });
             }
@@ -64,9 +71,22 @@ socket.on('raw',function(data){
         }
     }
 });
-window.addEventListener("beforeunload", function(e){
-    socket.emit('disconnect');
-}, false);
+
+function recover_minion(name,type,status,direction,loc_x,loc_y){
+    switch (type) {
+        case 'orge':
+            /* Resummon orge minion */
+            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
+            orge.change_direction(parseInt(direction));
+            orge.setpos(parseInt(loc_x),parseInt(loc_y));
+            /* TODO recover status (HP...)  */
+            main_stage.addChild(orge.obj);
+            minion.push(orge);
+            break;
+        default:
+
+    }
+}
 
 function control_minion(obj_name,status,direction){
     minion.forEach(function(each_minion){

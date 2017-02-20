@@ -57,7 +57,7 @@ app.get('/game_start', function(req,res){
         p2: players.query.p2
     });
     var player_channel = require('./player_channel.js');
-    var cm = new player_channel(players.query.p1+players.query.p2,server);
+    var cm = new player_channel(players.query.p1,players.query.p2,server);
     cm.cmd = 'start';
     cm.setup();
     /* TODO : Open a file to record this battle */
@@ -74,12 +74,28 @@ app.get('/game_cmd', function(req,res){
     /* Parsing command here */
     var json_obj = JSON.parse(players.query.cmd);
     /* Maintain Connection channel */
-    connection_list.forEach(function(connection_node){
+    connection_list.forEach(function(connection_node,index,object){
+        /* Compare , if fit then feed command */
         if(connection_node.find(players.query.p1+players.query.p2) == true){
             connection_node.get_cmd(json_obj);
         }
+        /* Also , check connection status , if useless, then remove it */
+        if(connection_node.active == false){
+            object.splice(index,1);
+        }
     });
     res.end("OK , connection number: " + connection_list.length);
+});
+
+/* Check connection status */
+app.get('/check_connection', function(req,res){
+    console.log('[io.render] Checking current connection !');
+    var connection_string = '';
+    connection_list.forEach(function(connection_node,index,object){
+        connection_string += 'Denote: ' + connection_node.own_denote + '; Player: ' + connection_node.player1 + "," + connection_node.player2+"\n";
+    });
+    /* TODO: update UI design (using ejs) */
+    res.end("Connection queue: " + connection_string);
 });
 
 // Listen url request

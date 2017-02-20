@@ -7,11 +7,26 @@ var ORGE = function( char_w,char_h, object_No ,max_w,max_h){
     this.scale = 2;
     this.boundary_x = max_w;
     this.boundary_y = max_h;
+    this.hp = 100;
     //
     this.direction = -1; // Stop
     this.vx = 0;
     this.vy = 0;
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
+    // TODO sound effect
+    var summon = new Howl({
+        src: ['orge_summon.mp3'],
+        loop: false
+    });
+    summon.play();
+    this.sound = new Howl({
+        src: ['footstep.mp3'],
+        loop: true,
+        volume: 0.5,
+        sprite:{
+            footstep: [0,1000]
+        }
+    });
 
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/orge.png"));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -35,6 +50,8 @@ ORGE.prototype.walking = function(current_tick){
             // and change velocity
             this.vx = (-1)*this.basic_velocity;
             this.vy = 0;
+            // sound
+            this.sound_effect();
             break;
         case 1:
             // Right
@@ -44,6 +61,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = this.basic_velocity;
             this.vy = 0;
+            // sound
+            this.sound_effect();
             break;
         case 2:
             // Top
@@ -53,6 +72,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = 0;
             this.vy = (-1)*this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 3:
             // Down
@@ -62,6 +83,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = 0;
             this.vy = this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 4:
             // Left + Top
@@ -71,6 +94,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = (-0.707)*this.basic_velocity;
             this.vy = (-0.707)*this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 5:
             // Left + down
@@ -80,6 +105,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = (-0.707)*this.basic_velocity;
             this.vy = (0.707)*this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 6:
             // Right + Top
@@ -89,6 +116,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = (0.707)*this.basic_velocity;
             this.vy = (-0.707)*this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 7:
             // Right + down
@@ -98,6 +127,8 @@ ORGE.prototype.walking = function(current_tick){
             // change velocity
             this.vx = (0.707)*this.basic_velocity;
             this.vy = (0.707)*this.basic_velocity;
+            // sound
+            this.sound_effect();
             break;
         case 8:
             /* Attack */
@@ -110,6 +141,8 @@ ORGE.prototype.walking = function(current_tick){
             this.obj.setTexture(right_texture);
             this.vx = 0;
             this.vy = 0;
+            // sound
+            this.sound.stop();
             break;
         case 10:
             /* Stop (face left) */
@@ -118,12 +151,30 @@ ORGE.prototype.walking = function(current_tick){
             this.obj.setTexture(left_texture);
             this.vx = 0;
             this.vy = 0;
+            // sound
+            this.sound.stop();
             break;
         default:
             // None, just stop and do nothing
             this.vx = 0;
             this.vy = 0;
+            // sound
+            this.sound.stop();
             break;
+    }
+}
+
+ORGE.prototype.set_status = function(hp){
+    this.hp = hp;
+}
+
+ORGE.prototype.sound_effect = function(){
+    if(this.sound.playing()){
+        // curent playing (do nothing)
+    }
+    else{
+        this.sound.play('footstep');
+        this.sound.rate(1.5);
     }
 }
 
