@@ -32,8 +32,9 @@ var cmd_prototype = {
 console.log(JSON.stringify(cmd_prototype));
 
 /* Connection establish */
-var est = document.getElementById('socket.io.nsp').value;
-const socket = io(est);
+//var est = document.getElementById('socket.io.nsp').value;
+//const socket = io(est);
+const socket = io();
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
     socket.emit('disconnect');

@@ -17,23 +17,24 @@ function player_channel(p1,p2,main_server,channel_obj){
     this.cmd = null;
     this.writeable = 1;
     this.active = true;
-    this.nsp = this.io_render.of("/"+p1+p2);
 };
 
 player_channel.prototype.setup = function(){
     var self = this;
-    self.nsp.on('connection',function(socket){
+    self.io_render.on('connection',function(socket){
         console.log('[io.render] New Connection from ' + socket.request.connection.remoteAddress);
+        socket.join('room-'+self.own_denote);
         var update = setInterval(function(){
             if(self.writeable == 1){
-                socket.emit('raw', self.cmd );
+                /* Using room instead of namespace */
+                self.io_render.in('room-'+self.own_denote).emit('raw',self.cmd);
                 self.writeable = 0;
             }
         },10);
         socket.on("disconnect",function(){
             console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
             self.active = false;
-            socket.disconnect();
+            socket.leave('room-'+self.own_denote);
         });
     });
 }
