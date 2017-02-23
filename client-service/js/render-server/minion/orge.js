@@ -35,7 +35,8 @@ var ORGE = function( char_w,char_h, object_No ,max_w,max_h){
     result.height = char_h*this.scale;
     result.x = 0;
     result.y = 0;
-    this.basic_velocity = 1;
+    this.basic_velocity_x = 1;
+    this.basic_velocity_y = 1;
     this.obj = result;
 }
 
@@ -48,7 +49,7 @@ ORGE.prototype.walking = function(current_tick){
             left_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),this.src_frame_h*this.picture_frame,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(left_texture);
             // and change velocity
-            this.vx = (-1)*this.basic_velocity;
+            this.vx = (-1)*this.basic_velocity_x;
             this.vy = 0;
             // sound
             this.sound_effect();
@@ -59,7 +60,7 @@ ORGE.prototype.walking = function(current_tick){
             right_texture.frame = (new PIXI.Rectangle(0+(this.src_frame_w)*(current_tick%this.picture_frame),0,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(right_texture);
             // change velocity
-            this.vx = this.basic_velocity;
+            this.vx = this.basic_velocity_x;
             this.vy = 0;
             // sound
             this.sound_effect();
@@ -71,7 +72,7 @@ ORGE.prototype.walking = function(current_tick){
             this.obj.setTexture(top_texture);
             // change velocity
             this.vx = 0;
-            this.vy = (-1)*this.basic_velocity;
+            this.vy = (-1)*this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -82,7 +83,7 @@ ORGE.prototype.walking = function(current_tick){
             this.obj.setTexture(down_texture);
             // change velocity
             this.vx = 0;
-            this.vy = this.basic_velocity;
+            this.vy = this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -92,8 +93,8 @@ ORGE.prototype.walking = function(current_tick){
             lt_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),3*this.src_frame_h,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(lt_texture);
             // change velocity
-            this.vx = (-0.707)*this.basic_velocity;
-            this.vy = (-0.707)*this.basic_velocity;
+            this.vx = (-0.707)*this.basic_velocity_x;
+            this.vy = (-0.707)*this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -103,8 +104,8 @@ ORGE.prototype.walking = function(current_tick){
             ld_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),6*this.src_frame_h,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(ld_texture);
             // change velocity
-            this.vx = (-0.707)*this.basic_velocity;
-            this.vy = (0.707)*this.basic_velocity;
+            this.vx = (-0.707)*this.basic_velocity_x;
+            this.vy = (0.707)*this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -114,8 +115,8 @@ ORGE.prototype.walking = function(current_tick){
             rt_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),2*this.src_frame_h,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(rt_texture);
             // change velocity
-            this.vx = (0.707)*this.basic_velocity;
-            this.vy = (-0.707)*this.basic_velocity;
+            this.vx = (0.707)*this.basic_velocity_x;
+            this.vy = (-0.707)*this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -125,8 +126,8 @@ ORGE.prototype.walking = function(current_tick){
             rd_texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),5*this.src_frame_h,this.src_frame_w,this.src_frame_h));
             this.obj.setTexture(rd_texture);
             // change velocity
-            this.vx = (0.707)*this.basic_velocity;
-            this.vy = (0.707)*this.basic_velocity;
+            this.vx = (0.707)*this.basic_velocity_x;
+            this.vy = (0.707)*this.basic_velocity_y;
             // sound
             this.sound_effect();
             break;
@@ -162,6 +163,11 @@ ORGE.prototype.walking = function(current_tick){
             this.sound.stop();
             break;
     }
+}
+
+ORGE.prototype.set_basicV = function(vx,vy){
+    this.basic_velocity_x = vx;
+    this.basic_velocity_y = vy;
 }
 
 ORGE.prototype.set_status = function(hp){

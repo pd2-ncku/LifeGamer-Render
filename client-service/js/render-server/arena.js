@@ -6,7 +6,29 @@ var main_stage = new PIXI.Container();
 // Render part
 var size_adapter = document.getElementById('arena');
 var renderer = PIXI.autoDetectRenderer(size_adapter.offsetWidth,size_adapter.offsetHeight);
+/* Battle field Initialize */
+// Setup Game Frame Measurement
+const max_w = size_adapter.offsetWidth;
+const max_h = size_adapter.offsetHeight;
+const map_w_unit = 50;
+const map_h_unit = 20;
+const x_unit = max_w/map_w_unit;
+const y_unit = max_h/map_h_unit;
 
+// Battle field Background variable
+const river_w_unit = 6;
+const river_h_unit = 20;
+const bridge_w_unit = 6;
+const bridge_h_unit = 4;
+
+// Fundamental structure ( cube )
+const main_tower_unit = 6;
+const vice_tower_unit = 4;
+
+console.log("Arena Size: (" + max_w + "," + max_h + ")");
+console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
+
+// Command prototype
 var cmd_prototype = {
     'cmd': 'battle',
     'current_minion' : [
@@ -15,8 +37,8 @@ var cmd_prototype = {
             'type': 'orge',
             'status': '50',
             'move': '2',
-            'loc_x': '200',
-            'loc_y': '200'
+            'loc_x': '20',
+            'loc_y': '10'
         }
     ] ,
     'new_minion': [
@@ -24,16 +46,14 @@ var cmd_prototype = {
             'name': 'orge1',
             'type': 'orge',
             'move': '1',
-            'loc_x': '300',
-            'loc_y': '300'
+            'loc_x': '30',
+            'loc_y': '10'
         }
     ]
 }
 console.log(JSON.stringify(cmd_prototype));
 
 /* Connection establish */
-//var est = document.getElementById('socket.io.nsp').value;
-//const socket = io(est);
 const socket = io();
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
@@ -79,7 +99,8 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
             /* Resummon orge minion */
             var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
             orge.change_direction(parseInt(direction));
-            orge.setpos(parseInt(loc_x),parseInt(loc_y));
+            /* loc_x and loc_y => (x,y) => need to convert one time */
+            orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
             /* TODO recover status (HP...)  */
             main_stage.addChild(orge.obj);
             minion.push(orge);
@@ -105,7 +126,9 @@ function add_minion(name,type,direction,loc_x,loc_y){
             /* Summon new orge minion */
             var orge = new ORGE( x_unit , y_unit , name ,max_w,max_h);
             orge.change_direction(parseInt(direction));
-            orge.setpos(parseInt(loc_x),parseInt(loc_y));
+            orge.set_basicV(x_unit/30,y_unit/30);
+            /* loc_x and loc_y => (x,y) => need to convert one time */
+            orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
             main_stage.addChild(orge.obj);
             minion.push(orge);
             break;
@@ -113,28 +136,6 @@ function add_minion(name,type,direction,loc_x,loc_y){
 
     }
 }
-
-/* Battle field Initialize */
-// Setup Game Frame Measurement
-const max_w = size_adapter.offsetWidth;
-const max_h = size_adapter.offsetHeight;
-const map_w_unit = 50;
-const map_h_unit = 20;
-const x_unit = max_w/map_w_unit;
-const y_unit = max_h/map_h_unit;
-
-// Battle field Background variable
-const river_w_unit = 6;
-const river_h_unit = 20;
-const bridge_w_unit = 6;
-const bridge_h_unit = 4;
-
-// Fundamental structure ( cube )
-const main_tower_unit = 6;
-const vice_tower_unit = 4;
-
-console.log("Arena Size: (" + max_w + "," + max_h + ")");
-console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
 
 // Append render view into DOM tree
 document.getElementById("arena").appendChild(renderer.view);

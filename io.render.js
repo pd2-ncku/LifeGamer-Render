@@ -6,10 +6,15 @@ const app = express();
 const url = require('url');
 const path = require('path');
 const bodyParser = require('body-parser');
+const moment = require('moment');
+const jsfs = require('jsonfile');
 /* core */
 // const logger = require('./back-end/logger');
 var connection_list = [];
+var battle_room = {};
+var battle_recording = {};
 
+const battle_record_storage = __dirname + '/server-service/battle-record';
 /* Redirect views path */
 app.set('views',path.join(__dirname,'client-service/views'));
 /* Setting static directory - image use */
@@ -21,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine','ejs');
 
 const server = require('http').createServer(app);
-
+var player_channel = require('./player_channel.js');
 /* Battle command */
 var battle_cmd = '';
 var cmd_flag = false;
@@ -56,14 +61,25 @@ app.get('/game_start', function(req,res){
         p1: players.query.p1,
         p2: players.query.p2
     });
-    var player_channel = require('./player_channel.js');
-    var cm = new player_channel(players.query.p1,players.query.p2,server);
+    /* If there have no room , create one for it */
+    var cm = new player_channel(players.query.p1,players.query.p2,server,moment().format(),req.connection.remoteAddress);
     cm.cmd = 'start';
     cm.setup();
-    /* TODO : Open a file to record this battle */
-
-    /* Push this connect manager into queue */
     connection_list.push(cm);
+
+    // Register a room as record
+    if(battle_room[players.query.p1+players.query.p2] != undefined){
+        // already build
+    }
+    else{
+        // Build a room for this pair
+        battle_room[players.query.p1+players.query.p2] = moment().format();
+        var record_data = {
+            content: []
+        };
+        battle_recording[players.query.p1+players.query.p2] = record_data;
+    }
+
 });
 
 /* Get Battle Command (In Game) */
@@ -75,27 +91,51 @@ app.get('/game_cmd', function(req,res){
     var json_obj = JSON.parse(players.query.cmd);
     /* Maintain Connection channel */
     connection_list.forEach(function(connection_node,index,object){
-        /* Compare , if fit then feed command */
-        if(connection_node.find(players.query.p1+players.query.p2) == true){
-            connection_node.get_cmd(json_obj);
-        }
-        /* Also , check connection status , if useless, then remove it */
+        // Also , check connection status , if useless, then remove it
         if(connection_node.active == false){
             object.splice(index,1);
         }
+        // Compare , if fit then feed command
+        if(connection_node.find(players.query.p1+players.query.p2) == true){
+            connection_node.get_cmd(json_obj);
+            return;
+        }
     });
-    res.end("OK , connection number: " + connection_list.length);
+    // Record the battle command in battle_recording
+    battle_recording[players.query.p1+players.query.p2].content.push(json_obj);
+
+    res.end("OK , command send");
+});
+
+app.get('/game_end', function(req,res){
+    var players = url.parse(req.url , true);
+    console.log('[io.render] Battle of ' + players.query.p1+players.query.p2+ " comes to an end.");
+    // Cancel from room
+    var battle_t = battle_room[players.query.p1+players.query.p2];
+    battle_room[players.query.p1+players.query.p2] = undefined;
+    // Write record into file
+    var record_obj = battle_recording[players.query.p1+players.query.p2];
+    jsfs.writeFileSync(battle_record_storage+'/'+'['+ battle_t +']'+players.query.p1+'?'+players.query.p2+'.battlelog',record_obj);
+    battle_recording[players.query.p1+players.query.p2] = undefined;
 });
 
 /* Check connection status */
 app.get('/check_connection', function(req,res){
-    console.log('[io.render] Checking current connection !');
-    var connection_string = '';
+    /* Update connection list */
     connection_list.forEach(function(connection_node,index,object){
-        connection_string += 'Denote: ' + connection_node.own_denote + '; Player: ' + connection_node.player1 + "," + connection_node.player2+"\n";
+        // Also , check connection status , if useless, then remove it
+        if(connection_node.active == false){
+            object.splice(index,1);
+        }
     });
-    /* TODO: update UI design (using ejs) */
-    res.end("Connection queue: " + connection_string);
+    console.log('[io.render] Checking current connection !');
+    res.render('connection_table',{
+        title: 'Connection Table',
+        col1: '標籤',
+        col2: 'IP位置',
+        col3: '建立時間',
+        content: connection_list
+    });
 });
 
 // Listen url request
