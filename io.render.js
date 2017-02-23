@@ -139,9 +139,9 @@ app.get('/check_connection', function(req,res){
 });
 
 // Listen url request
-/*server.listen(process.env.npm_package_config_portiorender, function(){
+server.listen(process.env.npm_package_config_portiorender, function(){
     var host = server.address().address;
     var port = server.address().port;
     // logger.record('io.render',"[io.render] Example app listening at "+host+" : "+port);
     console.log("[io.render] Example app listening at "+host+" : "+port);
-});*/
+});
