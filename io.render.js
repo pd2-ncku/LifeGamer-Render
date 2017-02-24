@@ -27,29 +27,6 @@ app.set('view engine','ejs');
 
 const server = require('http').createServer(app);
 var player_channel = require('./player_channel.js');
-/* Battle command */
-var battle_cmd = '';
-var cmd_flag = false;
-
-app.post('/socket_test',function(req,res){
-    /* Handle command from battle server */
-    // logger.record('io.render','[io.render] Get Battle server request.');
-    console.log('[io.render] Get Battle server request.');
-    /* FIXME Parsing the command from battle server, and then pack them to render log */
-    battle_cmd = req.body;
-    /* emit socket once */
-    cmd_flag = true;
-    /* Send back message to battle server */
-    res.end('OK, Server get: '+JSON.stringify(battle_cmd));
-});
-
-app.get('/pixi',function(req,res){
-    /* Use for Testing Pixi */
-    // logger.record('io.render','[io.render] Get Pixi test.');
-    console.log('[io.render] Get Pixi test.');
-    res.render('pixi',{
-    });
-});
 
 /* Get start Command */
 app.get('/game_start', function(req,res){
@@ -103,7 +80,6 @@ app.get('/game_cmd', function(req,res){
     });
     // Record the battle command in battle_recording
     battle_recording[players.query.p1+players.query.p2].content.push(json_obj);
-
     res.end("OK , command send");
 });
 
@@ -139,9 +115,11 @@ app.get('/check_connection', function(req,res){
 });
 
 // Listen url request
-server.listen(process.env.npm_package_config_portiorender, function(){
-    var host = server.address().address;
-    var port = server.address().port;
-    // logger.record('io.render',"[io.render] Example app listening at "+host+" : "+port);
-    console.log("[io.render] Example app listening at "+host+" : "+port);
-});
+if(process.env.TRAVIS == "false"){
+    server.listen(process.env.npm_package_config_portiorender, function(){
+        var host = server.address().address;
+        var port = server.address().port;
+        // logger.record('io.render',"[io.render] Example app listening at "+host+" : "+port);
+        console.log("[io.render] io.render server listening at "+host+" : "+port);
+    });
+}

@@ -7,7 +7,8 @@
     "scripts": {
         "build": "npm install",
         "render": "node io.render.js",
-        "all": "npm run build && npm run render"
+        "travis_all": "export TRAVIS=true && npm run build && npm run render",
+        "all": "export TRAVIS=false && npm run build && npm run render"
     },
     "license": "GPL-3.0",
     "repository":{

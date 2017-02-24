@@ -14,4 +14,4 @@ notifications:
         on_success: always
         on_failure: always
 
-script: npm run all
+script: npm run travis_all
