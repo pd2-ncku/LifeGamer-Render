@@ -26,9 +26,17 @@ player_channel.prototype.setup = function(){
     self.io_render.on('connection',function(socket){
         socket.join('room-'+self.own_denote);
         var update = setInterval(function(){
-            if(self.writeable == 1){
-                self.io_render.in('room-'+self.own_denote).emit('raw',self.cmd);
-                self.writeable = 0;
+            switch (self.writeable) {
+                case 1:
+                    self.io_render.in('room-'+self.own_denote).emit('raw',self.cmd);
+                    self.writeable = 0;
+                    break;
+                case 2:
+                    self.io_render.in('room-'+self.own_denote).emit('replay',self.cmd);
+                    self.writeable = 0;
+                    break;
+                default:
+
             }
         },10);
         socket.on("disconnect",function(){
@@ -42,6 +50,11 @@ player_channel.prototype.setup = function(){
 player_channel.prototype.get_cmd = function(cmd){
     this.cmd = cmd;
     this.writeable = 1;
+}
+
+player_channel.prototype.get_replay = function(replay_log){
+    this.cmd = replay_log;
+    this.writeable = 2;
 }
 
 player_channel.prototype.find = function(denote){

@@ -1,0 +1,55 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content>
+        <meta name="author" content="kevinbird61">
+        <link rel="icon" href="icon.png">
+        <title> <%= title %> </title>
+        <!-- bootstrap css & js -->
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.9.0/bootstrap-social.min.css" integrity="sha256-02JtFTurpwBjQJ6q13iJe82/NF0RbZlJroDegK5g87Y=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" integrity="sha256-ijlUKKj3hJCiiT2HWo1kqkI79NTEYpzOsw5Rs3k42dI=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2-bootstrap.min.css" integrity="sha256-NAWFcNIZdH+TS1xpWujF/EB/Y8gwBbEOCoaK/eqaer8=" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <table class="table">
+                    <thead class="thead-inverse">
+                        <tr>
+                        <th>#</th>
+                        <th><%= col1 %></th>
+                        <th><%= col2 %></th>
+                        <th><%= col3 %></th>
+                        <th>選擇播放</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var index in content){ %>
+                            <% var detail = content[index].split('_'); %>
+                            <tr>
+                            <th scope="row"><%= index %></th>
+                            <td><%= detail[0] %></td>
+                            <td><%= detail[1] %></td>
+                            <td><%= detail[2] %></td>
+                            <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        // For manually redirect
+        function go_replay(pathname){
+            window.location = '/go_replay?replay=' + pathname;
+        }
+    </script>
+</html>

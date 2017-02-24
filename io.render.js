@@ -3,6 +3,7 @@
 /* And Using Socket.io to update client   */
 const express = require('express');
 const app = express();
+const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -39,7 +40,7 @@ app.get('/game_start', function(req,res){
         p2: players.query.p2
     });
     /* If there have no room , create one for it */
-    var cm = new player_channel(players.query.p1,players.query.p2,server,moment().format(),req.connection.remoteAddress);
+    var cm = new player_channel(players.query.p1,players.query.p2,server,moment().format('YYYY-MM-DD-hh-mm-ss-a'),req.connection.remoteAddress);
     cm.cmd = 'start';
     cm.setup();
     connection_list.push(cm);
@@ -91,7 +92,7 @@ app.get('/game_end', function(req,res){
     battle_room[players.query.p1+players.query.p2] = undefined;
     // Write record into file
     var record_obj = battle_recording[players.query.p1+players.query.p2];
-    jsfs.writeFileSync(battle_record_storage+'/'+'['+ battle_t +']'+players.query.p1+'?'+players.query.p2+'.battlelog',record_obj);
+    jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+players.query.p1+'_'+players.query.p2+'_.battlelog',record_obj);
     battle_recording[players.query.p1+players.query.p2] = undefined;
 });
 
@@ -114,8 +115,39 @@ app.get('/check_connection', function(req,res){
     });
 });
 
+/* Replay mechanism */
+app.get('/replay_list',function(req,res){
+    /* Fetch replay directory */
+    var record_list = fs.readdirSync(battle_record_storage);
+    /* Render choosing page */
+    res.render('replay_list',{
+        title: 'Replay Lobby',
+        col1: '戰鬥時間',
+        col2: '對戰人員1',
+        col3: '對戰人員2',
+        content: record_list
+    });
+});
+
+/* Get replay target */
+app.get('/go_replay',function(req,res){
+    /* Get target name */
+    var info = url.parse(req.url , true);
+    var target = info.query.replay;
+    console.log('[io.render] Prepare replay record - ' + target);
+    /* Fetch data */
+    if(fs.existsSync(battle_record_storage+'/'+target)){
+        var battle_log = jsfs.readFileSync(battle_record_storage+'/'+target);
+        // FIXME : using replay message deliver
+        res.end('We got : ' + target + '; Which content is : ' + JSON.stringify(battle_log));
+    }
+    else{
+        res.end('Sorry , can\'t find your replay target. Please try again!');
+    }
+});
+
 // Listen url request
-if(process.env.TRAVIS == "false"){
+if(process.env.TRAVIS != "true"){
     server.listen(process.env.npm_package_config_portiorender, function(){
         var host = server.address().address;
         var port = server.address().port;

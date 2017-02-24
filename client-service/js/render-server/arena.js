@@ -93,6 +93,13 @@ socket.on('raw',function(data){
     }
 });
 
+socket.on('replay',function(data){
+    /* Replay log receive */
+    var record = data.content;
+    console.log("Replay:");
+    console.dir(record);
+});
+
 function recover_minion(name,type,status,direction,loc_x,loc_y){
     switch (type) {
         case 'orge':
@@ -101,8 +108,9 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
             orge.change_direction(parseInt(direction));
             /* loc_x and loc_y => (x,y) => need to convert one time */
             orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-            /* TODO recover status (HP...)  */
+            orge.set_status(status);
             main_stage.addChild(orge.obj);
+            main_stage.addChild(orge.hp);
             minion.push(orge);
             break;
         default:
@@ -113,8 +121,9 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
 function control_minion(obj_name,status,direction){
     minion.forEach(function(each_minion){
         if(each_minion.object_No == obj_name){
-            /* FIXME : add status */
             console.log("Match");
+            /* add status - using percentage , which is negative */
+            each_minion.set_status(status);
             each_minion.change_direction(parseInt(direction));
         }
     })
