@@ -27,6 +27,9 @@ var ORGE = function( char_w,char_h, object_No ,max_w,max_h){
             footstep: [0,1000]
         }
     });
+    // Health Bar
+    this.hp_count = 100;
+    this.hp = new HealthBar((this.hp_count/100)*(3/2)*char_w*this.scale,10);
 
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/orge.png"));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -170,8 +173,14 @@ ORGE.prototype.set_basicV = function(vx,vy){
     this.basic_velocity_y = vy;
 }
 
-ORGE.prototype.set_status = function(hp){
-    this.hp = hp;
+ORGE.prototype.set_status = function(hp_var){
+    // Setting hp
+    if(this.hp.outer.width > 0){
+        this.hp.outer.width += hp_var;
+    }
+    else{
+        this.hp.outer.width = 0;
+    }
 }
 
 ORGE.prototype.sound_effect = function(){
@@ -202,8 +211,17 @@ ORGE.prototype.change_direction = function(new_direction){
     this.direction = new_direction;
 }
 
+ORGE.prototype.move = function(){
+    // Object moving
+    this.obj.x += this.vx;
+    this.obj.y += this.vy;
+    this.hp.x += this.vx;
+    this.hp.y += this.vy;
+}
+
 ORGE.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
+    this.hp.position.set(x-(this.obj.width/4),y-(this.obj.height/4));
 }
 
 ORGE.prototype.check_boundary = function(){

@@ -130,6 +130,7 @@ function add_minion(name,type,direction,loc_x,loc_y){
             /* loc_x and loc_y => (x,y) => need to convert one time */
             orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
             main_stage.addChild(orge.obj);
+            main_stage.addChild(orge.hp);
             minion.push(orge);
             break;
         default:
@@ -206,14 +207,6 @@ function setup() {
     bridge_top.position.set(22*x_unit,3*y_unit);
     bridge_down.position.set(22*x_unit,13*y_unit);
 
-    // Debug
-    /*var orge = new ORGE( x_unit , y_unit );
-    orge.change_direction(9);
-    orge.setpos(500,300);
-    main_stage.addChild(orge.obj);
-
-    minion.push(orge);*/
-
     battle_gameLoop();
 }
 
@@ -228,8 +221,7 @@ function play(){
     /* Receive the message and summon our minion here */
     // And moving the Character
     minion.forEach(function(each_mini){
-		each_mini.obj.x += each_mini.vx;
-        each_mini.obj.y += each_mini.vy;
+		each_mini.move();
         each_mini.check_boundary();
 	});
 }
@@ -237,19 +229,8 @@ function play(){
 var tick = 0;
 setInterval(function() {
 	minion.forEach(function(each_mini){
-        /* Random Change Direction */
-        /*if(tick%20 == 0){
-            each_mini.change_direction(Math.floor((Math.random() * 8)));
-        }*/
+        //each_mini.set_status(-1);
 		each_mini.walking(tick);
 	});
     tick++;
-    /* Debug: Dynamic add minion by time */
-    /*if(tick%50 == 0){
-        var new_orge = new ORGE( x_unit , y_unit );
-        new_orge.change_direction(1);
-        new_orge.setpos(Math.floor((Math.random()*500) + 1));
-        main_stage.addChild(new_orge.obj);
-        minion.push(new_orge);
-    }*/
 }, 100);
