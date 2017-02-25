@@ -131,6 +131,23 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
                 minion.push(orge);
             }
             break;
+        case 'mage':
+            if(parseInt(status) <= 0){
+                // this minion no need to recover
+            }
+            else {
+                /* Resummon mage minion */
+                var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
+                mage.change_direction(parseInt(direction));
+                /* loc_x and loc_y => (x,y) => need to convert one time */
+                mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                mage.set_status(status);
+                main_stage.addChild(mage.obj);
+                main_stage.addChild(mage.hp);
+                minion.push(orge);
+            }
+
+            break;
         default:
 
     }
@@ -160,7 +177,7 @@ function add_minion(name,type,direction,loc_x,loc_y){
     switch (type) {
         case 'orge':
             /* Summon new orge minion */
-            var orge = new ORGE( x_unit , y_unit , name ,max_w,max_h);
+            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
             orge.change_direction(parseInt(direction));
             orge.set_basicV(x_unit/30,y_unit/30);
             /* loc_x and loc_y => (x,y) => need to convert one time */
@@ -168,6 +185,16 @@ function add_minion(name,type,direction,loc_x,loc_y){
             main_stage.addChild(orge.obj);
             main_stage.addChild(orge.hp);
             minion.push(orge);
+            break;
+        case 'mage':
+            /* Summon new orge minion */
+            var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
+            mage.change_direction(parseInt(direction));
+            mage.set_basicV(x_unit/45,y_unit/45);
+            mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+            main_stage.addChild(mage.obj);
+            main_stage.addChild(mage.hp);
+            minion.push(mage);
             break;
         default:
 
@@ -186,7 +213,8 @@ PIXI.loader
         "battle_field/water_texture.png"
     ])
     .add([
-        "minion/orge.png"
+        "minion/orge.png",
+        "minion/mage.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
