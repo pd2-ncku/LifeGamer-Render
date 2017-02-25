@@ -193,6 +193,11 @@ ORGE.prototype.sound_effect = function(){
     }
 }
 
+ORGE.prototype.kill = function(){
+    this.sound.stop();
+    delete this.sound;
+}
+
 ORGE.prototype.change_direction = function(new_direction){
     // Moving x
 	if(this.obj.x+this.obj.width >= this.boundary_x){

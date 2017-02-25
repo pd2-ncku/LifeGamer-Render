@@ -63,10 +63,30 @@ window.addEventListener("beforeunload", function(e){
 socket.on('raw',function(data){
     /* Receive the message and parse it */
     var raw_data = data;
+    command_parser(raw_data);
+});
+
+socket.on('replay',function(data){
+    /* Replay log receive */
+    var record = data.content;
+    var index = 0;
+    /* And then push those command in verify tick */
+    var command_pusher = setInterval(function(){
+        if(index >= record.length){
+            clearInterval(command_pusher);
+        }
+        else{
+            command_parser(record[index]);
+            index++;
+        }
+    },1000);
+});
+
+function command_parser(cmd_obj){
     /* Get current type of message */
-    var cmd_type = raw_data.cmd;
-    var current_minion_list = raw_data.current_minion;
-    var new_minion_list = raw_data.new_minion;
+    var cmd_type = cmd_obj.cmd;
+    var current_minion_list = cmd_obj.current_minion;
+    var new_minion_list = cmd_obj.new_minion;
     if(cmd_type == "battle"){
         /* Battle field Ongoing */
         if(current_minion_list.length > 0 ){
@@ -91,27 +111,25 @@ socket.on('raw',function(data){
             });
         }
     }
-});
-
-socket.on('replay',function(data){
-    /* Replay log receive */
-    var record = data.content;
-    console.log("Replay:");
-    console.dir(record);
-});
+}
 
 function recover_minion(name,type,status,direction,loc_x,loc_y){
     switch (type) {
         case 'orge':
-            /* Resummon orge minion */
-            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
-            orge.change_direction(parseInt(direction));
-            /* loc_x and loc_y => (x,y) => need to convert one time */
-            orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-            orge.set_status(status);
-            main_stage.addChild(orge.obj);
-            main_stage.addChild(orge.hp);
-            minion.push(orge);
+            if(parseInt(status) <= 0){
+                // this minion no need to recover
+            }
+            else{
+                /* Resummon orge minion */
+                var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
+                orge.change_direction(parseInt(direction));
+                /* loc_x and loc_y => (x,y) => need to convert one time */
+                orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                orge.set_status(status);
+                main_stage.addChild(orge.obj);
+                main_stage.addChild(orge.hp);
+                minion.push(orge);
+            }
             break;
         default:
 
@@ -119,12 +137,21 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
 }
 
 function control_minion(obj_name,status,direction){
-    minion.forEach(function(each_minion){
+    minion.forEach(function(each_minion,index,object){
         if(each_minion.object_No == obj_name){
-            console.log("Match");
             /* add status - using percentage , which is negative */
-            each_minion.set_status(status);
-            each_minion.change_direction(parseInt(direction));
+            // Remove this minion from the battle field
+            each_minion.set_status(parseInt(status));
+            if(each_minion.hp.outer.width <= 0){
+                // Remove this object from battle field
+                main_stage.removeChild(each_minion.obj);
+                main_stage.removeChild(each_minion.hp);
+                each_minion.kill();
+                object.splice(index,1);
+            }
+            else{
+                each_minion.change_direction(parseInt(direction));
+            }
         }
     })
 }

@@ -40,7 +40,8 @@ app.get('/game_start', function(req,res){
         p2: players.query.p2
     });
     /* If there have no room , create one for it */
-    var cm = new player_channel(players.query.p1,players.query.p2,server,moment().format('YYYY-MM-DD-hh-mm-ss-a'),req.connection.remoteAddress);
+    var create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
+    var cm = new player_channel(players.query.p1,players.query.p2,server,create_time,req.connection.remoteAddress);
     cm.cmd = 'start';
     cm.setup();
     connection_list.push(cm);
@@ -51,7 +52,7 @@ app.get('/game_start', function(req,res){
     }
     else{
         // Build a room for this pair
-        battle_room[players.query.p1+players.query.p2] = moment().format();
+        battle_room[players.query.p1+players.query.p2] = create_time;
         var record_data = {
             content: []
         };
@@ -72,6 +73,7 @@ app.get('/game_cmd', function(req,res){
         // Also , check connection status , if useless, then remove it
         if(connection_node.active == false){
             object.splice(index,1);
+            delete connection_node;
         }
         // Compare , if fit then feed command
         if(connection_node.find(players.query.p1+players.query.p2) == true){
@@ -103,6 +105,7 @@ app.get('/check_connection', function(req,res){
         // Also , check connection status , if useless, then remove it
         if(connection_node.active == false){
             object.splice(index,1);
+            delete connection_node;
         }
     });
     console.log('[io.render] Checking current connection !');
@@ -139,7 +142,16 @@ app.get('/go_replay',function(req,res){
     if(fs.existsSync(battle_record_storage+'/'+target)){
         var battle_log = jsfs.readFileSync(battle_record_storage+'/'+target);
         // FIXME : using replay message deliver
-        res.end('We got : ' + target + '; Which content is : ' + JSON.stringify(battle_log));
+        // send total log , using player_channel
+        var re = new player_channel(target,target,server,moment().format('YYYY-MM-DD-hh-mm-ss-a'),req.connection.remoteAddress);
+        re.get_replay(battle_log);
+        re.setup();
+        res.render('arena_game_replay',{
+            script: target,
+            log: battle_log
+        });
+        // destroy this channel
+        delete re;
     }
     else{
         res.end('Sorry , can\'t find your replay target. Please try again!');
