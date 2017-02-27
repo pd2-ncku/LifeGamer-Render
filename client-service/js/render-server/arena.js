@@ -33,6 +33,7 @@ var cmd_prototype = {
     'cmd': 'battle',
     'current_minion' : [
         {
+            'belong': 'belong',
             'name': 'orge1',
             'type': 'orge',
             'status': '50',
@@ -43,6 +44,7 @@ var cmd_prototype = {
     ] ,
     'new_minion': [
         {
+            'belong': 'belong',
             'name': 'orge1',
             'type': 'orge',
             'move': '1',
@@ -59,6 +61,7 @@ const socket = io();
 window.addEventListener("beforeunload", function(e){
     socket.emit('disconnect');
 }, false);
+
 // Command/Data receive
 socket.on('raw',function(data){
     /* Receive the message and parse it */
@@ -70,6 +73,7 @@ socket.on('replay',function(data){
     /* Replay log receive */
     var record = data.content;
     var index = 0;
+    var command_push_rate = 1000;
     /* And then push those command in verify tick */
     var command_pusher = setInterval(function(){
         if(index >= record.length){
@@ -79,7 +83,7 @@ socket.on('replay',function(data){
             command_parser(record[index]);
             index++;
         }
-    },1000);
+    },command_push_rate);
 });
 
 function command_parser(cmd_obj){
@@ -94,7 +98,7 @@ function command_parser(cmd_obj){
             if(minion.length == 0){
                 /* TODO Notice that this user need to replot the battle field */
                 current_minion_list.forEach(function(current_minion){
-                    recover_minion(current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
+                    recover_minion(current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
                 });
             }
             else{
@@ -107,13 +111,13 @@ function command_parser(cmd_obj){
         if(new_minion_list.length > 0){
             /* Add new minion */
             new_minion_list.forEach(function(new_minion){
-                add_minion(new_minion.name,new_minion.type,new_minion.move,new_minion.loc_x,new_minion.loc_y);
+                add_minion(new_minion.belong,new_minion.name,new_minion.type,new_minion.move,new_minion.loc_x,new_minion.loc_y);
             });
         }
     }
 }
 
-function recover_minion(name,type,status,direction,loc_x,loc_y){
+function recover_minion(belong,name,type,status,direction,loc_x,loc_y){
     switch (type) {
         case 'orge':
             if(parseInt(status) <= 0){
@@ -146,7 +150,22 @@ function recover_minion(name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(mage.hp);
                 minion.push(orge);
             }
-
+            break;
+        case 'sgram':
+            if(parseInt(status) <= 0){
+                // this minion no need to recover
+            }
+            else {
+                /* Resummon mage minion */
+                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h,belong);
+                sgram.change_direction(parseInt(direction));
+                /* loc_x and loc_y => (x,y) => need to convert one time */
+                sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                sgram.set_status(status);
+                main_stage.addChild(sgram.obj);
+                main_stage.addChild(sgram.hp);
+                minion.push(sgram);
+            }
             break;
         default:
 
@@ -173,11 +192,11 @@ function control_minion(obj_name,status,direction){
     })
 }
 
-function add_minion(name,type,direction,loc_x,loc_y){
+function add_minion(belong,name,type,direction,loc_x,loc_y){
     switch (type) {
         case 'orge':
             /* Summon new orge minion */
-            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
+            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h,belong);
             orge.change_direction(parseInt(direction));
             orge.set_basicV(x_unit/30,y_unit/30);
             /* loc_x and loc_y => (x,y) => need to convert one time */
@@ -195,6 +214,16 @@ function add_minion(name,type,direction,loc_x,loc_y){
             main_stage.addChild(mage.obj);
             main_stage.addChild(mage.hp);
             minion.push(mage);
+            break;
+        case 'sgram':
+            /* Summon new sgram car */
+            var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h);
+            sgram.change_direction(parseInt(direction));
+            sgram.set_basicV(x_unit/45,y_unit/45);
+            sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+            main_stage.addChild(sgram.obj);
+            main_stage.addChild(sgram.hp);
+            minion.push(sgram);
             break;
         default:
 
@@ -214,7 +243,8 @@ PIXI.loader
     ])
     .add([
         "minion/orge.png",
-        "minion/mage.png"
+        "minion/mage.png",
+        "minion/320x320-sgram.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
