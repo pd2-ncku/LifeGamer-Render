@@ -1,6 +1,7 @@
 /* Global variable */
 // Maintain all minions in queue
 var minion = [];
+var buildings = [];
 // Scene Part
 var main_stage = new PIXI.Container();
 // Render part
@@ -98,7 +99,7 @@ function command_parser(cmd_obj){
             if(minion.length == 0){
                 /* TODO Notice that this user need to replot the battle field */
                 current_minion_list.forEach(function(current_minion){
-                    recover_minion(current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
+                    add_minion(current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
                 });
             }
             else{
@@ -111,64 +112,9 @@ function command_parser(cmd_obj){
         if(new_minion_list.length > 0){
             /* Add new minion */
             new_minion_list.forEach(function(new_minion){
-                add_minion(new_minion.belong,new_minion.name,new_minion.type,new_minion.move,new_minion.loc_x,new_minion.loc_y);
+                add_minion(new_minion.belong,new_minion.name,new_minion.type,100,new_minion.move,new_minion.loc_x,new_minion.loc_y);
             });
         }
-    }
-}
-
-function recover_minion(belong,name,type,status,direction,loc_x,loc_y){
-    switch (type) {
-        case 'orge':
-            if(parseInt(status) <= 0){
-                // this minion no need to recover
-            }
-            else{
-                /* Resummon orge minion */
-                var orge = new ORGE(x_unit,y_unit,name,max_w,max_h);
-                orge.change_direction(parseInt(direction));
-                /* loc_x and loc_y => (x,y) => need to convert one time */
-                orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-                orge.set_status(status);
-                main_stage.addChild(orge.obj);
-                main_stage.addChild(orge.hp);
-                minion.push(orge);
-            }
-            break;
-        case 'mage':
-            if(parseInt(status) <= 0){
-                // this minion no need to recover
-            }
-            else {
-                /* Resummon mage minion */
-                var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
-                mage.change_direction(parseInt(direction));
-                /* loc_x and loc_y => (x,y) => need to convert one time */
-                mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-                mage.set_status(status);
-                main_stage.addChild(mage.obj);
-                main_stage.addChild(mage.hp);
-                minion.push(orge);
-            }
-            break;
-        case 'sgram':
-            if(parseInt(status) <= 0){
-                // this minion no need to recover
-            }
-            else {
-                /* Resummon mage minion */
-                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h,belong);
-                sgram.change_direction(parseInt(direction));
-                /* loc_x and loc_y => (x,y) => need to convert one time */
-                sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-                sgram.set_status(status);
-                main_stage.addChild(sgram.obj);
-                main_stage.addChild(sgram.hp);
-                minion.push(sgram);
-            }
-            break;
-        default:
-
     }
 }
 
@@ -192,42 +138,61 @@ function control_minion(obj_name,status,direction){
     })
 }
 
-function add_minion(belong,name,type,direction,loc_x,loc_y){
-    switch (type) {
-        case 'orge':
-            /* Summon new orge minion */
-            var orge = new ORGE(x_unit,y_unit,name,max_w,max_h,belong);
-            orge.change_direction(parseInt(direction));
-            orge.set_basicV(x_unit/30,y_unit/30);
-            /* loc_x and loc_y => (x,y) => need to convert one time */
-            orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-            main_stage.addChild(orge.obj);
-            main_stage.addChild(orge.hp);
-            minion.push(orge);
-            break;
-        case 'mage':
-            /* Summon new orge minion */
-            var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
-            mage.change_direction(parseInt(direction));
-            mage.set_basicV(x_unit/45,y_unit/45);
-            mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-            main_stage.addChild(mage.obj);
-            main_stage.addChild(mage.hp);
-            minion.push(mage);
-            break;
-        case 'sgram':
-            /* Summon new sgram car */
-            var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h);
-            sgram.change_direction(parseInt(direction));
-            sgram.set_basicV(x_unit/45,y_unit/45);
-            sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-            main_stage.addChild(sgram.obj);
-            main_stage.addChild(sgram.hp);
-            minion.push(sgram);
-            break;
-        default:
-
+function add_minion(belong,name,type,status,direction,loc_x,loc_y){
+    /* Merge Recover in here */
+    if(parseInt(status) <= 0){
+        // this minion no need to recover
     }
+    else {
+        switch (type) {
+            case 'orge':
+                /* Summon new orge minion */
+                var orge = new ORGE(x_unit,y_unit,name,max_w,max_h,belong);
+                orge.change_direction(parseInt(direction));
+                orge.set_status(status);
+                orge.set_basicV(x_unit/30,y_unit/30);
+                /* loc_x and loc_y => (x,y) => need to convert one time */
+                orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(orge.obj);
+                main_stage.addChild(orge.hp);
+                minion.push(orge);
+                break;
+            case 'mage':
+                /* Summon new orge minion */
+                var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
+                mage.change_direction(parseInt(direction));
+                mage.set_status(status);
+                mage.set_basicV(x_unit/45,y_unit/45);
+                mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(mage.obj);
+                main_stage.addChild(mage.hp);
+                minion.push(mage);
+                break;
+            case 'sgram':
+                /* Summon new sgram car */
+                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h);
+                sgram.change_direction(parseInt(direction));
+                sgram.set_status(status);
+                sgram.set_basicV(x_unit/45,y_unit/45);
+                sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(sgram.obj);
+                main_stage.addChild(sgram.hp);
+                minion.push(sgram);
+                break;
+            case 'elf_archer':
+                var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h);
+                elf_archer.change_direction(parseInt(direction));
+                elf_archer.set_status(status);
+                elf_archer.set_basicV(x_unit/45,y_unit/45);
+                elf_archer.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(elf_archer.obj);
+                main_stage.addChild(elf_archer.hp);
+                minion.push(elf_archer);
+            default:
+
+        }
+    }
+
 }
 
 // Append render view into DOM tree
@@ -239,12 +204,16 @@ PIXI.loader
         "battle_field/bridge_texture.png",
         "battle_field/house_texture.png",
         "battle_field/land_texture.png",
-        "battle_field/water_texture.png"
+        "battle_field/water_texture.png",
+        "buildings/castle-blue.png",
+        "buildings/castle-red.png",
+        "buildings/big_castle.png"
     ])
     .add([
         "minion/orge.png",
         "minion/mage.png",
-        "minion/320x320-sgram.png"
+        "minion/320x320-sgram.png",
+        "minion/elf_archer.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);
@@ -289,17 +258,53 @@ function setup() {
     river.width = 6 * x_unit;
     river.height = max_h;
 
+    // setting tower
+    var x_bound = 7;
+    var main_x_bound = 2;
+    var p1_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_top','p1');
+    p1_vicetower_top.setpos(x_bound*x_unit,2*y_unit);
+    var p1_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_down','p1');
+    p1_vicetower_down.setpos(x_bound*x_unit,14*y_unit);
+    var p1_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p1_main','p1');
+    p1_maintower.setpos((main_x_bound)*x_unit,7*y_unit);
+    var p2_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_top','p2');
+    p2_vicetower_top.setpos((50-x_bound-vice_tower_unit)*x_unit,2*y_unit);
+    var p2_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_down','p2');
+    p2_vicetower_down.setpos((50-x_bound-vice_tower_unit)*x_unit,14*y_unit);
+    var p2_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p2_main','p2');
+    p2_maintower.setpos((50-main_x_bound-main_tower_unit)*x_unit,7*y_unit);
+
     // add them into scene
     main_stage.addChild(ground);
     main_stage.addChild(river);
     main_stage.addChild(bridge_top);
     main_stage.addChild(bridge_down);
+    main_stage.addChild(p1_vicetower_top.obj);
+    main_stage.addChild(p1_vicetower_top.hp);
+    main_stage.addChild(p1_vicetower_down.obj);
+    main_stage.addChild(p1_vicetower_down.hp);
+    main_stage.addChild(p1_maintower.obj);
+    main_stage.addChild(p1_maintower.hp);
+    main_stage.addChild(p2_vicetower_top.obj);
+    main_stage.addChild(p2_vicetower_top.hp);
+    main_stage.addChild(p2_vicetower_down.obj);
+    main_stage.addChild(p2_vicetower_down.hp);
+    main_stage.addChild(p2_maintower.obj);
+    main_stage.addChild(p2_maintower.hp);
 
     // set sprite's location
     ground.position.set(0,0);
     river.position.set(22*x_unit,0);
     bridge_top.position.set(22*x_unit,3*y_unit);
     bridge_down.position.set(22*x_unit,13*y_unit);
+
+    // Push tower into buildings array
+    buildings.push(p1_vicetower_top);
+    buildings.push(p1_vicetower_down);
+    buildings.push(p2_vicetower_top);
+    buildings.push(p2_vicetower_down);
+    buildings.push(p1_maintower);
+    buildings.push(p2_maintower);
 
     battle_gameLoop();
 }
@@ -326,5 +331,8 @@ setInterval(function() {
         //each_mini.set_status(-1);
 		each_mini.walking(tick);
 	});
+    buildings.forEach(function(each_tower){
+        each_tower.progressing(tick);
+    });
     tick++;
 }, 100);
