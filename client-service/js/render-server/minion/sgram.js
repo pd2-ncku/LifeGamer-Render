@@ -283,7 +283,7 @@ SGRAM.prototype.move = function(){
 
 SGRAM.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
-    this.hp.position.set(x-(this.obj.width/4),y-(this.obj.height/4));
+    this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
 }
 
 SGRAM.prototype.check_boundary = function(){

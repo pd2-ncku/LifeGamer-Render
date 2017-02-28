@@ -56,9 +56,9 @@ app.get('/game_start', function(req,res){
         var record_data = {
             content: []
         };
+        console.log("Build room !");
         battle_recording[players.query.p1+players.query.p2] = record_data;
     }
-
 });
 
 /* Get Battle Command (In Game) */
@@ -157,6 +157,37 @@ app.get('/go_replay',function(req,res){
         res.end('Sorry , can\'t find your replay target. Please try again!');
     }
 });
+
+app.post('/game_cmd',function(req,res){
+    var cmd = req.body.cmd;
+    var player1 = req.body.p1;
+    var player2 = req.body.p2;
+    console.log('[io.render] Cmd send from battle server');
+    console.log('[io.render] Denote: ' + player1+player2);
+    /* Parsing command here */
+    var json_obj = {
+        cmd: cmd,
+        current_minion: JSON.parse(req.body.current_minion),
+        new_minion: JSON.parse(req.body.new_minion),
+        buildings: JSON.parse(req.body.buildings)
+    }
+    /* Maintain Connection channel */
+    connection_list.forEach(function(connection_node,index,object){
+        // Also , check connection status , if useless, then remove it
+        if(connection_node.active == false){
+            object.splice(index,1);
+            delete connection_node;
+        }
+        // Compare , if fit then feed command
+        if(connection_node.find(player1+player2) == true){
+            connection_node.get_cmd(json_obj);
+            return;
+        }
+    });
+    // Record the battle command in battle_recording
+    battle_recording[player1+player2].content.push(json_obj);
+    res.end("OK , command send");
+})
 
 // Listen url request
 if(process.env.TRAVIS != "true"){

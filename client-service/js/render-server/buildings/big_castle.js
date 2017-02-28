@@ -10,6 +10,7 @@ var BIG_CASTLE = function(char_w,char_h,object_No,belong){
     this.src_frame_h = 1280;
     this.picture_frame = 3;
     this.scale = 1;
+    this.object_No = object_No;
     /* url */
     this.image_src = "buildings/big_castle.png";
     /* Also , Setting which direction the building face : default - p1->right , p2->left */

@@ -11,7 +11,7 @@ var ELF_ARCHER = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.vx = 0;
     this.vy = 0;
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
-    // TODO sound effect
+    // sound effect
     var summon = new Howl({
         src: ['elf_archer_summon.mp3'],
         loop: false,
@@ -281,7 +281,8 @@ ELF_ARCHER.prototype.move = function(){
 
 ELF_ARCHER.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
-    this.hp.position.set(x-(this.obj.width),y-(this.obj.height/4));
+    // Because of being center , hp bar x must be (loc_x_obj + w_obj/2 - w_hp/2)
+    this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
 }
 
 ELF_ARCHER.prototype.check_boundary = function(){

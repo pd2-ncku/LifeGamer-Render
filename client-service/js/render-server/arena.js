@@ -92,6 +92,7 @@ function command_parser(cmd_obj){
     var cmd_type = cmd_obj.cmd;
     var current_minion_list = cmd_obj.current_minion;
     var new_minion_list = cmd_obj.new_minion;
+    var tower_list = cmd_obj.buildings;
     if(cmd_type == "battle"){
         /* Battle field Ongoing */
         if(current_minion_list.length > 0 ){
@@ -115,7 +116,28 @@ function command_parser(cmd_obj){
                 add_minion(new_minion.belong,new_minion.name,new_minion.type,100,new_minion.move,new_minion.loc_x,new_minion.loc_y);
             });
         }
+        if(tower_list.length > 0){
+            // Dealing with buildings
+            tower_list.forEach(function(tower){
+                control_building(tower.name,tower.status);
+            });
+        }
     }
+}
+
+function control_building(tower_name,tower_status){
+    buildings.forEach(function(tower,index,object){
+        if(tower.object_No == tower_name){
+            tower.set_status(parseInt(tower_status));
+            if(tower.hp.outer.width <= 0){
+                // Remove this object from the battle field
+                main_stage.removeChild(tower.obj);
+                main_stage.removeChild(tower.hp);
+                object.splice(index,1);
+                // FIXME : or show ruins on the tower location
+            }
+        }
+    });
 }
 
 function control_minion(obj_name,status,direction){

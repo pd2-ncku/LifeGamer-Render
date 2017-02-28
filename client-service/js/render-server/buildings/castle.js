@@ -10,6 +10,7 @@ var CASTLE = function(char_w,char_h,object_No,belong){
     this.src_frame_h = 640;
     this.picture_frame = 3;
     this.scale = 1;
+    this.object_No = object_No;
     /* direction */
     /* Also , Setting which direction the building face : default - p1->right , p2->left */
     if(belong == 'p1'){
