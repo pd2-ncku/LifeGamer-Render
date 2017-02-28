@@ -1,0 +1,9 @@
+{
+    "target": "http://localhost",
+    "port": "3001",
+    "pathname": "/game_cmd",
+    "end": "/game_end",
+    "p1": "kevin",
+    "p2": "eric",
+    "interval": 1000
+}

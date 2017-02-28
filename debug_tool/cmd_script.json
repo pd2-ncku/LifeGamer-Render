@@ -1,0 +1,34 @@
+{
+    "content":[
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "orge1",
+                    "type": "orge",
+                    "status": "-10",
+                    "move": "2",
+                    "loc_x": "20",
+                    "loc_y": "10"
+                }
+            ] ,
+            "new_minion": [
+                {
+                    "belong": "p1",
+                    "name": "orge1",
+                    "type": "orge",
+                    "move": "1",
+                    "loc_x": "30",
+                    "loc_y": "10"
+                }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p1_top",
+                    "status": "-10"
+                }
+            ]
+        }
+    ]
+}
