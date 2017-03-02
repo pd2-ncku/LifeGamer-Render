@@ -11,6 +11,9 @@ const moment = require('moment');
 const jsfs = require('jsonfile');
 /* core */
 // const logger = require('./back-end/logger');
+var player_channel = require('./server-service/core/player_channel.js');
+
+/* table and queue */
 var connection_list = [];
 var battle_room = {};
 var battle_recording = {};
@@ -27,7 +30,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine','ejs');
 
 const server = require('http').createServer(app);
-var player_channel = require('./player_channel.js');
 
 /* Get start Command */
 app.get('/game_start', function(req,res){
@@ -158,12 +160,11 @@ app.get('/go_replay',function(req,res){
     }
 });
 
+// Post method of game command
 app.post('/game_cmd',function(req,res){
     var cmd = req.body.cmd;
     var player1 = req.body.p1;
     var player2 = req.body.p2;
-    console.log('[io.render] Cmd send from battle server');
-    console.log('[io.render] Denote: ' + player1+player2);
     /* Parsing command here */
     var json_obj = {
         cmd: cmd,
@@ -180,14 +181,30 @@ app.post('/game_cmd',function(req,res){
         }
         // Compare , if fit then feed command
         if(connection_node.find(player1+player2) == true){
+            console.log('[io.render] Cmd send from battle server');
+            console.log('[io.render] Denote: ' + player1+player2);
             connection_node.get_cmd(json_obj);
             return;
         }
     });
     // Record the battle command in battle_recording
     battle_recording[player1+player2].content.push(json_obj);
-    res.end("OK , command send");
+    res.end("OK ! Get Command!");
 })
+
+// Post method of end command
+app.post('/game_end', function(req,res){
+    var player1 = req.body.p1;
+    var player2 = req.body.p2;
+    console.log('[io.render] Battle of ' + player1+player2+ " comes to an end.");
+    // Cancel from room
+    var battle_t = battle_room[player1+player2];
+    battle_room[player1+player2] = undefined;
+    // Write record into file
+    var record_obj = battle_recording[player1+player2];
+    jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',record_obj);
+    battle_recording[player1+player2] = undefined;
+});
 
 // Listen url request
 if(process.env.TRAVIS != "true"){

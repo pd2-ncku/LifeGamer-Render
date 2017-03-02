@@ -38,10 +38,11 @@ player_channel.prototype.setup = function(){
                 default:
 
             }
-        },10);
+        },1);
         socket.on("disconnect",function(){
             console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
-            this.active = false;
+            // Set this channel to false , waiting to be delete
+            self.active = false;
             socket.leave('room-'+self.own_denote);
         });
     });
