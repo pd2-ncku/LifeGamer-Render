@@ -53,7 +53,7 @@ function delivery_script(cmd_script,config,request,readline){
             clearInterval(update);
             readline.prompt();
         }
-    },1000);
+    },config.interval);
 }
 
 // end command

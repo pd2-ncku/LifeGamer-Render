@@ -80,6 +80,36 @@
                     "status": "-10"
                 }
             ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "archer1",
+                    "type": "elf_archer",
+                    "status": "-20",
+                    "move": "2",
+                    "loc_x": "20",
+                    "loc_y": "10"
+                }
+            ] ,
+            "new_minion": [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_thief",
+                    "move": "1",
+                    "loc_x": "10",
+                    "loc_y": "10"
+                }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p2_down",
+                    "status": "-10"
+                }
+            ]
         }
     ]
 }

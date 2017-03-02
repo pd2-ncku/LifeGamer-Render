@@ -29,33 +29,6 @@ const vice_tower_unit = 4;
 console.log("Arena Size: (" + max_w + "," + max_h + ")");
 console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
 
-// Command prototype
-var cmd_prototype = {
-    'cmd': 'battle',
-    'current_minion' : [
-        {
-            'belong': 'belong',
-            'name': 'orge1',
-            'type': 'orge',
-            'status': '50',
-            'move': '2',
-            'loc_x': '20',
-            'loc_y': '10'
-        }
-    ] ,
-    'new_minion': [
-        {
-            'belong': 'belong',
-            'name': 'orge1',
-            'type': 'orge',
-            'move': '1',
-            'loc_x': '30',
-            'loc_y': '10'
-        }
-    ]
-}
-console.log(JSON.stringify(cmd_prototype));
-
 /* Connection establish */
 const socket = io();
 // disconnect from server
@@ -210,6 +183,17 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(elf_archer.obj);
                 main_stage.addChild(elf_archer.hp);
                 minion.push(elf_archer);
+                break;
+            case 'human_thief':
+                var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h);
+                human_thief.change_direction(parseInt(direction));
+                human_thief.set_status(status);
+                human_thief.set_basicV(x_unit/45,y_unit/45);
+                human_thief.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(human_thief.obj);
+                main_stage.addChild(human_thief.hp);
+                minion.push(human_thief);
+                break;
             default:
 
         }
@@ -235,7 +219,8 @@ PIXI.loader
         "minion/orge.png",
         "minion/mage.png",
         "minion/320x320-sgram.png",
-        "minion/elf_archer.png"
+        "minion/elf_archer.png",
+        "minion/human_thief.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);

@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const jsfs = require('jsonfile');
 /* core */
-// const logger = require('./back-end/logger');
+// var logger = require('./server-service/core/logger.js');
 var player_channel = require('./server-service/core/player_channel.js');
 
 /* table and queue */
