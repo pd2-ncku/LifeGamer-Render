@@ -62,6 +62,7 @@ socket.on('replay',function(data){
 
 function command_parser(cmd_obj){
     /* Get current type of message */
+    console.dir(cmd_obj);
     var cmd_type = cmd_obj.cmd;
     var current_minion_list = cmd_obj.current_minion;
     var new_minion_list = cmd_obj.new_minion;

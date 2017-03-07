@@ -5,5 +5,5 @@
     "end": "/game_end",
     "p1": "kevin",
     "p2": "eric",
-    "interval": 1000
+    "interval": 10
 }
