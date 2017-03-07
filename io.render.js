@@ -26,6 +26,7 @@ app.use(express.static('client-service/images'));
 app.use(express.static('client-service/sound'));
 app.use(express.static('client-service/js'));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 /* Setting view engine as ejs */
 app.set('view engine','ejs');
 
@@ -174,9 +175,9 @@ app.post('/game_cmd',function(req,res){
     /* Parsing command here */
     var json_obj = {
         cmd: cmd,
-        current_minion: JSON.parse(req.body.current_minion),
-        new_minion: JSON.parse(req.body.new_minion),
-        buildings: JSON.parse(req.body.buildings)
+        current_minion: req.body.current_minion,
+        new_minion: req.body.new_minion,
+        buildings: req.body.buildings
     }
     /* Maintain Connection channel */
     connection_list.forEach(function(connection_node,index,object){
@@ -194,8 +195,14 @@ app.post('/game_cmd',function(req,res){
         }
     });
     // Record the battle command in battle_recording
-    battle_recording[player1+player2].content.push(json_obj);
-    res.end("OK ! Get Command!");
+    if(battle_recording[player1+player2].content == undefined){
+        console.log("[io.render][Error] Haven't has any players summon this battle room yet!");
+        res.end("Nope, command need to resend again!");
+    }
+    else{
+        battle_recording[player1+player2].content.push(json_obj);
+        res.end("OK , command send");
+    }
 })
 
 // Post method of end command
