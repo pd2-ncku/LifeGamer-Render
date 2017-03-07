@@ -84,8 +84,14 @@ app.get('/game_cmd', function(req,res){
         }
     });
     // Record the battle command in battle_recording
-    battle_recording[players.query.p1+players.query.p2].content.push(json_obj);
-    res.end("OK , command send");
+    if(battle_recording[players.query.p1+players.query.p2].content == undefined){
+        console.log("[io.render][Error] Haven't has any players summon this battle room yet!");
+        res.end("Nope, command need to resend again!");
+    }
+    else{
+        battle_recording[players.query.p1+players.query.p2].content.push(json_obj);
+        res.end("OK , command send");
+    }
 });
 
 app.get('/game_end', function(req,res){
