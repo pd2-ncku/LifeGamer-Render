@@ -80,7 +80,7 @@ function command_parser(cmd_obj){
             else{
                 /* Control those minion */
                 current_minion_list.forEach(function(current_minion){
-                    control_minion(current_minion.name,current_minion.status,current_minion.move);
+                    control_minion(current_minion.name,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
                 });
             }
         }
@@ -114,7 +114,7 @@ function control_building(tower_name,tower_status){
     });
 }
 
-function control_minion(obj_name,status,direction){
+function control_minion(obj_name,status,direction,loc_x,loc_y){
     minion.forEach(function(each_minion,index,object){
         if(each_minion.object_No == obj_name){
             /* add status - using percentage , which is negative */
@@ -128,7 +128,9 @@ function control_minion(obj_name,status,direction){
                 object.splice(index,1);
             }
             else{
-                each_minion.change_direction(parseInt(direction));
+                // Using loc_x and loc_y to set current minion direction
+                each_minion.set_loc_by_xy(loc_x,loc_y,parseInt(direction));
+                // each_minion.change_direction(parseInt(direction));
             }
         }
     })

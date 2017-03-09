@@ -285,6 +285,38 @@ HUMAN_THIEF.prototype.setpos = function( x,y ){
     this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
 }
 
+HUMAN_THIEF.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
+    if( this.obj.width > next_x && this.obj.height > next_y ){
+        // go left and top
+        this.change_direction(4);
+    }else if( this.obj.width > next_x && this.obj.height == next_y ){
+        // go left
+        this.change_direction(0);
+    }else if( this.obj.width > next_x && this.obj.height < next_y ){
+        // go left and down
+        this.change_direction(5);
+    }else if( this.obj.width < next_x && this.obj.height > next_y ){
+        // go right top
+        this.change_direction(6);
+    }else if( this.obj.width < next_x && this.obj.height == next_y ){
+        // go right
+        this.change_direction(1);
+    }else if( this.obj.width < next_x && this.obj.height < next_y ){
+        // go right and down
+        this.change_direction(7);
+    }else if( this.obj.width == next_x && this.obj.height > next_y ){
+        // go top
+        this.change_direction(2);
+    }else if( this.obj.width == next_x && this.obj.height < next_y ){
+        // go down
+        this.change_direction(3);
+    }
+    // And if status is attack or stop , priority are highest
+    if(direction == 9 || direction == 10 || direction == 11 ){
+        this.change_direction(direction);
+    }
+}
+
 HUMAN_THIEF.prototype.check_boundary = function(){
     // x
 	if(this.obj.x+this.obj.width >= this.boundary_x){

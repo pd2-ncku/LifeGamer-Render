@@ -221,12 +221,13 @@ app.post('/game_cmd',function(req,res){
 
     for(var index in connection_list){
         if(connection_list[index].active == false){
-            object.splice(index,1);
+            connection_list.splice(index,1);
         }
         if(connection_list[index].find(player1+player2) == true){
             console.log('[io.render] Cmd send from battle server');
-            console.log('[io.render] Denote: ' + player1+player2);
-            connection_list[index].get_cmd(json_obj);
+            console.log('[io.render] Get command room: ' + player1+player2);
+            // connection_list[index].get_cmd(json_obj);
+            connection_list[index].push_cmd(json_obj);
             return;
         }
     }
