@@ -64,49 +64,6 @@ app.get('/game_start', function(req,res){
     }
 });
 
-/* Get Battle Command (In Game) */
-app.get('/game_cmd', function(req,res){
-    console.log('[io.render] Cmd send from battle server');
-    var players = url.parse(req.url , true);
-    console.log('[io.render] Denote: ' + players.query.p1+players.query.p2+ "; Cmd is " + players.query.cmd);
-    /* Parsing command here */
-    var json_obj = JSON.parse(players.query.cmd);
-    /* Maintain Connection channel */
-    connection_list.forEach(function(connection_node,index,object){
-        // Also , check connection status , if useless, then remove it
-        if(connection_node.active == false){
-            object.splice(index,1);
-            delete connection_node;
-        }
-        // Compare , if fit then feed command
-        if(connection_node.find(players.query.p1+players.query.p2) == true){
-            connection_node.get_cmd(json_obj);
-            return;
-        }
-    });
-    // Record the battle command in battle_recording
-    if(battle_recording[players.query.p1+players.query.p2] == undefined){
-        console.log("[io.render][Error] Haven't has any players summon this battle room yet!");
-        res.end("Nope, command need to resend again!");
-    }
-    else{
-        battle_recording[players.query.p1+players.query.p2].content.push(json_obj);
-        res.end("OK , command send");
-    }
-});
-
-app.get('/game_end', function(req,res){
-    var players = url.parse(req.url , true);
-    console.log('[io.render] Battle of ' + players.query.p1+players.query.p2+ " comes to an end.");
-    // Cancel from room
-    var battle_t = battle_room[players.query.p1+players.query.p2];
-    battle_room[players.query.p1+players.query.p2] = undefined;
-    // Write record into file
-    var record_obj = battle_recording[players.query.p1+players.query.p2];
-    jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+players.query.p1+'_'+players.query.p2+'_.battlelog',record_obj);
-    battle_recording[players.query.p1+players.query.p2] = undefined;
-});
-
 /* Check connection status */
 app.get('/check_connection', function(req,res){
     /* Update connection list */
@@ -203,6 +160,7 @@ app.post('/game_cmd',function(req,res){
         new_minion: n_minion_list,
         buildings: b_list
     }
+
     /* Maintain Connection channel */
     /*connection_list.forEach(function(connection_node,index,object){
         // Also , check connection status , if useless, then remove it
@@ -228,7 +186,7 @@ app.post('/game_cmd',function(req,res){
             console.log('[io.render] Get command room: ' + player1+player2);
             // connection_list[index].get_cmd(json_obj);
             connection_list[index].push_cmd(json_obj);
-            return;
+            // return;
         }
     }
 

@@ -10,6 +10,10 @@ var ELF_ARCHER = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.direction = -1; // Stop
     this.vx = 0;
     this.vy = 0;
+    // Recording previous x,y location
+    this.pre_x = 0;
+    this.pre_y = 0;
+
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
     // sound effect
     var summon = new Howl({
@@ -286,35 +290,44 @@ ELF_ARCHER.prototype.setpos = function( x,y ){
 }
 
 ELF_ARCHER.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
-    if( this.obj.width > next_x && this.obj.height > next_y ){
-        // go left and top
-        this.change_direction(4);
-    }else if( this.obj.width > next_x && this.obj.height == next_y ){
-        // go left
-        this.change_direction(0);
-    }else if( this.obj.width > next_x && this.obj.height < next_y ){
-        // go left and down
-        this.change_direction(5);
-    }else if( this.obj.width < next_x && this.obj.height > next_y ){
-        // go right top
-        this.change_direction(6);
-    }else if( this.obj.width < next_x && this.obj.height == next_y ){
-        // go right
-        this.change_direction(1);
-    }else if( this.obj.width < next_x && this.obj.height < next_y ){
-        // go right and down
-        this.change_direction(7);
-    }else if( this.obj.width == next_x && this.obj.height > next_y ){
-        // go top
-        this.change_direction(2);
-    }else if( this.obj.width == next_x && this.obj.height < next_y ){
-        // go down
-        this.change_direction(3);
-    }
+    // Receive next tick location x,y
+    // Judging by these two x,y
     // And if status is attack or stop , priority are highest
-    if(direction == 9 || direction == 10 || direction == 11 ){
+    if(direction == 8 || direction == 9 || direction == 10 || direction == 11 ){
         this.change_direction(direction);
     }
+    else{
+        // If now special position , do walking
+        if( this.pre_x > next_x && this.pre_y > next_y ){
+            // go left and top
+            this.change_direction(4);
+        }else if( this.pre_x > next_x && this.pre_y == next_y ){
+            // go left
+            this.change_direction(0);
+        }else if( this.pre_x > next_x && this.pre_y < next_y ){
+            // go left and down
+            this.change_direction(5);
+        }else if( this.pre_x < next_x && this.pre_y > next_y ){
+            // go right top
+            this.change_direction(6);
+        }else if( this.pre_x < next_x && this.pre_y == next_y ){
+            // go right
+            this.change_direction(1);
+        }else if( this.pre_x < next_x && this.pre_y < next_y ){
+            // go right and down
+            this.change_direction(7);
+        }else if( this.pre_x == next_x && this.pre_y > next_y ){
+            // go top
+            this.change_direction(2);
+        }else if( this.pre_x == next_x && this.pre_y < next_y ){
+            // go down
+            this.change_direction(3);
+        }
+    }
+    // Pass this pair of x,y to previous
+    this.pre_x = next_x;
+    this.pre_y = next_y;
+
 }
 
 ELF_ARCHER.prototype.check_boundary = function(){

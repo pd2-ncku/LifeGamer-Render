@@ -7,11 +7,11 @@
             "new_minion": [
                 {
                     "belong": "p1",
-                    "name": "orge1",
-                    "type": "orge",
+                    "name": "thief1",
+                    "type": "human_thief",
                     "move": "1",
-                    "loc_x": "30",
-                    "loc_y": "10"
+                    "loc_x": "10",
+                    "loc_y": "7"
                 }
             ] ,
             "buildings": [
@@ -26,12 +26,12 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "orge1",
-                    "type": "orge",
+                    "name": "theif1",
+                    "type": "human_thief",
                     "status": "-10",
                     "move": "0",
-                    "loc_x": "20",
-                    "loc_y": "10"
+                    "loc_x": "11",
+                    "loc_y": "8"
                 }
             ] ,
             "new_minion": [
@@ -60,8 +60,17 @@
                     "type": "sgram",
                     "status": "-20",
                     "move": "0",
-                    "loc_x": "20",
+                    "loc_x": "2",
                     "loc_y": "10"
+                },
+                {
+                    "belong": "p1",
+                    "name": "theif1",
+                    "type": "human_thief",
+                    "status": "-10",
+                    "move": "0",
+                    "loc_x": "12",
+                    "loc_y": "9"
                 }
             ] ,
             "new_minion": [
@@ -89,20 +98,238 @@
                     "name": "archer1",
                     "type": "elf_archer",
                     "status": "-20",
-                    "move": "2",
-                    "loc_x": "20",
+                    "move": "10",
+                    "loc_x": "11",
                     "loc_y": "10"
+                },
+                {
+                    "belong": "p1",
+                    "name": "sgram1",
+                    "type": "sgram",
+                    "status": "0",
+                    "move": "9",
+                    "loc_x": "2",
+                    "loc_y": "10"
+                },
+                {
+                    "belong": "p1",
+                    "name": "theif1",
+                    "type": "human_thief",
+                    "status": "0",
+                    "move": "8",
+                    "loc_x": "12",
+                    "loc_y": "9"
                 }
             ] ,
             "new_minion": [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "k1",
+                    "type": "human_knight",
                     "move": "1",
-                    "loc_x": "10",
-                    "loc_y": "10"
+                    "loc_x": "17",
+                    "loc_y": "3"
                 }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p2_down",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "sgram1",
+                    "type": "sgram",
+                    "status": "0",
+                    "move": "11",
+                    "loc_x": "2",
+                    "loc_y": "10"
+                },
+                {
+                    "belong": "p1",
+                    "name": "theif1",
+                    "type": "human_thief",
+                    "status": "0",
+                    "move": "10",
+                    "loc_x": "12",
+                    "loc_y": "9"
+                },
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_knight",
+                    "status": "0",
+                    "move": "9",
+                    "loc_x": "17",
+                    "loc_y": "3"
+                }
+            ] ,
+            "new_minion": [
+                {
+                    "belong": "p1",
+                    "name": "pr1",
+                    "type": "human_priest",
+                    "move": "1",
+                    "loc_x": "17",
+                    "loc_y": "13"
+                }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p2_down",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_knight",
+                    "status": "0",
+                    "move": "9",
+                    "loc_x": "17",
+                    "loc_y": "3"
+                },
+                {
+                    "belong": "p1",
+                    "name": "pr1",
+                    "type": "human_priest",
+                    "status": "-10",
+                    "move": "1",
+                    "loc_x": "15",
+                    "loc_y": "13"
+                }
+            ] ,
+            "new_minion": [
+                {
+                    "belong": "p1",
+                    "name": "un1",
+                    "type": "undead_samurai",
+                    "move": "1",
+                    "loc_x": "34",
+                    "loc_y": "13"
+                }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p2_down",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_knight",
+                    "status": "0",
+                    "move": "11",
+                    "loc_x": "17",
+                    "loc_y": "3"
+                },
+                {
+                    "belong": "p1",
+                    "name": "pr1",
+                    "type": "human_priest",
+                    "status": "-10",
+                    "move": "1",
+                    "loc_x": "13",
+                    "loc_y": "13"
+                },
+                {
+                    "belong": "p1",
+                    "name": "un1",
+                    "type": "undead_samurai",
+                    "status": "-20",
+                    "move": "10",
+                    "loc_x": "34",
+                    "loc_y": "13"
+                }
+            ] ,
+            "new_minion": [
+                {
+                    "belong": "p1",
+                    "name": "wi1",
+                    "type": "elf_wisp",
+                    "move": "1",
+                    "loc_x": "20",
+                    "loc_y": "13"
+                },
+                {
+                    "belong": "p1",
+                    "name": "g1",
+                    "type": "elf_giant",
+                    "move": "1",
+                    "loc_x": "1",
+                    "loc_y": "17"
+                }
+            ] ,
+            "buildings": [
+                {
+                    "name": "p2_down",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_knight",
+                    "status": "0",
+                    "move": "11",
+                    "loc_x": "17",
+                    "loc_y": "3"
+                },
+                {
+                    "belong": "p1",
+                    "name": "pr1",
+                    "type": "human_priest",
+                    "status": "-10",
+                    "move": "1",
+                    "loc_x": "13",
+                    "loc_y": "13"
+                },
+                {
+                    "belong": "p1",
+                    "name": "un1",
+                    "type": "undead_samurai",
+                    "status": "-20",
+                    "move": "10",
+                    "loc_x": "34",
+                    "loc_y": "13"
+                },
+                {
+                    "belong": "p1",
+                    "name": "wi1",
+                    "type": "elf_wisp",
+                    "status": "-10",
+                    "move": "9",
+                    "loc_x": "20",
+                    "loc_y": "13"
+                },
+                {
+                    "belong": "p1",
+                    "name": "g1",
+                    "type": "elf_giant",
+                    "move": "8",
+                    "loc_x": "1",
+                    "loc_y": "17"
+                }
+            ] ,
+            "new_minion": [
             ] ,
             "buildings": [
                 {

@@ -130,7 +130,6 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
             else{
                 // Using loc_x and loc_y to set current minion direction
                 each_minion.set_loc_by_xy(loc_x,loc_y,parseInt(direction));
-                // each_minion.change_direction(parseInt(direction));
             }
         }
     })
@@ -143,29 +142,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
     }
     else {
         switch (type) {
-            case 'orge':
-                /* Summon new orge minion */
-                var orge = new ORGE(x_unit,y_unit,name,max_w,max_h,belong);
-                orge.change_direction(parseInt(direction));
-                orge.set_status(status);
-                orge.set_basicV(x_unit/30,y_unit/30);
-                /* loc_x and loc_y => (x,y) => need to convert one time */
-                orge.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-                main_stage.addChild(orge.obj);
-                main_stage.addChild(orge.hp);
-                minion.push(orge);
-                break;
-            case 'mage':
-                /* Summon new orge minion */
-                var mage = new MAGE(x_unit,y_unit,name,max_w,max_h);
-                mage.change_direction(parseInt(direction));
-                mage.set_status(status);
-                mage.set_basicV(x_unit/45,y_unit/45);
-                mage.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
-                main_stage.addChild(mage.obj);
-                main_stage.addChild(mage.hp);
-                minion.push(mage);
-                break;
+            // Siege devices
             case 'sgram':
                 /* Summon new sgram car */
                 var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h);
@@ -177,6 +154,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(sgram.hp);
                 minion.push(sgram);
                 break;
+            // Elf force
             case 'elf_archer':
                 var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h);
                 elf_archer.change_direction(parseInt(direction));
@@ -187,6 +165,27 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(elf_archer.hp);
                 minion.push(elf_archer);
                 break;
+            case 'elf_wisp':
+                var elf_wisp = new ELF_WISP(x_unit,y_unit,name,max_w,max_h);
+                elf_wisp.change_direction(parseInt(direction));
+                elf_wisp.set_status(status);
+                elf_wisp.set_basicV(x_unit/45,y_unit/45);
+                elf_wisp.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(elf_wisp.obj);
+                main_stage.addChild(elf_wisp.hp);
+                minion.push(elf_wisp);
+                break;
+            case 'elf_giant':
+                var elf_giant = new ELF_ROCK_GIANT(x_unit,y_unit,name,max_w,max_h);
+                elf_giant.change_direction(parseInt(direction));
+                elf_giant.set_status(status);
+                elf_giant.set_basicV(x_unit/45,y_unit/45);
+                elf_giant.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(elf_giant.obj);
+                main_stage.addChild(elf_giant.hp);
+                minion.push(elf_giant);
+                break;
+            // Human force
             case 'human_thief':
                 var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h);
                 human_thief.change_direction(parseInt(direction));
@@ -197,6 +196,38 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(human_thief.hp);
                 minion.push(human_thief);
                 break;
+            case 'human_knight':
+                var human_knight = new HUMAN_KNIGHT(x_unit,y_unit,name,max_w,max_h);
+                human_knight.change_direction(parseInt(direction));
+                human_knight.set_status(status);
+                human_knight.set_basicV(x_unit/45,y_unit/45);
+                human_knight.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(human_knight.obj);
+                main_stage.addChild(human_knight.hp);
+                minion.push(human_knight);
+            break;
+            case 'human_priest':
+                var human_priest = new HUMAN_PRIEST(x_unit,y_unit,name,max_w,max_h);
+                human_priest.change_direction(parseInt(direction));
+                human_priest.set_status(status);
+                human_priest.set_basicV(x_unit/45,y_unit/45);
+                human_priest.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(human_priest.obj);
+                main_stage.addChild(human_priest.hp);
+                minion.push(human_priest);
+            break;
+            // Undead force
+            case 'undead_samurai':
+                var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h);
+                undead_samurai.change_direction(parseInt(direction));
+                undead_samurai.set_status(status);
+                undead_samurai.set_basicV(x_unit/45,y_unit/45);
+                undead_samurai.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(undead_samurai.obj);
+                main_stage.addChild(undead_samurai.hp);
+                minion.push(undead_samurai);
+            break;
+
             default:
 
         }
@@ -219,9 +250,12 @@ PIXI.loader
         "buildings/big_castle.png"
     ])
     .add([
-        "minion/orge.png",
-        "minion/mage.png",
-        "minion/320x320-sgram.png",
+        "minion/elf_rock_giant.png",
+        "minion/elf_wisp.png",
+        "minion/undead_samurai.png",
+        "minion/human_priest.png",
+        "minion/human_knight.png",
+        "minion/sgram.png",
         "minion/elf_archer.png",
         "minion/human_thief.png"
     ])

@@ -7,7 +7,10 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.scale = 3;
     this.boundary_x = max_w;
     this.boundary_y = max_h;
-    //
+    // Recording previous x,y location
+    this.pre_x = 0;
+    this.pre_y = 0;
+
     this.direction = -1; // Stop
     this.vx = 0;
     this.vy = 0;
@@ -44,11 +47,11 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/320x320-sgram.png";
+        this.image_url = "minion/sgram.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/320x320-sgram.png";
+        this.image_url = "minion/sgram.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -287,35 +290,43 @@ SGRAM.prototype.setpos = function( x,y ){
 }
 
 SGRAM.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
-    if( this.obj.width > next_x && this.obj.height > next_y ){
-        // go left and top
-        this.change_direction(4);
-    }else if( this.obj.width > next_x && this.obj.height == next_y ){
-        // go left
-        this.change_direction(0);
-    }else if( this.obj.width > next_x && this.obj.height < next_y ){
-        // go left and down
-        this.change_direction(5);
-    }else if( this.obj.width < next_x && this.obj.height > next_y ){
-        // go right top
-        this.change_direction(6);
-    }else if( this.obj.width < next_x && this.obj.height == next_y ){
-        // go right
-        this.change_direction(1);
-    }else if( this.obj.width < next_x && this.obj.height < next_y ){
-        // go right and down
-        this.change_direction(7);
-    }else if( this.obj.width == next_x && this.obj.height > next_y ){
-        // go top
-        this.change_direction(2);
-    }else if( this.obj.width == next_x && this.obj.height < next_y ){
-        // go down
-        this.change_direction(3);
-    }
+    // Receive next tick location x,y
+    // Judging by these two x,y
     // And if status is attack or stop , priority are highest
-    if((direction) == 9 || (direction) == 10 || (direction) == 11 ){
-        this.change_direction((direction));
+    if(direction == 8 || direction == 9 || direction == 10 || direction == 11 ){
+        this.change_direction(direction);
     }
+    else{
+        // If now special position , do walking
+        if( this.pre_x > next_x && this.pre_y > next_y ){
+            // go left and top
+            this.change_direction(4);
+        }else if( this.pre_x > next_x && this.pre_y == next_y ){
+            // go left
+            this.change_direction(0);
+        }else if( this.pre_x > next_x && this.pre_y < next_y ){
+            // go left and down
+            this.change_direction(5);
+        }else if( this.pre_x < next_x && this.pre_y > next_y ){
+            // go right top
+            this.change_direction(6);
+        }else if( this.pre_x < next_x && this.pre_y == next_y ){
+            // go right
+            this.change_direction(1);
+        }else if( this.pre_x < next_x && this.pre_y < next_y ){
+            // go right and down
+            this.change_direction(7);
+        }else if( this.pre_x == next_x && this.pre_y > next_y ){
+            // go top
+            this.change_direction(2);
+        }else if( this.pre_x == next_x && this.pre_y < next_y ){
+            // go down
+            this.change_direction(3);
+        }
+    }
+    // Pass this pair of x,y to previous
+    this.pre_x = next_x;
+    this.pre_y = next_y;
 }
 
 SGRAM.prototype.check_boundary = function(){

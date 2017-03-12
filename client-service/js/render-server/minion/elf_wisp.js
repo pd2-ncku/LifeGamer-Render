@@ -1,5 +1,5 @@
-/* Declare human thief */
-var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
+/* Declare Elf Archer */
+var ELF_WISP = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* constructor */
     this.src_frame_w = 320;
     this.src_frame_h = 320;
@@ -15,7 +15,7 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.pre_y = 0;
 
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
-    // TODO sound effect
+    // sound effect
     var summon = new Howl({
         src: ['elf_archer_summon.mp3'],
         loop: false,
@@ -46,11 +46,11 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/human_thief.png";
+        this.image_url = "minion/elf_wisp.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/human_thief.png";
+        this.image_url = "minion/elf_wisp.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -75,7 +75,7 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.right_atk = 1;
 }
 
-HUMAN_THIEF.prototype.walking = function(current_tick){
+ELF_WISP.prototype.walking = function(current_tick){
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     switch (this.direction) {
         case 0:
@@ -206,12 +206,12 @@ HUMAN_THIEF.prototype.walking = function(current_tick){
     }
 }
 
-HUMAN_THIEF.prototype.set_basicV = function(vx,vy){
+ELF_WISP.prototype.set_basicV = function(vx,vy){
     this.basic_velocity_x = vx;
     this.basic_velocity_y = vy;
 }
 
-HUMAN_THIEF.prototype.set_status = function(hp_var){
+ELF_WISP.prototype.set_status = function(hp_var){
     // Setting hp
     if(this.hp.outer.width > 0){
         this.hp.outer.width += hp_var*this.hp_unit;
@@ -221,7 +221,7 @@ HUMAN_THIEF.prototype.set_status = function(hp_var){
     }
 }
 
-HUMAN_THIEF.prototype.sound_effect = function(type){
+ELF_WISP.prototype.sound_effect = function(type){
     switch (type) {
         case -1:
             // Stop all sound
@@ -252,12 +252,12 @@ HUMAN_THIEF.prototype.sound_effect = function(type){
     }
 }
 
-HUMAN_THIEF.prototype.kill = function(){
+ELF_WISP.prototype.kill = function(){
     this.sound_effect(-1);
     delete this.sound;
 }
 
-HUMAN_THIEF.prototype.change_direction = function(new_direction){
+ELF_WISP.prototype.change_direction = function(new_direction){
     // Moving x
 	if(this.obj.x+this.obj.width >= this.boundary_x){
 		this.obj.x -= 5;
@@ -275,7 +275,7 @@ HUMAN_THIEF.prototype.change_direction = function(new_direction){
     this.direction = new_direction;
 }
 
-HUMAN_THIEF.prototype.move = function(){
+ELF_WISP.prototype.move = function(){
     // Object moving
     this.obj.x += this.vx;
     this.obj.y += this.vy;
@@ -283,13 +283,13 @@ HUMAN_THIEF.prototype.move = function(){
     this.hp.y += this.vy;
 }
 
-HUMAN_THIEF.prototype.setpos = function( x,y ){
+ELF_WISP.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
     // Because of being center , hp bar x must be (loc_x_obj + w_obj/2 - w_hp/2)
     this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
 }
 
-HUMAN_THIEF.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
+ELF_WISP.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
     // Receive next tick location x,y
     // Judging by these two x,y
     // And if status is attack or stop , priority are highest
@@ -327,9 +327,10 @@ HUMAN_THIEF.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
     // Pass this pair of x,y to previous
     this.pre_x = next_x;
     this.pre_y = next_y;
+
 }
 
-HUMAN_THIEF.prototype.check_boundary = function(){
+ELF_WISP.prototype.check_boundary = function(){
     // x
 	if(this.obj.x+this.obj.width >= this.boundary_x){
 		this.vx = 0;
