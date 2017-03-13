@@ -31,16 +31,21 @@ console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
 
 /* Connection establish */
 const socket = io();
+// Send join to server
+var room_name = document.getElementById('room_name').value;
+socket.emit('join',room_name);
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
     socket.emit('disconnect');
 }, false);
 
+var command_buffer = [];
 // Command/Data receive
 socket.on('raw',function(data){
     /* Receive the message and parse it */
     var raw_data = data;
-    command_parser(raw_data);
+    command_buffer.push(raw_data);
+    //command_parser(raw_data);
 });
 
 socket.on('replay',function(data){
@@ -59,6 +64,16 @@ socket.on('replay',function(data){
         }
     },command_push_rate);
 });
+
+// Set an Interval to deliver
+var tick_simulation = setInterval(function(){
+    var latest_cmd;
+    if(command_buffer.length > 0){
+        latest_cmd = command_buffer.shift();
+        command_parser(latest_cmd);
+    }
+},1000);
+
 
 function command_parser(cmd_obj){
     /* Get current type of message */

@@ -9,12 +9,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const moment = require('moment');
 const jsfs = require('jsonfile');
+const IO = require('socket.io');
 /* core */
 // var logger = require('./server-service/core/logger.js');
-var player_channel = require('./server-service/core/player_channel.js');
 
 /* table and queue */
-var connection_list = [];
+var connection_list = {};
 var battle_room = {};
 var battle_recording = {};
 
@@ -31,6 +31,7 @@ app.use(bodyParser.json());
 app.set('view engine','ejs');
 
 const server = require('http').createServer(app);
+var io = new IO().listen(server);
 
 /* Get start Command */
 app.get('/game_start', function(req,res){
@@ -44,10 +45,6 @@ app.get('/game_start', function(req,res){
     });
     /* If there have no room , create one for it */
     var create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
-    var cm = new player_channel(players.query.p1,players.query.p2,server,create_time,req.connection.remoteAddress);
-    cm.cmd = 'start';
-    cm.setup();
-    connection_list.push(cm);
 
     // Register a room as record
     if(battle_room[players.query.p1+players.query.p2] != undefined){
@@ -67,13 +64,6 @@ app.get('/game_start', function(req,res){
 /* Check connection status */
 app.get('/check_connection', function(req,res){
     /* Update connection list */
-    connection_list.forEach(function(connection_node,index,object){
-        // Also , check connection status , if useless, then remove it
-        if(connection_node.active == false){
-            object.splice(index,1);
-            delete connection_node;
-        }
-    });
 
     console.log('[io.render] Checking current connection !');
     res.render('connection_table',{
@@ -152,18 +142,8 @@ app.post('/game_cmd',function(req,res){
         buildings: b_list
     }
 
-    /* Maintain Connection channel */
-    for(var index in connection_list){
-        if(connection_list[index].active == false){
-            connection_list.splice(index,1);
-        }
-        if(connection_list[index].find(player1+player2) == true){
-            console.log('[io.render] Cmd send from battle server');
-            console.log('[io.render] Get command room: ' + player1+player2);
-            connection_list[index].push_cmd(json_obj);
-            // return;
-        }
-    }
+    /* Broadcast message through these connection channel */
+    io.in('room-'+player1+player2).emit('raw',json_obj);
 
     // Record the battle command in battle_recording
     if(battle_recording[player1+player2] == undefined){
@@ -188,6 +168,19 @@ app.post('/game_end', function(req,res){
     var record_obj = battle_recording[player1+player2];
     jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',record_obj);
     battle_recording[player1+player2] = undefined;
+});
+
+// Socket io
+io.sockets.on('connection',function(socket){
+    socket.on("join",function(room_id){
+        console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_id);
+        socket.room = room_id;
+        socket.join('room-'+room_id);
+    });
+    socket.on("disconnect",function(){
+        console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
+        socket.leave('room-'+socket.room);
+    });
 });
 
 // Listen url request
