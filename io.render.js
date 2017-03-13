@@ -74,6 +74,7 @@ app.get('/check_connection', function(req,res){
             delete connection_node;
         }
     });
+
     console.log('[io.render] Checking current connection !');
     res.render('connection_table',{
         title: 'Connection Table',
@@ -132,24 +133,14 @@ app.post('/game_cmd',function(req,res){
     var c_minion_list,n_minion_list,b_list;
 
     if(typeof req.body.current_minion == 'string'){
-        // do parse
+        // if sending data are type string, do parse
         c_minion_list = JSON.parse(req.body.current_minion);
-    }
-    else{
-        c_minion_list = req.body.current_minion;
-    }
-    if(typeof req.body.new_minion == 'string'){
-        // do parse
         n_minion_list = JSON.parse(req.body.new_minion);
-    }
-    else{
-        n_minion_list = req.body.new_minion;
-    }
-    if(typeof req.body.buildings == 'string'){
-        // do parse
         b_list = JSON.parse(req.body.buildings);
     }
     else{
+        c_minion_list = req.body.current_minion;
+        n_minion_list = req.body.new_minion;
         b_list = req.body.buildings;
     }
 
@@ -162,21 +153,6 @@ app.post('/game_cmd',function(req,res){
     }
 
     /* Maintain Connection channel */
-    /*connection_list.forEach(function(connection_node,index,object){
-        // Also , check connection status , if useless, then remove it
-        if(connection_node.active == false){
-            object.splice(index,1);
-            delete connection_node;
-        }
-        // Compare , if fit then feed command
-        if(connection_node.find(player1+player2) == true){
-            console.log('[io.render] Cmd send from battle server');
-            console.log('[io.render] Denote: ' + player1+player2);
-            connection_node.get_cmd(json_obj);
-            return;
-        }
-    });*/
-
     for(var index in connection_list){
         if(connection_list[index].active == false){
             connection_list.splice(index,1);
@@ -184,7 +160,6 @@ app.post('/game_cmd',function(req,res){
         if(connection_list[index].find(player1+player2) == true){
             console.log('[io.render] Cmd send from battle server');
             console.log('[io.render] Get command room: ' + player1+player2);
-            // connection_list[index].get_cmd(json_obj);
             connection_list[index].push_cmd(json_obj);
             // return;
         }

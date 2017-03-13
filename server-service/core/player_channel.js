@@ -56,6 +56,7 @@ player_channel.prototype.setup = function(){
             console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
             // Set this channel to false , waiting to be delete
             self.active = false;
+            self.own_denote = null;
             socket.leave('room-'+self.own_denote);
         });
     });

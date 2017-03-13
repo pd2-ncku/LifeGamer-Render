@@ -17,28 +17,19 @@ var ELF_WISP = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
     // sound effect
     var summon = new Howl({
-        src: ['elf_archer_summon.mp3'],
-        loop: false,
-        sprite: {
-            start: [2000,3000]
-        }
+        src: ['elf/elf_wisp_summon.mp3'],
+        loop: false
     });
-    summon.play('start');
+    summon.play();
     this.sound = new Howl({
-        src: ['elf_archer_footstep.mp3'],
+        src: ['elf/elf_wisp_walking.mp3'],
         loop: true,
-        volume: 0.5,
-        sprite:{
-            footstep: [0,1000]
-        }
+        volume: 0.5
     });
     this.atk_sound = new Howl({
-        src: ['elf_archer_attack.mp3'],
+        src: ['elf/elf_wisp_attack.mp3'],
         loop: true,
-        volume: 0.5,
-        sprite: {
-            hit: [0,1000]
-        }
+        volume: 0.1
     });
     // Health Bar
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
@@ -46,11 +37,11 @@ var ELF_WISP = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/elf_wisp.png";
+        this.image_url = "minion/elf/elf_wisp.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/elf_wisp.png";
+        this.image_url = "minion/elf/elf_wisp.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -233,7 +224,7 @@ ELF_WISP.prototype.sound_effect = function(type){
                 this.sound.stop();
             }else {
                 this.sound.stop();
-                this.atk_sound.play('hit');
+                this.atk_sound.play();
                 this.atk_sound.rate(1);
             }
             break;
@@ -243,8 +234,8 @@ ELF_WISP.prototype.sound_effect = function(type){
                 this.atk_sound.stop();
             }else {
                 this.atk_sound.stop();
-                this.sound.play('footstep');
-                this.sound.rate(1);
+                this.sound.play();
+                this.sound.rate(0.1);
             }
             break;
         default:

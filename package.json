@@ -6,6 +6,7 @@
     },
     "scripts": {
         "build": "npm install",
+        "postbuild": "node setup.js",
         "render": "node io.render.js",
         "travis_all": "export TRAVIS=true && npm run build && npm run render",
         "all": "npm run build && npm run render"

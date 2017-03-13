@@ -1,5 +1,5 @@
 /* Declare Elf Archer */
-var HUMAN_PRIEST = function( char_w,char_h,object_No,max_w,max_h,belong ){
+var HUMAN_KNIGHT = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* constructor */
     this.src_frame_w = 640;
     this.src_frame_h = 640;
@@ -15,29 +15,26 @@ var HUMAN_PRIEST = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.pre_y = 0;
 
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
-    // sound effect
+    // TODO sound effect
     var summon = new Howl({
-        src: ['elf_archer_summon.mp3'],
-        loop: false,
-        sprite: {
-            start: [2000,3000]
-        }
+        src: ['human/human_knight_summon.mp3'],
+        loop: false
     });
-    summon.play('start');
+    summon.play();
     this.sound = new Howl({
-        src: ['elf_archer_footstep.mp3'],
+        src: ['human/human_knight_walking.mp3'],
         loop: true,
         volume: 0.5,
         sprite:{
-            footstep: [0,1000]
+            footstep: [0,3000]
         }
     });
     this.atk_sound = new Howl({
-        src: ['elf_archer_attack.mp3'],
+        src: ['human/human_knight_attack.mp3'],
         loop: true,
         volume: 0.5,
         sprite: {
-            hit: [0,1000]
+            hit: [0,2000]
         }
     });
     // Health Bar
@@ -46,11 +43,11 @@ var HUMAN_PRIEST = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/human_priest.png";
+        this.image_url = "minion/human/human_knight.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/human_priest.png";
+        this.image_url = "minion/human/human_knight.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -75,7 +72,7 @@ var HUMAN_PRIEST = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.right_atk = 1;
 }
 
-HUMAN_PRIEST.prototype.walking = function(current_tick){
+HUMAN_KNIGHT.prototype.walking = function(current_tick){
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     switch (this.direction) {
         case 0:
@@ -206,12 +203,12 @@ HUMAN_PRIEST.prototype.walking = function(current_tick){
     }
 }
 
-HUMAN_PRIEST.prototype.set_basicV = function(vx,vy){
+HUMAN_KNIGHT.prototype.set_basicV = function(vx,vy){
     this.basic_velocity_x = vx;
     this.basic_velocity_y = vy;
 }
 
-HUMAN_PRIEST.prototype.set_status = function(hp_var){
+HUMAN_KNIGHT.prototype.set_status = function(hp_var){
     // Setting hp
     if(this.hp.outer.width > 0){
         this.hp.outer.width += hp_var*this.hp_unit;
@@ -221,7 +218,7 @@ HUMAN_PRIEST.prototype.set_status = function(hp_var){
     }
 }
 
-HUMAN_PRIEST.prototype.sound_effect = function(type){
+HUMAN_KNIGHT.prototype.sound_effect = function(type){
     switch (type) {
         case -1:
             // Stop all sound
@@ -252,12 +249,12 @@ HUMAN_PRIEST.prototype.sound_effect = function(type){
     }
 }
 
-HUMAN_PRIEST.prototype.kill = function(){
+HUMAN_KNIGHT.prototype.kill = function(){
     this.sound_effect(-1);
     delete this.sound;
 }
 
-HUMAN_PRIEST.prototype.change_direction = function(new_direction){
+HUMAN_KNIGHT.prototype.change_direction = function(new_direction){
     // Moving x
 	if(this.obj.x+this.obj.width >= this.boundary_x){
 		this.obj.x -= 5;
@@ -275,7 +272,7 @@ HUMAN_PRIEST.prototype.change_direction = function(new_direction){
     this.direction = new_direction;
 }
 
-HUMAN_PRIEST.prototype.move = function(){
+HUMAN_KNIGHT.prototype.move = function(){
     // Object moving
     this.obj.x += this.vx;
     this.obj.y += this.vy;
@@ -283,13 +280,13 @@ HUMAN_PRIEST.prototype.move = function(){
     this.hp.y += this.vy;
 }
 
-HUMAN_PRIEST.prototype.setpos = function( x,y ){
+HUMAN_KNIGHT.prototype.setpos = function( x,y ){
     this.obj.position.set(x,y);
     // Because of being center , hp bar x must be (loc_x_obj + w_obj/2 - w_hp/2)
     this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
 }
 
-HUMAN_PRIEST.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
+HUMAN_KNIGHT.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
     // Receive next tick location x,y
     // Judging by these two x,y
     // And if status is attack or stop , priority are highest
@@ -330,7 +327,7 @@ HUMAN_PRIEST.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
 
 }
 
-HUMAN_PRIEST.prototype.check_boundary = function(){
+HUMAN_KNIGHT.prototype.check_boundary = function(){
     // x
 	if(this.obj.x+this.obj.width >= this.boundary_x){
 		this.vx = 0;

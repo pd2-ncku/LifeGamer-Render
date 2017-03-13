@@ -17,27 +17,24 @@ var ELF_ROCK_GIANT = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
     // sound effect
     var summon = new Howl({
-        src: ['elf_archer_summon.mp3'],
-        loop: false,
-        sprite: {
-            start: [2000,3000]
-        }
+        src: ['elf/elf_giant_summon.mp3'],
+        loop: false
     });
-    summon.play('start');
+    summon.play();
     this.sound = new Howl({
-        src: ['elf_archer_footstep.mp3'],
+        src: ['elf/elf_giant_walking.mp3'],
         loop: true,
         volume: 0.5,
         sprite:{
-            footstep: [0,1000]
+            footstep: [0,5000]
         }
     });
     this.atk_sound = new Howl({
-        src: ['elf_archer_attack.mp3'],
+        src: ['elf/elf_giant_attack.mp3'],
         loop: true,
         volume: 0.5,
         sprite: {
-            hit: [0,1000]
+            hit: [0,2000]
         }
     });
     // Health Bar
@@ -46,11 +43,11 @@ var ELF_ROCK_GIANT = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/elf_rock_giant.png";
+        this.image_url = "minion/elf/elf_rock_giant.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/elf_rock_giant.png";
+        this.image_url = "minion/elf/elf_rock_giant.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));

@@ -250,14 +250,14 @@ PIXI.loader
         "buildings/big_castle.png"
     ])
     .add([
-        "minion/elf_rock_giant.png",
-        "minion/elf_wisp.png",
-        "minion/undead_samurai.png",
-        "minion/human_priest.png",
-        "minion/human_knight.png",
-        "minion/sgram.png",
-        "minion/elf_archer.png",
-        "minion/human_thief.png"
+        "minion/elf/elf_rock_giant.png",
+        "minion/elf/elf_wisp.png",
+        "minion/undead/undead_samurai.png",
+        "minion/human/human_priest.png",
+        "minion/human/human_knight.png",
+        "minion/siege/sgram.png",
+        "minion/elf/elf_archer.png",
+        "minion/human/human_thief.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);

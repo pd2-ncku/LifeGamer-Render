@@ -17,7 +17,7 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.object_No = object_No; // Use for detective ( Convenience to distinguish )
     // TODO sound effect
     var summon = new Howl({
-        src: ['sgram_summon.mp3'],
+        src: ['siege/sgram_summon.mp3'],
         loop: false,
         sprite: {
             start: [0,1000]
@@ -25,7 +25,7 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     });
     summon.play('start');
     this.sound = new Howl({
-        src: ['sgram.mp3'],
+        src: ['siege/sgram.mp3'],
         loop: true,
         volume: 0.5,
         sprite:{
@@ -33,7 +33,7 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
         }
     });
     this.atk_sound = new Howl({
-        src: ['sgram_attack.mp3'],
+        src: ['siege/sgram_attack.mp3'],
         loop: true,
         volume: 0.5,
         sprite: {
@@ -47,11 +47,11 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
-        this.image_url = "minion/sgram.png";
+        this.image_url = "minion/siege/sgram.png";
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/sgram.png";
+        this.image_url = "minion/siege/sgram.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
