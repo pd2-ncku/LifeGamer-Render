@@ -166,7 +166,23 @@ app.post('/game_end', function(req,res){
     battle_room[player1+player2] = undefined;
     // Write record into file
     var record_obj = battle_recording[player1+player2];
-    jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',record_obj);
+    // jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',record_obj);
+    jsfs.writeFile(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,record_obj,function(err){
+        if(err) {
+            console.log('[io.render] Battle log writing failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
+            // FIXME : Storage failed list => to recovery
+            return;
+        }
+        /* When we finish log file,change this file name */
+        fs.rename(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'.battlelog',function(err_rename){
+            if(err_rename){
+                // Rename failure
+                console.log('[io.render] Battle log renaming failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
+                // FIXME : Storage failed list => to recovery
+                return;
+            }
+        });
+    })
     battle_recording[player1+player2] = undefined;
 });
 
