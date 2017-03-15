@@ -11,6 +11,7 @@ const moment = require('moment');
 const jsfs = require('jsonfile');
 const IO = require('socket.io');
 /* core */
+const config = jsfs.readFileSync(__dirname+"/config.json");
 // var logger = require('./server-service/core/logger.js');
 
 /* table and queue */
@@ -18,7 +19,16 @@ var connection_list = {};
 var battle_room = {};
 var battle_recording = {};
 
-const battle_record_storage = __dirname + '/server-service/battle-record';
+/* Base on platform to decide storage path */
+if(process.platform == "win32"){
+    // if run on Windows, using current directory as storage
+    const battle_record_storage = __dirname + '/' + config.server_root + '/' + config.server_battle_record;
+}
+else if(process.platform == "linux"){
+    // if run on Linux, using /tmp
+    const battle_record_storage = '/tmp/' + config.server_root + '/' + config.server_battle_record;
+}
+
 /* Redirect views path */
 app.set('views',path.join(__dirname,'client-service/views'));
 /* Setting static directory - image use */
