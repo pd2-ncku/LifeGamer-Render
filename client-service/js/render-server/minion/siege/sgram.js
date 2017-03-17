@@ -18,27 +18,18 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     // TODO sound effect
     var summon = new Howl({
         src: ['siege/sgram_summon.mp3'],
-        loop: false,
-        sprite: {
-            start: [0,1000]
-        }
+        loop: false
     });
     summon.play('start');
     this.sound = new Howl({
         src: ['siege/sgram.mp3'],
         loop: true,
-        volume: 0.5,
-        sprite:{
-            footstep: [0,2000]
-        }
+        volume: 0.5
     });
     this.atk_sound = new Howl({
         src: ['siege/sgram_attack.mp3'],
         loop: true,
-        volume: 0.5,
-        sprite: {
-            hit: [1000,2000]
-        }
+        volume: 0.5
     });
     // Health Bar
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
@@ -51,7 +42,7 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/siege/sgram.png";
+        this.image_url = "minion/siege/sgram_p2.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -62,6 +53,7 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     result.y = 0;
     this.basic_velocity_x = 0.5;
     this.basic_velocity_y = 0.5;
+    this.velocity_rate = 1;
     this.obj = result;
     /* Setting character direction in image source location */
     this.left = 2;
@@ -208,8 +200,8 @@ SGRAM.prototype.walking = function(current_tick){
 }
 
 SGRAM.prototype.set_basicV = function(vx,vy){
-    this.basic_velocity_x = vx;
-    this.basic_velocity_y = vy;
+    this.basic_velocity_x = vx*this.velocity_rate;
+    this.basic_velocity_y = vy*this.velocity_rate;
 }
 
 SGRAM.prototype.set_status = function(hp_var){
@@ -228,13 +220,14 @@ SGRAM.prototype.sound_effect = function(type){
             // Stop all sound
             this.sound.stop();
             this.atk_sound.stop();
+            break;
         case 0:
             // attack
             if(this.sound.playing() || this.atk_sound.playing()){
                 this.sound.stop();
             }else {
                 this.sound.stop();
-                this.atk_sound.play('hit');
+                this.atk_sound.play();
                 this.atk_sound.rate(1);
             }
             break;
@@ -244,7 +237,7 @@ SGRAM.prototype.sound_effect = function(type){
                 this.atk_sound.stop();
             }else {
                 this.atk_sound.stop();
-                this.sound.play('footstep');
+                this.sound.play();
                 this.sound.rate(1);
             }
             break;
@@ -256,6 +249,7 @@ SGRAM.prototype.sound_effect = function(type){
 SGRAM.prototype.kill = function(){
     this.sound_effect(-1);
     delete this.sound;
+    delete this.atk_sound;
 }
 
 SGRAM.prototype.change_direction = function(new_direction){

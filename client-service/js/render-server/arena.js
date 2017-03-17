@@ -115,39 +115,39 @@ function command_parser(cmd_obj){
 }
 
 function control_building(tower_name,tower_status){
-    buildings.forEach(function(tower,index,object){
-        if(tower.object_No == tower_name){
-            tower.set_status(parseInt(tower_status));
-            if(tower.hp.outer.width <= 0){
+    for(var index in buildings){
+        if(buildings[index].object_No == tower_name){
+            buildings[index].set_status(tower_status);
+            if(buildings[index].hp.outer.width <= 0){
                 // Remove this object from the battle field
-                main_stage.removeChild(tower.obj);
-                main_stage.removeChild(tower.hp);
-                object.splice(index,1);
+                main_stage.removeChild(buildings[index].obj);
+                main_stage.removeChild(buildings[index].hp);
+                buildings.splice(index,1);
                 // FIXME : or show ruins on the tower location
             }
         }
-    });
+    }
 }
 
 function control_minion(obj_name,status,direction,loc_x,loc_y){
-    minion.forEach(function(each_minion,index,object){
-        if(each_minion.object_No == obj_name){
+    for(var index in minion){
+        if(minion[index].object_No == obj_name){
             /* add status - using percentage , which is negative */
             // Remove this minion from the battle field
-            each_minion.set_status(parseInt(status));
-            if(each_minion.hp.outer.width <= 0){
+            minion[index].set_status(status);
+            if(minion[index].hp.outer.width <= 0){
                 // Remove this object from battle field
-                main_stage.removeChild(each_minion.obj);
-                main_stage.removeChild(each_minion.hp);
-                each_minion.kill();
-                object.splice(index,1);
+                minion[index].kill();
+                main_stage.removeChild(minion[index].obj);
+                main_stage.removeChild(minion[index].hp);
+                minion.splice(index,1);
             }
             else{
                 // Using loc_x and loc_y to set current minion direction
-                each_minion.set_loc_by_xy(loc_x,loc_y,parseInt(direction));
+                minion[index].set_loc_by_xy(loc_x,loc_y,parseInt(direction));
             }
         }
-    })
+    }
 }
 
 function add_minion(belong,name,type,status,direction,loc_x,loc_y){
@@ -156,14 +156,14 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
         // this minion no need to recover
     }
     else {
+        var unit_pieces = 100;
         switch (type) {
             // Siege devices
             case 'sgram':
                 /* Summon new sgram car */
-                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h);
+                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h,belong);
                 sgram.change_direction(parseInt(direction));
-                sgram.set_status(status);
-                sgram.set_basicV(x_unit/45,y_unit/45);
+                sgram.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(sgram.obj);
                 main_stage.addChild(sgram.hp);
@@ -171,30 +171,27 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 break;
             // Elf force
             case 'elf_archer':
-                var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h);
+                var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h,belong);
                 elf_archer.change_direction(parseInt(direction));
-                elf_archer.set_status(status);
-                elf_archer.set_basicV(x_unit/45,y_unit/45);
+                elf_archer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_archer.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(elf_archer.obj);
                 main_stage.addChild(elf_archer.hp);
                 minion.push(elf_archer);
                 break;
             case 'elf_wisp':
-                var elf_wisp = new ELF_WISP(x_unit,y_unit,name,max_w,max_h);
+                var elf_wisp = new ELF_WISP(x_unit,y_unit,name,max_w,max_h,belong);
                 elf_wisp.change_direction(parseInt(direction));
-                elf_wisp.set_status(status);
-                elf_wisp.set_basicV(x_unit/45,y_unit/45);
+                elf_wisp.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_wisp.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(elf_wisp.obj);
                 main_stage.addChild(elf_wisp.hp);
                 minion.push(elf_wisp);
                 break;
             case 'elf_giant':
-                var elf_giant = new ELF_ROCK_GIANT(x_unit,y_unit,name,max_w,max_h);
+                var elf_giant = new ELF_ROCK_GIANT(x_unit,y_unit,name,max_w,max_h,belong);
                 elf_giant.change_direction(parseInt(direction));
-                elf_giant.set_status(status);
-                elf_giant.set_basicV(x_unit/45,y_unit/45);
+                elf_giant.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_giant.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(elf_giant.obj);
                 main_stage.addChild(elf_giant.hp);
@@ -202,30 +199,27 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 break;
             // Human force
             case 'human_thief':
-                var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h);
+                var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h,belong);
                 human_thief.change_direction(parseInt(direction));
-                human_thief.set_status(status);
-                human_thief.set_basicV(x_unit/45,y_unit/45);
+                human_thief.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_thief.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(human_thief.obj);
                 main_stage.addChild(human_thief.hp);
                 minion.push(human_thief);
                 break;
             case 'human_knight':
-                var human_knight = new HUMAN_KNIGHT(x_unit,y_unit,name,max_w,max_h);
+                var human_knight = new HUMAN_KNIGHT(x_unit,y_unit,name,max_w,max_h,belong);
                 human_knight.change_direction(parseInt(direction));
-                human_knight.set_status(status);
-                human_knight.set_basicV(x_unit/45,y_unit/45);
+                human_knight.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_knight.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(human_knight.obj);
                 main_stage.addChild(human_knight.hp);
                 minion.push(human_knight);
             break;
             case 'human_priest':
-                var human_priest = new HUMAN_PRIEST(x_unit,y_unit,name,max_w,max_h);
+                var human_priest = new HUMAN_PRIEST(x_unit,y_unit,name,max_w,max_h,belong);
                 human_priest.change_direction(parseInt(direction));
-                human_priest.set_status(status);
-                human_priest.set_basicV(x_unit/45,y_unit/45);
+                human_priest.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_priest.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(human_priest.obj);
                 main_stage.addChild(human_priest.hp);
@@ -233,10 +227,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
             break;
             // Undead force
             case 'undead_samurai':
-                var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h);
+                var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h,belong);
                 undead_samurai.change_direction(parseInt(direction));
-                undead_samurai.set_status(status);
-                undead_samurai.set_basicV(x_unit/45,y_unit/45);
+                undead_samurai.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 undead_samurai.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(undead_samurai.obj);
                 main_stage.addChild(undead_samurai.hp);
@@ -272,7 +265,15 @@ PIXI.loader
         "minion/human/human_knight.png",
         "minion/siege/sgram.png",
         "minion/elf/elf_archer.png",
-        "minion/human/human_thief.png"
+        "minion/human/human_thief.png",
+        "minion/elf/elf_rock_giant_p2.png",
+        "minion/elf/elf_wisp_p2.png",
+        "minion/undead/undead_samurai_p2.png",
+        "minion/human/human_priest_p2.png",
+        "minion/human/human_knight_p2.png",
+        "minion/siege/sgram_p2.png",
+        "minion/elf/elf_archer_p2.png",
+        "minion/human/human_thief_p2.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);

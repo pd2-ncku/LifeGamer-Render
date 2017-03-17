@@ -41,7 +41,7 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/human/human_thief.png";
+        this.image_url = "minion/human/human_thief_p2.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -52,6 +52,7 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong ){
     result.y = 0;
     this.basic_velocity_x = 0.5;
     this.basic_velocity_y = 0.5;
+    this.velocity_rate = 4;
     this.obj = result;
     /* Setting character direction in image source location */
     this.left = 2;
@@ -198,8 +199,8 @@ HUMAN_THIEF.prototype.walking = function(current_tick){
 }
 
 HUMAN_THIEF.prototype.set_basicV = function(vx,vy){
-    this.basic_velocity_x = vx;
-    this.basic_velocity_y = vy;
+    this.basic_velocity_x = vx*this.velocity_rate;
+    this.basic_velocity_y = vy*this.velocity_rate;
 }
 
 HUMAN_THIEF.prototype.set_status = function(hp_var){
@@ -218,6 +219,7 @@ HUMAN_THIEF.prototype.sound_effect = function(type){
             // Stop all sound
             this.sound.stop();
             this.atk_sound.stop();
+            break;
         case 0:
             // attack
             if(this.sound.playing() || this.atk_sound.playing()){
@@ -246,6 +248,7 @@ HUMAN_THIEF.prototype.sound_effect = function(type){
 HUMAN_THIEF.prototype.kill = function(){
     this.sound_effect(-1);
     delete this.sound;
+    delete this.atk_sound;
 }
 
 HUMAN_THIEF.prototype.change_direction = function(new_direction){

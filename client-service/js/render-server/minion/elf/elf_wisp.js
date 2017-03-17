@@ -41,7 +41,7 @@ var ELF_WISP = function( char_w,char_h,object_No,max_w,max_h,belong ){
     }
     else{
         /* FIXME: setting path to p2 image */
-        this.image_url = "minion/elf/elf_wisp.png";
+        this.image_url = "minion/elf/elf_wisp_p2.png";
     }
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -52,6 +52,7 @@ var ELF_WISP = function( char_w,char_h,object_No,max_w,max_h,belong ){
     result.y = 0;
     this.basic_velocity_x = 0.5;
     this.basic_velocity_y = 0.5;
+    this.velocity_rate = 3;
     this.obj = result;
     /* Setting character direction in image source location */
     this.left = 2;
@@ -198,14 +199,14 @@ ELF_WISP.prototype.walking = function(current_tick){
 }
 
 ELF_WISP.prototype.set_basicV = function(vx,vy){
-    this.basic_velocity_x = vx;
-    this.basic_velocity_y = vy;
+    this.basic_velocity_x = vx*this.velocity_rate;
+    this.basic_velocity_y = vy*this.velocity_rate;
 }
 
 ELF_WISP.prototype.set_status = function(hp_var){
     // Setting hp
     if(this.hp.outer.width > 0){
-        this.hp.outer.width += hp_var*this.hp_unit;
+        this.hp.outer.width += parseInt(hp_var)*this.hp_unit;
     }
     else {
         this.hp.outer.width = 0;
@@ -218,6 +219,7 @@ ELF_WISP.prototype.sound_effect = function(type){
             // Stop all sound
             this.sound.stop();
             this.atk_sound.stop();
+            break;
         case 0:
             // attack
             if(this.sound.playing() || this.atk_sound.playing()){
@@ -246,6 +248,7 @@ ELF_WISP.prototype.sound_effect = function(type){
 ELF_WISP.prototype.kill = function(){
     this.sound_effect(-1);
     delete this.sound;
+    delete this.atk_sound;
 }
 
 ELF_WISP.prototype.change_direction = function(new_direction){
