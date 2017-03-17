@@ -33,7 +33,7 @@ var ELF_ROCK_GIANT = function( char_w,char_h,object_No,max_w,max_h,belong ){
     });
     // Health Bar
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
-    this.hp_unit = ((3/2)*char_w*this.scale)/100;
+    this.hp_unit = Math.ceil(((3/2)*char_w*this.scale)/100);
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
@@ -275,6 +275,12 @@ ELF_ROCK_GIANT.prototype.move = function(){
     this.obj.y += this.vy;
     this.hp.x += this.vx;
     this.hp.y += this.vy;
+}
+
+ELF_ROCK_GIANT.prototype.set_init_pos = function( loc_x,loc_y ){
+    // Using coordinate system value to setup
+    this.pre_x = loc_x;
+    this.pre_y = loc_y;
 }
 
 ELF_ROCK_GIANT.prototype.setpos = function( x,y ){

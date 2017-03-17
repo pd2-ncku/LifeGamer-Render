@@ -33,7 +33,7 @@ var HUMAN_PRIEST = function( char_w,char_h,object_No,max_w,max_h,belong ){
     });
     // Health Bar
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
-    this.hp_unit = ((3/2)*char_w*this.scale)/100;
+    this.hp_unit = Math.ceil(((3/2)*char_w*this.scale)/100);
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */
@@ -275,6 +275,12 @@ HUMAN_PRIEST.prototype.move = function(){
     this.obj.y += this.vy;
     this.hp.x += this.vx;
     this.hp.y += this.vy;
+}
+
+HUMAN_PRIEST.prototype.set_init_pos = function( loc_x,loc_y ){
+    // Using coordinate system value to setup
+    this.pre_x = loc_x;
+    this.pre_y = loc_y;
 }
 
 HUMAN_PRIEST.prototype.setpos = function( x,y ){

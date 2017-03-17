@@ -137,13 +137,15 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
             minion[index].set_status(status);
             if(minion[index].hp.outer.width <= 0){
                 // Remove this object from battle field
-                minion[index].kill();
+                console.log("Remove this minion: " + index);
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
+                minion[index].kill();
                 minion.splice(index,1);
             }
             else{
                 // Using loc_x and loc_y to set current minion direction
+                console.log("HP: " + minion[index].hp.outer.width);
                 minion[index].set_loc_by_xy(loc_x,loc_y,parseInt(direction));
             }
         }
@@ -202,6 +204,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h,belong);
                 human_thief.change_direction(parseInt(direction));
                 human_thief.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                human_thief.set_init_pos(loc_x,loc_y);
                 human_thief.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(human_thief.obj);
                 main_stage.addChild(human_thief.hp);
