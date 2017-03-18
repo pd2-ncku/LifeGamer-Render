@@ -73,7 +73,7 @@
                     "belong": "p1",
                     "name": "thief1",
                     "type": "human_thief",
-                    "status": "-10",
+                    "status": "10",
                     "move": "9",
                     "loc_x": "10",
                     "loc_y": "7"
@@ -95,7 +95,7 @@
                     "belong": "p1",
                     "name": "thief1",
                     "type": "human_thief",
-                    "status": "-20",
+                    "status": "20",
                     "move": "11",
                     "loc_x": "10",
                     "loc_y": "7"
@@ -109,7 +109,63 @@
                     "status": "-10"
                 }
             ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_thief",
+                    "status": "-20",
+                    "move": "10",
+                    "loc_x": "10",
+                    "loc_y": "7"
+                }
+            ] ,
+            "new_minion": [
+            ] ,
+            "buildings": [
+                {
+                    "name": "p1_top",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+                {
+                    "belong": "p1",
+                    "name": "thief1",
+                    "type": "human_thief",
+                    "status": "-40",
+                    "move": "10",
+                    "loc_x": "10",
+                    "loc_y": "7"
+                }
+            ] ,
+            "new_minion": [
+            ] ,
+            "buildings": [
+                {
+                    "name": "p1_top",
+                    "status": "-10"
+                }
+            ]
+        },
+        {
+            "cmd": "battle",
+            "current_minion" : [
+            ] ,
+            "new_minion": [
+            ] ,
+            "buildings": [
+                {
+                    "name": "p1_top",
+                    "status": "-30"
+                }
+            ]
         }
-
     ]
 }

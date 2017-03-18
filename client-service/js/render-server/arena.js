@@ -28,7 +28,12 @@ const vice_tower_unit = 4;
 
 console.log("Arena Size: (" + max_w + "," + max_h + ")");
 console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
-
+// sound effect
+var bg = new Howl({
+    src: ['bg_sound_track1.mp3'],
+    loop: true
+});
+bg.play();
 /* Connection establish */
 const socket = io();
 // Send join to server
@@ -123,8 +128,9 @@ function control_building(tower_name,tower_status){
     for(var index in buildings){
         if(buildings[index].object_No == tower_name){
             buildings[index].set_status(tower_status);
-            if(buildings[index].hp.outer.width <= 0){
+            if(Math.floor(buildings[index].hp.outer.width) <= 0){
                 // Remove this object from the battle field
+                buildings[index].destroy();
                 main_stage.removeChild(buildings[index].obj);
                 main_stage.removeChild(buildings[index].hp);
                 buildings.splice(index,1);
@@ -138,8 +144,10 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
     for(var index in minion){
         if(minion[index].object_No == obj_name){
             // Remove this minion from the battle field
+            console.log("Before-> Minion HP: " + minion[index].hp.outer.width);
             minion[index].set_status(status);
-            if(minion[index].hp.outer.width <= 0){
+            console.log("After-> Minion HP: " + minion[index].hp.outer.width);
+            if(Math.floor(minion[index].hp.outer.width) <= 0){
                 // Remove this object from battle field
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
@@ -148,7 +156,6 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
             }
             else{
                 // Using loc_x and loc_y to set current minion direction
-                console.log("HP: " + minion[index].hp.outer.width);
                 minion[index].set_loc_by_xy(loc_x,loc_y,parseInt(direction));
             }
         }

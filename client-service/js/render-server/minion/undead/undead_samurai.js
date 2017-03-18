@@ -33,7 +33,9 @@ var UNDEAD_SAMURAI = function( char_w,char_h,object_No,max_w,max_h,belong ){
     });
     // Health Bar
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
-    this.hp_unit = Math.ceil(((3/2)*char_w*this.scale)/100);
+    // this.hp_unit = Math.ceil(((3/2)*char_w*this.scale)/100);
+    this.hp_unit = (((3/2)*char_w*this.scale)/100);
+    console.log("Samurai Total: "+ (3/2)*char_w*this.scale + ", Per Unit: " + this.hp_unit);
     /* Using belong to choose the target (distinguish different players) texture */
     if(belong == 'p1'){
         /* setting path to p1 image */

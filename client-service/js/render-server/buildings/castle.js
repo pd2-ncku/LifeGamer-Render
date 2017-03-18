@@ -22,9 +22,16 @@ var CASTLE = function(char_w,char_h,object_No,belong){
         this.image_src = "buildings/castle-red.png";
         this.direction = 1;
     }
+
+    // sound effect
+    this.dstry_sound = new Howl({
+        src: ['buildings/building_destroy.mp3'],
+        loop: false
+    });
+
     /* HealthBar */
     this.hp = new HealthBar((3/2)*char_w*this.scale,10);
-    this.hp_unit = ((3/2)*char_w*this.scale)/100
+    this.hp_unit = ((3/2)*char_w*this.scale)/100;
     /* Initialize texture */
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_src));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
@@ -61,6 +68,10 @@ CASTLE.prototype.set_status = function(hp_var){
     else {
         this.hp.outer.width = 0;
     }
+}
+
+CASTLE.prototype.destroy = function(){
+    this.dstry_sound.play();
 }
 
 CASTLE.prototype.setpos = function( x,y ){
