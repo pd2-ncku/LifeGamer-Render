@@ -14,7 +14,7 @@
     "license": "GPL-3.0",
     "repository":{
         "type": "git",
-        "url": "https://github.com/kevinbird61/render-server"
+        "url": "https://github.com/pd2-ncku/LifeGamer-Render"
     },
     "dependencies": {
         "body-parser": "^1.15.2",

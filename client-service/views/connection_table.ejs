@@ -33,9 +33,9 @@
                         <% for(var index in content){ %>
                             <tr>
                             <th scope="row"><%= index %></th>
-                            <td><%= content[index].own_denote %></td>
-                            <td><%= content[index].connection_address %></td>
-                            <td><%= content[index].init_time %></td>
+                            <td><%= content[index].tag %></td>
+                            <td><%= content[index].ip %></td>
+                            <td><%= content[index].timestamp %></td>
                             </tr>
                         <% } %>
                     </tbody>

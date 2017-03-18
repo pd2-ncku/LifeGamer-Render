@@ -45,7 +45,6 @@ socket.on('raw',function(data){
     /* Receive the message and parse it */
     var raw_data = data;
     command_buffer.push(raw_data);
-    //command_parser(raw_data);
 });
 
 socket.on('replay',function(data){
@@ -69,6 +68,7 @@ socket.on('replay',function(data){
 var tick_simulation = setInterval(function(){
     var latest_cmd;
     if(command_buffer.length > 0){
+        // Pop out the first command from command buffer
         latest_cmd = command_buffer.shift();
         command_parser(latest_cmd);
     }
@@ -77,7 +77,6 @@ var tick_simulation = setInterval(function(){
 
 function command_parser(cmd_obj){
     /* Get current type of message */
-    console.dir(cmd_obj);
     var cmd_type = cmd_obj.cmd;
     var current_minion_list = cmd_obj.current_minion;
     var new_minion_list = cmd_obj.new_minion;
@@ -88,28 +87,34 @@ function command_parser(cmd_obj){
             /* Do new checking */
             if(minion.length == 0){
                 /* TODO Notice that this user need to replot the battle field */
-                current_minion_list.forEach(function(current_minion){
+                // Using for loop instead of forEach
+                for(var index in current_minion_list){
+                    // FIXME: using add_minion here, and create "recover detection"
+                    var current_minion = current_minion_list[index];
                     add_minion(current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
-                });
+                }
             }
             else{
                 /* Control those minion */
-                current_minion_list.forEach(function(current_minion){
+                for(var index in current_minion_list){
+                    var current_minion = current_minion_list[index];
                     control_minion(current_minion.name,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
-                });
+                }
             }
         }
         if(new_minion_list.length > 0){
             /* Add new minion */
-            new_minion_list.forEach(function(new_minion){
+            for(var index in new_minion_list){
+                var new_minion = new_minion_list[index];
                 add_minion(new_minion.belong,new_minion.name,new_minion.type,100,new_minion.move,new_minion.loc_x,new_minion.loc_y);
-            });
+            }
         }
         if(tower_list.length > 0){
             // Dealing with buildings
-            tower_list.forEach(function(tower){
+            for(var index in tower_list){
+                var tower = tower_list[index];
                 control_building(tower.name,tower.status);
-            });
+            }
         }
     }
 }
@@ -132,12 +137,10 @@ function control_building(tower_name,tower_status){
 function control_minion(obj_name,status,direction,loc_x,loc_y){
     for(var index in minion){
         if(minion[index].object_No == obj_name){
-            /* add status - using percentage , which is negative */
             // Remove this minion from the battle field
             minion[index].set_status(status);
             if(minion[index].hp.outer.width <= 0){
                 // Remove this object from battle field
-                console.log("Remove this minion: " + index);
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
                 minion[index].kill();
@@ -263,20 +266,26 @@ PIXI.loader
     .add([
         "minion/elf/elf_rock_giant.png",
         "minion/elf/elf_wisp.png",
-        "minion/undead/undead_samurai.png",
-        "minion/human/human_priest.png",
-        "minion/human/human_knight.png",
-        "minion/siege/sgram.png",
         "minion/elf/elf_archer.png",
-        "minion/human/human_thief.png",
         "minion/elf/elf_rock_giant_p2.png",
         "minion/elf/elf_wisp_p2.png",
-        "minion/undead/undead_samurai_p2.png",
+        "minion/elf/elf_archer_p2.png",
+    ])
+    .add([
+        "minion/human/human_priest.png",
+        "minion/human/human_knight.png",
         "minion/human/human_priest_p2.png",
         "minion/human/human_knight_p2.png",
-        "minion/siege/sgram_p2.png",
-        "minion/elf/elf_archer_p2.png",
+        "minion/human/human_thief.png",
         "minion/human/human_thief_p2.png"
+    ])
+    .add([
+        "minion/siege/sgram.png",
+        "minion/siege/sgram_p2.png"
+    ])
+    .add([
+        "minion/undead/undead_samurai.png",
+        "minion/undead/undead_samurai_p2.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);

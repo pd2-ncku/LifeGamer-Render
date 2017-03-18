@@ -12,21 +12,26 @@ const jsfs = require('jsonfile');
 const IO = require('socket.io');
 /* core */
 const config = jsfs.readFileSync(__dirname+"/config.json");
+var battle_record_storage;
 // var logger = require('./server-service/core/logger.js');
 
-/* table and queue */
-var connection_list = {};
+/* Use for battle recording
+    - battle_room : record battle creation time
+    - battle_recording : record battle commands
+*/
 var battle_room = {};
 var battle_recording = {};
+/* Use for connection table */
+var socket_channel = [];
 
 /* Base on platform to decide storage path */
 if(process.platform == "win32"){
     // if run on Windows, using current directory as storage
-    const battle_record_storage = __dirname + '/' + config.server_root + '/' + config.server_battle_record;
+    battle_record_storage = __dirname + '/' + config.server_root + '/' + config.server_battle_record;
 }
 else if(process.platform == "linux"){
     // if run on Linux, using /tmp
-    const battle_record_storage = '/tmp/' + config.server_root + '/' + config.server_battle_record;
+    battle_record_storage = '/tmp/' + config.server_root + '/' + config.server_battle_record;
 }
 
 /* Redirect views path */
@@ -45,57 +50,60 @@ var io = new IO().listen(server);
 
 /* Get start Command */
 app.get('/game_start', function(req,res){
-    console.log('[io.render] Game Start.');
     // using get parameter
     var players = url.parse(req.url , true);
-    console.log('[io.render] Match Player 1: ' + players.query.p1 + "; Match Player 2: " + players.query.p2);
-    res.render('arena_game',{
-        p1: players.query.p1,
-        p2: players.query.p2
-    });
     /* If there have no room , create one for it */
     var create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
-
     // Register a room as record
     if(battle_room[players.query.p1+players.query.p2] != undefined){
         // already build
     }
     else{
         // Build a room for this pair
+        console.log('[io.render][Create Battle Room] Player 1: ' + players.query.p1 + "; Player 2: " + players.query.p2);
         battle_room[players.query.p1+players.query.p2] = create_time;
         var record_data = {
             content: []
         };
-        console.log("Build room !");
         battle_recording[players.query.p1+players.query.p2] = record_data;
     }
+    res.render('arena_game',{
+        p1: players.query.p1,
+        p2: players.query.p2
+    });
 });
 
 /* Check connection status */
 app.get('/check_connection', function(req,res){
     /* Update connection list */
-
+    // FIXME : get socket information / or maintain the room table
     console.log('[io.render] Checking current connection !');
     res.render('connection_table',{
         title: 'Connection Table',
         col1: '標籤',
         col2: 'IP位置',
         col3: '建立時間',
-        content: connection_list
+        content: socket_channel
     });
 });
 
 /* Replay mechanism */
 app.get('/replay_list',function(req,res){
     /* Fetch replay directory */
-    var record_list = fs.readdirSync(battle_record_storage);
-    /* Render choosing page */
-    res.render('replay_list',{
-        title: 'Replay Lobby',
-        col1: '戰鬥時間',
-        col2: '對戰人員1',
-        col3: '對戰人員2',
-        content: record_list
+    fs.readdir(battle_record_storage,function(err,files){
+        if(err){
+            console.log("[io.render][Error readdir] : " + battle_record_storage);
+        }
+        else {
+            /* Render choosing page */
+            res.render('replay_list',{
+                title: 'Replay Lobby',
+                col1: '戰鬥時間',
+                col2: '對戰人員1',
+                col3: '對戰人員2',
+                content: files
+            });
+        }
     });
 });
 
@@ -104,21 +112,22 @@ app.get('/go_replay',function(req,res){
     /* Get target name */
     var info = url.parse(req.url , true);
     var target = info.query.replay;
-    console.log('[io.render] Prepare replay record - ' + target);
+    console.log('[io.render][Record Usage] Prepare replay record - ' + target);
     /* Fetch data */
     if(fs.existsSync(battle_record_storage+'/'+target)){
-        var battle_log = jsfs.readFileSync(battle_record_storage+'/'+target);
-        // FIXME : using replay message deliver
-        // send total log , using player_channel
-        var re = new player_channel(target,target,server,moment().format('YYYY-MM-DD-hh-mm-ss-a'),req.connection.remoteAddress);
-        re.get_replay(battle_log);
-        re.setup();
-        res.render('arena_game_replay',{
-            script: target,
-            log: battle_log
+        jsfs.readFile(battle_record_storage+'/'+target,function(err,battle_log){
+            if(err){
+                console.log("[io.render][Error Read log]: " + battle_record_storage+'/'+target);
+            }
+            else {
+                // using replay message deliver
+                io.in('room-'+target).emit('replay',battle_log);
+                // send total log , using player_channel
+                res.render('arena_game_replay',{
+                    script: target
+                });
+            }
         });
-        // destroy this channel
-        delete re;
     }
     else{
         res.end('Sorry , can\'t find your replay target. Please try again!');
@@ -133,7 +142,7 @@ app.post('/game_cmd',function(req,res){
     var c_minion_list,n_minion_list,b_list;
 
     if(typeof req.body.current_minion == 'string'){
-        // if sending data are type string, do parse
+        // if sending data are type string, do parse (only need one variable to detect)
         c_minion_list = JSON.parse(req.body.current_minion);
         n_minion_list = JSON.parse(req.body.new_minion);
         b_list = JSON.parse(req.body.buildings);
@@ -170,29 +179,30 @@ app.post('/game_cmd',function(req,res){
 app.post('/game_end', function(req,res){
     var player1 = req.body.p1;
     var player2 = req.body.p2;
-    console.log('[io.render] Battle of ' + player1+player2+ " comes to an end.");
+    console.log('[io.render][End of Battle] Player1:' + player1+" , Player 2:"+player2+ ".");
     // Cancel from room
     var battle_t = battle_room[player1+player2];
     battle_room[player1+player2] = undefined;
     // Write record into file
     var record_obj = battle_recording[player1+player2];
-    // jsfs.writeFileSync(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',record_obj);
+    // Change file name to available one when all data had been written
     jsfs.writeFile(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,record_obj,function(err){
         if(err) {
-            console.log('[io.render] Battle log writing failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
+            console.log('[io.render][I/O Error] Battle log writing failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
             // FIXME : Storage failed list => to recovery
             return;
         }
         /* When we finish log file,change this file name */
-        fs.rename(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'.battlelog',function(err_rename){
+        fs.rename(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',function(err_rename){
             if(err_rename){
                 // Rename failure
-                console.log('[io.render] Battle log renaming failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
+                console.log('[io.render][I/O Error] Battle log renaming failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);
                 // FIXME : Storage failed list => to recovery
                 return;
             }
         });
-    })
+    });
+    // Release the battle recording buffer
     battle_recording[player1+player2] = undefined;
 });
 
@@ -202,10 +212,24 @@ io.sockets.on('connection',function(socket){
         console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_id);
         socket.room = room_id;
         socket.join('room-'+room_id);
+        // Enroll socket channel
+        var channel_obj = {
+            tag: room_id,
+            ip: socket.request.connection.remoteAddress,
+            timestamp: battle_room[room_id]
+        };
+        // Push it into socket_channel
+        socket_channel.push(channel_obj);
     });
     socket.on("disconnect",function(){
         console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
         socket.leave('room-'+socket.room);
+        // Enroll socket channel
+        for(var index in socket_channel){
+            if(socket_channel[index].ip == socket.request.connection.remoteAddress && socket_channel[index].tag == socket.room){
+                socket_channel.splice(index,1);
+            }
+        }
     });
 });
 
