@@ -10,6 +10,8 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     // Recording previous x,y location
     this.pre_x = 0;
     this.pre_y = 0;
+    this.x_unit = char_w;
+    this.y_unit = char_h;
 
     this.direction = -1; // Stop
     this.vx = 0;
@@ -273,10 +275,12 @@ SGRAM.prototype.change_direction = function(new_direction){
 
 SGRAM.prototype.move = function(){
     // Object moving
-    this.obj.x += this.vx;
+    /*this.obj.x += this.vx;
     this.obj.y += this.vy;
     this.hp.x += this.vx;
-    this.hp.y += this.vy;
+    this.hp.y += this.vy;*/
+    this.obj.position.set(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
+    this.hp.position.set(this.pre_x*this.x_unit+(this.obj.width)/2-(this.hp.width)/2,this.pre_y*this.y_unit-(this.obj.height/4));
 }
 
 SGRAM.prototype.set_init_pos = function( loc_x,loc_y ){
