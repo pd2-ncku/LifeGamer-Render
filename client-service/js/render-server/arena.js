@@ -292,6 +292,15 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(human_priest.hp);
                 minion.push(human_priest);
             break;
+            case 'human_piper':
+                var human_piper = new HUMAN_PIPER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
+                human_piper.change_direction(parseInt(direction));
+                human_piper.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                human_piper.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(human_piper.obj);
+                main_stage.addChild(human_piper.hp);
+                minion.push(human_piper);
+            break;
             // Undead force
             case 'undead_samurai':
                 var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
@@ -302,7 +311,15 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(undead_samurai.hp);
                 minion.push(undead_samurai);
             break;
-
+            case 'undead_alchemist':
+                var undead_alchemist = new UNDEAD_ALCHEMIST(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
+                undead_alchemist.change_direction(parseInt(direction));
+                undead_alchemist.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                undead_alchemist.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                main_stage.addChild(undead_alchemist.obj);
+                main_stage.addChild(undead_alchemist.hp);
+                minion.push(undead_alchemist);
+            break;
             default:
 
         }
@@ -338,7 +355,9 @@ PIXI.loader
         "minion/human/human_priest_p2.png",
         "minion/human/human_knight_p2.png",
         "minion/human/human_thief.png",
-        "minion/human/human_thief_p2.png"
+        "minion/human/human_thief_p2.png",
+        "minion/human/human_piper.png",
+        "minion/human/human_piper_p2.png"
     ])
     .add([
         "minion/siege/sgram.png",
@@ -346,7 +365,9 @@ PIXI.loader
     ])
     .add([
         "minion/undead/undead_samurai.png",
-        "minion/undead/undead_samurai_p2.png"
+        "minion/undead/undead_samurai_p2.png",
+        "minion/undead/undead_alchemist.png",
+        "minion/undead/undead_alchemist_p2.png"
     ])
     .on("progress", loadProgressHandler)
     .load(setup);

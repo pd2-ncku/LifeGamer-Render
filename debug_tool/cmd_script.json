@@ -7,8 +7,8 @@
             "new_minion": [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "move": "1",
                     "status": "100",
                     "loc_x": "10",
@@ -27,12 +27,12 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "-30",
                     "move": "1",
                     "loc_x": "10",
-                    "loc_y": "7"
+                    "loc_y": "8"
                 }
             ] ,
             "new_minion": [
@@ -49,12 +49,12 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "-40",
                     "move": "8",
                     "loc_x": "10",
-                    "loc_y": "7"
+                    "loc_y": "9"
                 }
             ] ,
             "new_minion": [
@@ -71,12 +71,12 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "10",
                     "move": "9",
                     "loc_x": "10",
-                    "loc_y": "7"
+                    "loc_y": "10"
                 }
             ] ,
             "new_minion": [
@@ -93,8 +93,8 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "20",
                     "move": "11",
                     "loc_x": "10",
@@ -115,8 +115,8 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "-20",
                     "move": "10",
                     "loc_x": "10",
@@ -137,8 +137,8 @@
             "current_minion" : [
                 {
                     "belong": "p1",
-                    "name": "thief1",
-                    "type": "human_thief",
+                    "name": "test1",
+                    "type": "undead_alchemist",
                     "status": "-40",
                     "move": "10",
                     "loc_x": "10",

@@ -9,14 +9,14 @@
 </head>
 <body>
   <!-- Give an text-center div for the battlefield -->
-    <input id="room_name" type="hidden" value="<%= p1 %><%= p2 %>"> 
+    <input id="room_name" type="hidden" value="<%= p1 %><%= p2 %>">
     <div class="text-center">
         <div id="arena" style="height:100vh ; width:100vw"></div>
     </div>
 <script src="lib/socket.io-1.4.5.js"></script>
 <script src="lib/pixi.min.js"></script>
 <script src="lib/howler.min.js"></script>
-<script type="text/javascript" src="render-server/arena.js"></script>
+<script type="text/javascript" src="render-server/minion/minion.js"></script>
 <script type="text/javascript" src="render-server/buildings/castle.js"></script>
 <script type="text/javascript" src="render-server/buildings/big_castle.js"></script>
 <script type="text/javascript" src="render-server/minion/siege/sgram.js"></script>
@@ -26,6 +26,9 @@
 <script type="text/javascript" src="render-server/minion/human/human_thief.js"></script>
 <script type="text/javascript" src="render-server/minion/human/human_knight.js"></script>
 <script type="text/javascript" src="render-server/minion/human/human_priest.js"></script>
+<script type="text/javascript" src="render-server/minion/human/human_piper.js"></script>
 <script type="text/javascript" src="render-server/minion/undead/undead_samurai.js"></script>
+<script type="text/javascript" src="render-server/minion/undead/undead_alchemist.js"></script>
 <script type="text/javascript" src="render-server/minion/healthbar.js"></script>
+<script type="text/javascript" src="render-server/arena.js"></script>
 </body>
