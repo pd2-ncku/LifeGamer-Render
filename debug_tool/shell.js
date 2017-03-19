@@ -61,7 +61,8 @@ function end_script(config,request){
     request.post(config.target+":"+config.port+config.end, {
         form:{
             p1: config.p1,
-            p2: config.p2
+            p2: config.p2,
+            winner: config.p1
         }
     });
 }

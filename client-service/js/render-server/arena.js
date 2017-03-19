@@ -3,10 +3,33 @@
 var minion = [];
 var buildings = [];
 // Scene Part
+var wrapper = new PIXI.Container();
 var main_stage = new PIXI.Container();
+var close_stage = new PIXI.Container();
+wrapper.addChild(close_stage);
+wrapper.addChild(main_stage);
+close_stage.alpha = 0;
 // Render part
 var size_adapter = document.getElementById('arena');
 var renderer = PIXI.autoDetectRenderer(size_adapter.offsetWidth,size_adapter.offsetHeight);
+renderer.backgroundColor = 0x1099bb;
+// Close stage
+var font_style = new PIXI.TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 36,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fill: ['#ffffff', '#00ff99'], // gradient
+    stroke: '#4a1850',
+    strokeThickness: 5,
+    dropShadow: true,
+    dropShadowColor: '#000000',
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 6,
+    dropShadowDistance: 6,
+    wordWrap: true,
+    wordWrapWidth: size_adapter.offsetWidth
+});
 /* Battle field Initialize */
 // Setup Game Frame Measurement
 const max_w = size_adapter.offsetWidth;
@@ -29,11 +52,20 @@ const vice_tower_unit = 4;
 console.log("Arena Size: (" + max_w + "," + max_h + ")");
 console.log("Per unit size: x=" + x_unit + ", y=" + y_unit);
 // sound effect
+var opening = new Howl({
+    src: ['game_start.mp3'],
+    loop: false
+});
+opening.play();
 var bg = new Howl({
     src: ['bg_sound_track1.mp3'],
     loop: true
 });
 bg.play();
+var eog = new Howl({
+    src: ['endofgame.mp3'],
+    loop: false
+});
 /* Connection establish */
 const socket = io();
 // Send join to server
@@ -67,6 +99,23 @@ socket.on('replay',function(data){
             index++;
         }
     },command_push_rate);
+});
+
+// Dealing with interaction
+socket.on('EOG',function(battle_info){
+    // FIXME : dealing with final state (and show the result page)
+    // And break down channel
+    console.log("End of Game received! Hope you enjoy this game!");
+    // bg fade out
+    bg.fade(1.0,0.0,1000);
+    eog.play();
+    socket.emit('disconnect');
+    // setup close_stage
+    var endText = new PIXI.Text('Thank for playing !\nAnd Congratulate winner :'+ battle_info.winner, font_style);
+    endText.x = (size_adapter.offsetWidth - endText.width)/2;
+    endText.y = (size_adapter.offsetHeight - endText.height)/2;
+    close_stage.addChild(endText);
+    state = closegame;
 });
 
 // Set an Interval to deliver
@@ -392,26 +441,33 @@ state = play;
 function battle_gameLoop(){
     requestAnimationFrame(battle_gameLoop);
     state();
-    renderer.render(main_stage);
+    renderer.render(wrapper);
 }
 
 function play(){
     /* Receive the message and summon our minion here */
     // And moving the Character
-    minion.forEach(function(each_mini){
-		each_mini.move();
-        each_mini.check_boundary();
-	});
+    for(var index in minion){
+        minion[index].move();
+        minion[index].check_boundary();
+    }
+}
+
+function closegame(){
+    console.log("Alpha : " + main_stage.alpha);
+    if( Math.floor(main_stage.alpha) >= 0){
+        main_stage.alpha -= 0.01;
+        close_stage.alpha += 0.01;
+    }
 }
 
 var tick = 0;
 setInterval(function() {
-	minion.forEach(function(each_mini){
-        //each_mini.set_status(-1);
-		each_mini.walking(tick);
-	});
-    buildings.forEach(function(each_tower){
-        each_tower.progressing(tick);
-    });
+    for(var index in minion){
+        minion[index].walking(tick);
+    }
+    for(var b_index in buildings){
+        buildings[b_index].progressing(tick);
+    }
     tick++;
 }, 100);

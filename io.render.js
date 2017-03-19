@@ -183,6 +183,11 @@ app.post('/game_end', function(req,res){
     // Cancel from room
     var battle_t = battle_room[player1+player2];
     battle_room[player1+player2] = undefined;
+    // Break down the channel , inform by server
+    var end_match = {
+        winner: req.body.winner
+    }
+    io.in('room-'+player1+player2).emit('EOG',end_match);
     // Write record into file
     var record_obj = battle_recording[player1+player2];
     // Change file name to available one when all data had been written
