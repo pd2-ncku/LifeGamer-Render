@@ -1,5 +1,5 @@
 /* Declare Sgram minion */
-var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
+var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_y ){
     /* Constructor */
     this.src_frame_w = 320;
     this.src_frame_h = 320;
@@ -8,8 +8,8 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.boundary_x = max_w;
     this.boundary_y = max_h;
     // Recording previous x,y location
-    this.pre_x = 0;
-    this.pre_y = 0;
+    this.pre_x = loc_x;
+    this.pre_y = loc_y;
     this.x_unit = char_w;
     this.y_unit = char_h;
 

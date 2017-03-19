@@ -1,5 +1,5 @@
 /* Declare Elf Archer */
-var UNDEAD_SAMURAI = function( char_w,char_h,object_No,max_w,max_h,belong ){
+var UNDEAD_SAMURAI = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_y ){
     /* constructor */
     this.src_frame_w = 640;
     this.src_frame_h = 640;
@@ -11,8 +11,8 @@ var UNDEAD_SAMURAI = function( char_w,char_h,object_No,max_w,max_h,belong ){
     this.vx = 0;
     this.vy = 0;
     // Recording previous x,y location
-    this.pre_x = 0;
-    this.pre_y = 0;
+    this.pre_x = loc_x;
+    this.pre_y = loc_y;
     this.x_unit = char_w;
     this.y_unit = char_h;
 

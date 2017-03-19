@@ -126,7 +126,7 @@ var tick_simulation = setInterval(function(){
         latest_cmd = command_buffer.shift();
         command_parser(latest_cmd);
     }
-},1000);
+},100);
 
 
 function command_parser(cmd_obj){
@@ -196,7 +196,7 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
             console.log("Before-> Minion HP: " + minion[index].hp.outer.width);
             minion[index].set_status(status);
             console.log("After-> Minion HP: " + minion[index].hp.outer.width);
-            if(Math.floor(minion[index].hp.outer.width) <= 0){
+            if(Math.floor(minion[index].hp.outer.width) <= 2){
                 // Remove this object from battle field
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
@@ -222,7 +222,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
             // Siege devices
             case 'sgram':
                 /* Summon new sgram car */
-                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h,belong);
+                var sgram = new SGRAM(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 sgram.change_direction(parseInt(direction));
                 sgram.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -232,7 +232,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 break;
             // Elf force
             case 'elf_archer':
-                var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h,belong);
+                var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 elf_archer.change_direction(parseInt(direction));
                 elf_archer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_archer.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -241,7 +241,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(elf_archer);
                 break;
             case 'elf_wisp':
-                var elf_wisp = new ELF_WISP(x_unit,y_unit,name,max_w,max_h,belong);
+                var elf_wisp = new ELF_WISP(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 elf_wisp.change_direction(parseInt(direction));
                 elf_wisp.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_wisp.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -250,7 +250,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(elf_wisp);
                 break;
             case 'elf_giant':
-                var elf_giant = new ELF_ROCK_GIANT(x_unit,y_unit,name,max_w,max_h,belong);
+                var elf_giant = new ELF_ROCK_GIANT(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 elf_giant.change_direction(parseInt(direction));
                 elf_giant.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_giant.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -260,7 +260,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 break;
             // Human force
             case 'human_thief':
-                var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h,belong);
+                var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 human_thief.change_direction(parseInt(direction));
                 human_thief.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_thief.set_init_pos(loc_x,loc_y);
@@ -270,7 +270,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(human_thief);
                 break;
             case 'human_knight':
-                var human_knight = new HUMAN_KNIGHT(x_unit,y_unit,name,max_w,max_h,belong);
+                var human_knight = new HUMAN_KNIGHT(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 human_knight.change_direction(parseInt(direction));
                 human_knight.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_knight.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -279,7 +279,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(human_knight);
             break;
             case 'human_priest':
-                var human_priest = new HUMAN_PRIEST(x_unit,y_unit,name,max_w,max_h,belong);
+                var human_priest = new HUMAN_PRIEST(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 human_priest.change_direction(parseInt(direction));
                 human_priest.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_priest.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
@@ -289,7 +289,7 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
             break;
             // Undead force
             case 'undead_samurai':
-                var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h,belong);
+                var undead_samurai = new UNDEAD_SAMURAI(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 undead_samurai.change_direction(parseInt(direction));
                 undead_samurai.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 undead_samurai.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
