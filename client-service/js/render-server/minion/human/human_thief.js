@@ -144,7 +144,7 @@ HUMAN_THIEF.prototype.change_direction = function(new_direction){
     this.direction = new_direction;
 }
 
-HUMAN_THIEF.prototype.move = function(){
+HUMAN_THIEF.prototype.move = function(control){
     // Provide 2 way walking method
     if(control == 0){
         // Using default

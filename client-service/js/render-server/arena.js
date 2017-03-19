@@ -110,6 +110,12 @@ socket.on('EOG',function(battle_info){
     bg.fade(1.0,0.0,1000);
     eog.play();
     socket.emit('disconnect');
+    // Disable all element in minion
+    for(var index in minion){
+        minion[index].kill();
+        main_stage.removeChild(minion.obj);
+        main_stage.removeChild(minion.hp);
+    }
     // setup close_stage
     var endText = new PIXI.Text('Thank for playing !\nAnd Congratulate winner :'+ battle_info.winner, font_style);
     endText.x = (size_adapter.offsetWidth - endText.width)/2;
