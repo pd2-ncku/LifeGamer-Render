@@ -263,7 +263,6 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 var human_thief = new HUMAN_THIEF(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 human_thief.change_direction(parseInt(direction));
                 human_thief.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
-                human_thief.set_init_pos(loc_x,loc_y);
                 human_thief.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
                 main_stage.addChild(human_thief.obj);
                 main_stage.addChild(human_thief.hp);
@@ -448,14 +447,15 @@ function play(){
     /* Receive the message and summon our minion here */
     // And moving the Character
     for(var index in minion){
-        minion[index].move();
+        // Using 0,1 to control minion moving mechanism
+        minion[index].move(0);
         minion[index].check_boundary();
     }
 }
 
 function closegame(){
-    console.log("Alpha : " + main_stage.alpha);
     if( Math.floor(main_stage.alpha) >= 0){
+        // Open close stage
         main_stage.alpha -= 0.01;
         close_stage.alpha += 0.01;
     }

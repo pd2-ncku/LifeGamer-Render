@@ -273,20 +273,19 @@ UNDEAD_SAMURAI.prototype.change_direction = function(new_direction){
     this.direction = new_direction;
 }
 
-UNDEAD_SAMURAI.prototype.move = function(){
-    // Object moving
-    /*this.obj.x += this.vx;
-    this.obj.y += this.vy;
-    this.hp.x += this.vx;
-    this.hp.y += this.vy;*/
-    this.obj.position.set(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
-    this.hp.position.set(this.pre_x*this.x_unit+(this.obj.width)/2-(this.hp.width)/2,this.pre_y*this.y_unit-(this.obj.height/4));
-}
-
-UNDEAD_SAMURAI.prototype.set_init_pos = function( loc_x,loc_y ){
-    // Using coordinate system value to setup
-    this.pre_x = loc_x;
-    this.pre_y = loc_y;
+UNDEAD_SAMURAI.prototype.move = function(control){
+    // Provide 2 way walking method
+    if(control == 0){
+        // Using default
+        this.obj.x += this.vx;
+        this.obj.y += this.vy;
+        this.hp.position.set(this.obj.x+(this.obj.width)/2-(this.hp.width)/2,this.obj.y-(this.obj.height/4));
+    }
+    else{
+        // Using position (caus low fps)
+        this.obj.position.set(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
+        this.hp.position.set(this.pre_x*this.x_unit+(this.obj.width)/2-(this.hp.width)/2,this.pre_y*this.y_unit-(this.obj.height/4));
+    }
 }
 
 UNDEAD_SAMURAI.prototype.setpos = function( x,y ){
