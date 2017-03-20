@@ -44,7 +44,9 @@ function delivery_script(cmd_script,config,request,readline){
                     p2: config.p2,
                     current_minion: JSON.stringify(cmd_script.content[index].current_minion),
                     new_minion: JSON.stringify(cmd_script.content[index].new_minion),
-                    buildings: JSON.stringify(cmd_script.content[index].buildings)
+                    buildings: JSON.stringify(cmd_script.content[index].buildings),
+                    current_hand_p1: JSON.stringify(cmd_script.content[index].current_hand_p1),
+                    current_hand_p2: JSON.stringify(cmd_script.content[index].current_hand_p2)
                 }
             });
             index++;

@@ -40,6 +40,7 @@ app.set('views',path.join(__dirname,'client-service/views'));
 app.use(express.static('client-service/images'));
 app.use(express.static('client-service/sound'));
 app.use(express.static('client-service/js'));
+app.use(express.static('client-service/css'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 /* Setting view engine as ejs */
@@ -139,18 +140,22 @@ app.post('/game_cmd',function(req,res){
     var cmd = req.body.cmd;
     var player1 = req.body.p1;
     var player2 = req.body.p2;
-    var c_minion_list,n_minion_list,b_list;
+    var c_minion_list,n_minion_list,b_list,p1_cur_hand_list,p2_cur_hand_list;
 
     if(typeof req.body.current_minion == 'string'){
         // if sending data are type string, do parse (only need one variable to detect)
         c_minion_list = JSON.parse(req.body.current_minion);
         n_minion_list = JSON.parse(req.body.new_minion);
         b_list = JSON.parse(req.body.buildings);
+        p1_cur_hand_list = JSON.parse(req.body.current_hand_p1);
+        p2_cur_hand_list = JSON.parse(req.body.current_hand_p2);
     }
     else{
         c_minion_list = req.body.current_minion;
         n_minion_list = req.body.new_minion;
         b_list = req.body.buildings;
+        p1_cur_hand_list = req.body.current_hand_p1;
+        p2_cur_hand_list = req.body.current_hand_p2;
     }
 
     /* Parsing command here */
@@ -158,7 +163,9 @@ app.post('/game_cmd',function(req,res){
         cmd: cmd,
         current_minion: c_minion_list,
         new_minion: n_minion_list,
-        buildings: b_list
+        buildings: b_list,
+        current_hand_p1: p1_cur_hand_list,
+        current_hand_p2: p2_cur_hand_list
     }
 
     /* Broadcast message through these connection channel */

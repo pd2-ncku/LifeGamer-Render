@@ -20,6 +20,34 @@
                     "name": "p1_top",
                     "status": "-10"
                 }
+            ] ,
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
             ]
         },
         {
@@ -41,6 +69,34 @@
                 {
                     "name": "p1_top",
                     "status": "-10"
+                }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
                 }
             ]
         },
@@ -64,6 +120,34 @@
                     "name": "p1_top",
                     "status": "-10"
                 }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
             ]
         },
         {
@@ -85,6 +169,34 @@
                 {
                     "name": "p1_top",
                     "status": "-10"
+                }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
                 }
             ]
         },
@@ -108,6 +220,34 @@
                     "name": "p1_top",
                     "status": "-10"
                 }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
             ]
         },
         {
@@ -129,6 +269,34 @@
                 {
                     "name": "p1_top",
                     "status": "-10"
+                }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
                 }
             ]
         },
@@ -152,6 +320,34 @@
                     "name": "p1_top",
                     "status": "-10"
                 }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
             ]
         },
         {
@@ -164,6 +360,34 @@
                 {
                     "name": "p1_top",
                     "status": "-30"
+                }
+            ],
+            "current_hand_p1": [
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
+                }
+            ],
+            "current_hand_p2":[
+                {
+                    "name": "human_priest"
+                },
+                {
+                    "name": "human_piper"
+                },
+                {
+                    "name": "human_knight"
+                },
+                {
+                    "name": "elf_archer"
                 }
             ]
         }

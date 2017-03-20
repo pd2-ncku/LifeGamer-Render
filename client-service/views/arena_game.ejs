@@ -6,13 +6,17 @@
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="arena.css">
 </head>
 <body>
   <!-- Give an text-center div for the battlefield -->
     <input id="room_name" type="hidden" value="<%= p1 %><%= p2 %>">
+    <div class="p1_current_card" id="p1_hand">
     <div class="text-center">
-        <div id="arena" style="height:100vh ; width:100vw"></div>
+        <div class="battle_field" id="arena"></div>
     </div>
+    <div class="p2_current_card" id="p2_hand">
+<!-- Js library -->
 <script src="lib/socket.io-1.4.5.js"></script>
 <script src="lib/pixi.min.js"></script>
 <script src="lib/howler.min.js"></script>
@@ -30,5 +34,8 @@
 <script type="text/javascript" src="render-server/minion/undead/undead_samurai.js"></script>
 <script type="text/javascript" src="render-server/minion/undead/undead_alchemist.js"></script>
 <script type="text/javascript" src="render-server/minion/healthbar.js"></script>
+<script type="text/javascript" src="render-server/player_hand.js"></script>
+<script type="text/javascript" src="render-server/global_battle_field.js"></script>
+<script type="text/javascript" src="render-server/channel.js"></script>
 <script type="text/javascript" src="render-server/arena.js"></script>
 </body>
