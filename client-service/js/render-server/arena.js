@@ -179,6 +179,9 @@ function closegame(){
         // Open close stage
         main_stage.alpha -= 0.01;
         close_stage.alpha += 0.01;
+        // Closin card deck
+        P1_carddeck_handler.stage.alpha -= 0.01;
+        P2_carddeck_handler.stage.alpha -= 0.01;
     }
 }
 

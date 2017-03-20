@@ -28,33 +28,53 @@ var PLAYER_HAND = function(max_w,max_h){
     // Load undead
     this.texture_map['undead_samurai'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_samurai_mugshot.png"));
     this.texture_map['undead_alchemist'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_alchemist_mugshot.png"));
-    // Create 4 sprite
+    /* Create 4 sprite :
+        obj: store Sprite it have
+        userdata: record current minion name
+    */
     this.sprite = {};
-    this.sprite[0] = new PIXI.Sprite(this.texture_map['elf_archer']);
-    this.sprite[0].width = max_w;
-    this.sprite[0].height = max_w;
-    this.sprite[0].x = 0;
-    this.sprite[0].y = max_h/2 - 2*max_w;
-    this.sprite[1] = new PIXI.Sprite(this.texture_map['elf_dancer']);
-    this.sprite[1].width = max_w;
-    this.sprite[1].height = max_w;
-    this.sprite[1].x = 0;
-    this.sprite[1].y = max_h/2 - max_w;
-    this.sprite[2] = new PIXI.Sprite(this.texture_map['elf_giant']);
-    this.sprite[2].width = max_w;
-    this.sprite[2].height = max_w;
-    this.sprite[2].x = 0;
-    this.sprite[2].y = max_h/2;
-    this.sprite[3] = new PIXI.Sprite(this.texture_map['sgram']);
-    this.sprite[3].width = max_w;
-    this.sprite[3].height = max_w;
-    this.sprite[3].x = 0;
-    this.sprite[3].y = max_h/2 + max_w;
+    this.sprite[0] = {
+        obj: new PIXI.Sprite(this.texture_map['elf_archer']),
+        userdata: "elf_archer"
+    };
+    this.sprite[0].obj.width = max_w;
+    this.sprite[0].obj.height = max_w;
+    this.sprite[0].obj.x = 0;
+    this.sprite[0].obj.y = max_h/2 - 2*max_w;
+    this.sprite[1] = {
+        obj: new PIXI.Sprite(this.texture_map['elf_dancer']),
+        userdata: "elf_archer"
+    };
+    this.sprite[1].obj.width = max_w;
+    this.sprite[1].obj.height = max_w;
+    this.sprite[1].obj.x = 0;
+    this.sprite[1].obj.y = max_h/2 - max_w;
+    this.sprite[2] = {
+        obj: new PIXI.Sprite(this.texture_map['elf_giant']),
+        userdata: "elf_giant"
+    }
+    this.sprite[2].obj.width = max_w;
+    this.sprite[2].obj.height = max_w;
+    this.sprite[2].obj.x = 0;
+    this.sprite[2].obj.y = max_h/2;
+    this.sprite[3] = {
+        obj: new PIXI.Sprite(this.texture_map['sgram']),
+        userdata: "sgram"
+    }
+    this.sprite[3].obj.width = max_w;
+    this.sprite[3].obj.height = max_w;
+    this.sprite[3].obj.x = 0;
+    this.sprite[3].obj.y = max_h/2 + max_w;
 
-    this.stage.addChild(this.sprite[0]);
-    this.stage.addChild(this.sprite[1]);
-    this.stage.addChild(this.sprite[2]);
-    this.stage.addChild(this.sprite[3]);
+    this.stage.addChild(this.sprite[0].obj);
+    this.stage.addChild(this.sprite[1].obj);
+    this.stage.addChild(this.sprite[2].obj);
+    this.stage.addChild(this.sprite[3].obj);
+
+    this.subscribe(this.sprite[0].obj);
+    this.subscribe(this.sprite[1].obj);
+    this.subscribe(this.sprite[2].obj);
+    this.subscribe(this.sprite[3].obj);
 
     // var result = new PIXI.Sprite(texture);
     this.stage_width = max_w;
@@ -64,9 +84,73 @@ var PLAYER_HAND = function(max_w,max_h){
 
 PLAYER_HAND.prototype.update = function(new_arr){
     // Using new received array to update player's hand
-    console.log("Array Size: " + new_arr.length);
     for(var index in new_arr){
-        console.log("index: " + index + "; And Name : " + new_arr[index].name);
-        this.sprite[index].setTexture(this.texture_map[new_arr[index].name]);
+        this.sprite[index].obj.setTexture(this.texture_map[new_arr[index].name]);
+        this.sprite[index].userdata = new_arr[index].name;
+    }
+}
+
+PLAYER_HAND.prototype.subscribe = function(obj){
+    obj.interactive = true;
+    obj.on('mousedown',onDragStart)
+        .on('touchstart',onDragStart)
+        .on('mouseup',onDragEnd)
+        .on('mouseupoutside',onDragEnd)
+        .on('touchend',onDragEnd)
+        .on('touchendoutside',onDragEnd)
+        .on('mousemove',onDragMove)
+        .on('touchmove',onDragMove);
+}
+
+PLAYER_HAND.prototype.addShadow = function(obj) {
+    var gr = new PIXI.Graphics();
+    gr.beginFill(0x0, 1);
+    //yes , I know bunny size, I'm sorry for this hack
+    var scale = 1.1;
+    gr.drawRect(-25/2 * scale, -36/2 * scale, 25 * scale, 36 * scale);
+    gr.endFill();
+    var blurFilter = new PIXI.filters.blurFilter();
+    blurFilter.blur = 0.5;
+    gr.filters = [blurFilter];
+
+    //gr.displayGroup = shadowLayer;
+    obj.addChild(gr);
+}
+
+// Drag and drop event
+function onDragStart(event){
+    console.log("On drag.");
+    if (!this.dragging) {
+        this.data = event.data;
+        //this.oldGroup = this.displayGroup;
+        //this.displayGroup = dragLayer;
+        this.dragging = true;
+
+        this.scale.x *= 1.1;
+        this.scale.y *= 1.1;
+        this.dragPoint = event.data.getLocalPosition(this.parent);
+        this.dragPoint.x -= this.x;
+        this.dragPoint.y -= this.y;
+    }
+}
+
+function onDragEnd(event){
+    console.log("On End");
+    if(this.dragging) {
+       this.dragging = false;
+       //this.displayGroup = this.oldGroup;
+       this.scale.x /= 1.1;
+       this.scale.y /= 1.1;
+       // set the interaction data to null
+       this.data = null;
+   }
+}
+
+function onDragMove(event){
+    console.log("On Move");
+    if (this.dragging) {
+        var newPosition = this.data.getLocalPosition(this.parent);
+        this.x = newPosition.x - this.dragPoint.x;
+        this.y = newPosition.y - this.dragPoint.y;
     }
 }
