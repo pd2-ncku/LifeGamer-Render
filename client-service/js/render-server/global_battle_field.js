@@ -30,8 +30,8 @@ var p2_hand_size_adapter = document.getElementById('p2_hand');
 var p2_hand_renderer = PIXI.autoDetectRenderer(p2_hand_size_adapter.offsetWidth,p2_hand_size_adapter.offsetHeight);
 p2_hand_renderer.backgroundColor = 0x1099bb;
 // Another Container (user's hand) will initialize with PLAYER_HAND
-var P1_carddeck_handler = new PLAYER_HAND(p1_hand_size_adapter.offsetWidth,p1_hand_size_adapter.offsetHeight);
-var P2_carddeck_handler = new PLAYER_HAND(p1_hand_size_adapter.offsetWidth,p1_hand_size_adapter.offsetHeight);
+var P1_carddeck_handler = new PLAYER_HAND('p1',p1_hand_size_adapter.offsetWidth,p1_hand_size_adapter.offsetHeight,main_stage);
+var P2_carddeck_handler = new PLAYER_HAND('p2',p2_hand_size_adapter.offsetWidth,p2_hand_size_adapter.offsetHeight,main_stage);
 // Append render view into DOM tree
 document.getElementById("arena").appendChild(renderer.view);
 document.getElementById("p1_hand").appendChild(p1_hand_renderer.view);

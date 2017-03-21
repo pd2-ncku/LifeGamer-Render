@@ -37,6 +37,7 @@ PIXI.loader
         "minion/elf/elf_archer.png",
         "minion/elf/elf_archer_p2.png",
         "minion/elf/elf_archer_mugshot.png",
+        "minion/elf/elf_archer.gif"
     ])
     .add([
         "minion/human/human_priest.png",
