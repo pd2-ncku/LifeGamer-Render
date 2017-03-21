@@ -41,67 +41,13 @@ var PLAYER_HAND = function(belong,max_w,max_h,battle_stage){
     walking_texture['sgram'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/siege/sgram.gif"));
     walking_texture['undead_samurai'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_samurai.gif"));
     walking_texture['undead_alchemist'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_alchemist.gif"));
-    /* Create 4 sprite :
-        obj: store Sprite it have
-        userdata: record current minion name
-    */
+    walking_texture['unknown'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/unknown.png"));
+    /* Create 4 sprite */
     this.sprite = {};
-    this.sprite[0] = {
-        obj: new PIXI.Sprite(this.texture_map['elf_archer'])
-    };
-    this.sprite[0].obj.belong = belong;
-    this.sprite[0].obj.width = max_w;
-    this.sprite[0].obj.height = max_w;
-    this.sprite[0].obj.userdata = 'elf_archer';
-    this.sprite[0].obj.main_stage = battle_stage;
-    this.sprite[0].obj.texture_map = walking_texture;
-    this.sprite[0].obj.underdeck = true;
-    this.sprite[0].obj.x = 0;
-    this.sprite[0].obj.y = max_h/2 - 2*max_w;
-    this.sprite[0].obj.bound_x = max_w;
-    this.sprite[0].obj.bound_y = max_h;
-    this.sprite[1] = {
-        obj: new PIXI.Sprite(this.texture_map['elf_dancer'])
-    };
-    this.sprite[1].obj.belong = belong;
-    this.sprite[1].obj.width = max_w;
-    this.sprite[1].obj.height = max_w;
-    this.sprite[1].obj.userdata = 'elf_dancer';
-    this.sprite[1].obj.texture_map = walking_texture;
-    this.sprite[1].obj.underdeck = true;
-    this.sprite[1].obj.main_stage = battle_stage;
-    this.sprite[1].obj.x = 0;
-    this.sprite[1].obj.y = max_h/2 - max_w;
-    this.sprite[1].obj.bound_x = max_w;
-    this.sprite[1].obj.bound_y = max_h;
-    this.sprite[2] = {
-        obj: new PIXI.Sprite(this.texture_map['elf_giant'])
-    }
-    this.sprite[2].obj.belong = belong;
-    this.sprite[2].obj.width = max_w;
-    this.sprite[2].obj.height = max_w;
-    this.sprite[2].obj.userdata = 'elf_giant';
-    this.sprite[2].obj.texture_map = walking_texture;
-    this.sprite[2].obj.underdeck = true;
-    this.sprite[2].obj.main_stage = battle_stage;
-    this.sprite[2].obj.x = 0;
-    this.sprite[2].obj.y = max_h/2;
-    this.sprite[2].obj.bound_x = max_w;
-    this.sprite[2].obj.bound_y = max_h;
-    this.sprite[3] = {
-        obj: new PIXI.Sprite(this.texture_map['sgram'])
-    }
-    this.sprite[3].obj.belong = belong;
-    this.sprite[3].obj.width = max_w;
-    this.sprite[3].obj.height = max_w;
-    this.sprite[3].obj.userdata = 'sgram';
-    this.sprite[3].obj.texture_map = walking_texture;
-    this.sprite[3].obj.underdeck = true;
-    this.sprite[3].obj.main_stage = battle_stage;
-    this.sprite[3].obj.x = 0;
-    this.sprite[3].obj.y = max_h/2 + max_w;
-    this.sprite[3].obj.bound_x = max_w;
-    this.sprite[3].obj.bound_y = max_h;
+    this.sprite[0] = this.init_obj(belong,0,max_w,max_h,'human_priest',walking_texture,battle_stage);
+    this.sprite[1] = this.init_obj(belong,1,max_w,max_h,'elf_archer',walking_texture,battle_stage);
+    this.sprite[2] = this.init_obj(belong,2,max_w,max_h,'undead_samurai',walking_texture,battle_stage);
+    this.sprite[3] = this.init_obj(belong,3,max_w,max_h,'sgram',walking_texture,battle_stage);
 
     this.stage.addChild(this.sprite[0].obj);
     this.stage.addChild(this.sprite[1].obj);
@@ -119,14 +65,69 @@ var PLAYER_HAND = function(belong,max_w,max_h,battle_stage){
     // Calculate 4 card size and location of card picture
 }
 
+PLAYER_HAND.prototype.init_obj = function(belong,loc,max_w,max_h,type,walking_texture,battle_stage){
+    /* Create sprite object:
+        obj: load sprite
+        belong: record owner
+        width,height: record obj size
+        userdata: record type
+        texture_map: maintain walking texture
+        underdeck: true if this sprite is in player deck
+        main_stage: record main_stage (battlefield container)
+        prev_stage: record current stage (player card deck container)
+        mugshot: record mugshot texture of current sprite
+        loc_x,loc_y: record recover location (for drag and drop recovery)
+        bound_x,bound_y: record boundary of card deck
+    */
+    var result = {
+        obj: new PIXI.Sprite(this.texture_map[type])
+    }
+    result.obj.belong = belong;
+    result.obj.width = max_w;
+    result.obj.height = max_w;
+    result.obj.userdata = type;
+    result.obj.texture_map = walking_texture;
+    result.obj.underdeck = true;
+    result.obj.main_stage = battle_stage;
+    result.obj.prev_stage = this.stage;
+    result.obj.mugshot = this.texture_map[type];
+    result.obj.x = 0;
+    result.obj.loc_x = 0;
+    switch (loc) {
+        case 0:
+            result.obj.y = max_h/2 - 2*max_w;
+            result.obj.loc_y = max_h/2 - 2*max_w;
+            break;
+        case 1:
+            result.obj.y = max_h/2 - max_w;
+            result.obj.loc_y = max_h/2 - max_w;
+            break;
+        case 2:
+            result.obj.y = max_h/2;
+            result.obj.loc_y = max_h/2;
+            break;
+        case 3:
+            result.obj.y = max_h/2 + max_w;
+            result.obj.loc_y = max_h/2 + max_w;
+            break;
+        default:
+    }
+    result.obj.bound_x = max_w;
+    result.obj.bound_y = max_h;
+
+    return result;
+}
+
 PLAYER_HAND.prototype.update = function(new_arr){
     // Using new received array to update player's hand
     for(var index in new_arr){
         this.sprite[index].obj.setTexture(this.texture_map[new_arr[index].name]);
         this.sprite[index].obj.userdata = new_arr[index].name;
+        this.sprite[index].obj.mugshot = this.texture_map[new_arr[index].name];
     }
 }
 
+// Enroll event for each sprite
 PLAYER_HAND.prototype.subscribe = function(obj){
     obj.interactive = true;
     obj.on('mousedown',onDragStart)
@@ -162,8 +163,14 @@ function onDragEnd(event){
     if(this.dragging) {
        this.dragging = false;
        //this.displayGroup = this.oldGroup;
-       if(this.x > this.bound_x || this.y > this.bound_y){
+       if(this.x > 0 || this.y > this.bound_y){
            this.underdeck = false;
+           // Set back to card deck
+           this.setParent(this.prev_stage);
+           this.x = this.loc_x;
+           this.y = this.loc_y;
+           this.setTexture(this.texture_map['unknown']);
+           // FIXME: tell battle server about summon new minion
        }
        this.scale.x /= 1.1;
        this.scale.y /= 1.1;
@@ -177,20 +184,34 @@ function onDragMove(event){
         var newPosition = this.data.getLocalPosition(this.parent);
         this.x = newPosition.x - this.dragPoint.x;
         this.y = newPosition.y - this.dragPoint.y;
+        // If drag without dropping on the battlefield => underdeck = true
         if(this.belong == 'p1' && this.underdeck == true){
+            // Drag on battlefield
             if(this.x > this.bound_x || this.y > this.bound_y){
                 this.setParent(this.main_stage);
                 this.x -= this.bound_x;
                 this.setTexture(this.texture_map[this.userdata]);
                 this.main_stage.addChild(this);
             }
+            // Drag back to player deck
+            else if(this.x < 0){
+                this.setParent(this.prev_stage);
+                this.x = this.loc_x;
+                this.y = this.loc_y;
+                this.setTexture(this.mugshot);
+            }
         }
+        // If drag and drop on the battlefield
         else{
-            /*if(this.x < 0 || this.y > this.bound_y){
-                this.setParent(this.main_stage);
-                this.x -= this.bound_x;
-                this.main_stage.addChild(this);
-            }*/
+            // FIXME : need to recover card deck in player's container
+            // p2 drag and drop
+            if(this.belong == 'p2' && this.underdeck == true){
+                if(this.x < this.bound_x || this.y > this.bound_y){
+                    // Set back to origin location
+                    this.x = this.loc_x;
+                    this.y = this.loc_y;
+                }
+            }
         }
     }
 }

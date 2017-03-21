@@ -28,6 +28,9 @@ PIXI.loader
         "buildings/big_castle.png"
     ])
     .add([
+        "minion/unknown.png"
+    ])
+    .add([
         "minion/elf/elf_rock_giant.png",
         "minion/elf/elf_rock_giant_p2.png",
         "minion/elf/elf_rock_giant_mugshot.png",
