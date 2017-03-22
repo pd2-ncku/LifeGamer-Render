@@ -62,7 +62,6 @@ var PLAYER_HAND = function(belong,max_w,max_h,battle_stage){
     // var result = new PIXI.Sprite(texture);
     this.stage_width = max_w;
     this.stage_height = max_h;
-    // Calculate 4 card size and location of card picture
 }
 
 PLAYER_HAND.prototype.init_obj = function(belong,loc,max_w,max_h,type,walking_texture,battle_stage){
@@ -166,11 +165,17 @@ function onDragEnd(event){
        if(this.x > 0 || this.y > this.bound_y){
            this.underdeck = false;
            // Set back to card deck
+           console.log("Battle field size :("+this.main_stage.width+","+this.main_stage.height+")");
+           let place_x = this.x/(this.main_stage.width/50);
+           let place_y = this.y/(this.main_stage.height/20);
+           console.log("Drop Minion Location x: "+place_x+"; y: "+place_y);
+           // Set back to the card deck
            this.setParent(this.prev_stage);
            this.x = this.loc_x;
            this.y = this.loc_y;
            this.setTexture(this.texture_map['unknown']);
-           // FIXME: tell battle server about summon new minion
+           // send control msg ! *control_channel* is global
+           control_channel.place_minion(this.belong,this.userdata,place_x,place_y);
        }
        this.scale.x /= 1.1;
        this.scale.y /= 1.1;

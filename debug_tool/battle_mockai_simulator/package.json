@@ -1,12 +1,12 @@
 {
-    "name": "render-server-debug-tool",
-    "main": "debug_tool.js",
+    "name": "render-server-debug-tool-Mock_AI",
+    "main": "mock_ai.js",
     "config": {
-      "version": "v1.0.0"
+      "version": "v0.0.1"
     },
     "scripts": {
         "build": "npm install",
-        "start": "node debug_tool.js",
+        "start": "node mock_ai.js",
         "all": "npm run build && npm run start"
     },
     "license": "GPL-3.0",
@@ -15,7 +15,6 @@
         "url": ""
     },
     "dependencies": {
-        "jsonfile": "^2.4.0",
-        "request": "^2.7.0"
+        "socket.io-client": "^1.7.3"
     }
 }

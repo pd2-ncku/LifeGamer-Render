@@ -2,7 +2,8 @@
     "name": "render-server",
     "main": "io.render.js",
     "config":  {
-        "portiorender": 3001
+        "portiorender": 3001,
+        "portcontrol": 3002
     },
     "scripts": {
         "build": "npm install",

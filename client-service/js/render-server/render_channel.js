@@ -7,6 +7,7 @@ socket.emit('join',room_name);
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
     socket.emit('disconnect');
+    control_channel.disconnect();
 }, false);
 
 var command_buffer = [];

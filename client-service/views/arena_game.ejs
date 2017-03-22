@@ -10,6 +10,8 @@
 </head>
 <body>
   <!-- Give an text-center div for the battlefield -->
+    <input id="control_port" type="hidden" value="<%= port %>">
+    <input id="c_player" type="hidden" value="<%= p1 %>">
     <input id="room_name" type="hidden" value="<%= p1 %><%= p2 %>">
     <div class="p1_current_card" id="p1_hand">
     <div class="text-center">
@@ -34,8 +36,9 @@
 <script type="text/javascript" src="render-server/minion/undead/undead_samurai.js"></script>
 <script type="text/javascript" src="render-server/minion/undead/undead_alchemist.js"></script>
 <script type="text/javascript" src="render-server/minion/healthbar.js"></script>
+<script type="text/javascript" src="render-server/control_channel.js"></script>
 <script type="text/javascript" src="render-server/player_hand.js"></script>
-<script type="text/javascript" src="render-server/global_battle_field.js"></script>
-<script type="text/javascript" src="render-server/channel.js"></script>
-<script type="text/javascript" src="render-server/arena.js"></script>
+<script type="text/javascript" src="render-server/global_var.js"></script>
+<script type="text/javascript" src="render-server/render_channel.js"></script>
+<script type="text/javascript" src="render-server/main.js"></script>
 </body>
