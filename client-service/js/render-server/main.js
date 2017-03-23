@@ -21,7 +21,9 @@ PIXI.loader
     .add([
         "battle_field/bridge_texture.png",
         "battle_field/house_texture.png",
-        "battle_field/land_texture.png",
+        "battle_field/grass.png",
+        "battle_field/brick.png",
+        "battle_field/grass-brick.png",
         "battle_field/water_texture.png",
         "buildings/castle-blue.png",
         "buildings/castle-red.png",
@@ -86,35 +88,17 @@ function loadProgressHandler(loader, resource) {
 // Setup render page
 function setup() {
     // setup battle field
-    ground = new PIXI.Sprite(
-	       PIXI.loader.resources["battle_field/land_texture.png"].texture
-	);
-    bridge_top = new PIXI.Sprite(
-	       new PIXI.Texture(PIXI.BaseTexture.fromImage("battle_field/bridge_texture.png"))
-	);
-    bridge_down = new PIXI.Sprite(
-	       new PIXI.Texture(PIXI.BaseTexture.fromImage("battle_field/bridge_texture.png"))
-	);
     river = new PIXI.Sprite(
 	       PIXI.loader.resources["battle_field/water_texture.png"].texture
 	);
-
     // set size
-    ground.width = max_w;
-    ground.height = max_h;
-    bridge_top.width = 6 * x_unit;
-    bridge_top.height = 4 * y_unit;
-    bridge_down.width = 6 * x_unit;
-    bridge_down.height = 4 * y_unit;
     river.width = 6 * x_unit;
     river.height = max_h;
-
     // setting tower
     var x_bound = 7;
     var main_x_bound = 2;
     /* Row the dice to choose which type of castle */
     let type_of_castle = Math.floor((Math.random() * 2) + 1);
-
     var p1_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_top','p1',type_of_castle);
     p1_vicetower_top.setpos(x_bound*x_unit,2*y_unit);
     var p1_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_down','p1',type_of_castle);
@@ -128,11 +112,95 @@ function setup() {
     var p2_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p2_main','p2',type_of_castle);
     p2_maintower.setpos((50-main_x_bound-main_tower_unit)*x_unit,7*y_unit);
 
+    // Setup ground texture
+    for(let j=0; j < map_h_unit ; j++ ){
+        for(let i=0; i < map_w_unit ; i++){
+            if(i == 0 || i == map_w_unit-1 || j == 0 || j == map_h_unit-1){
+                // make the brick wall
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/grass-brick.png'));
+                texture.frame = (new PIXI.Rectangle(0,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+            else{
+                // random pick an number
+                let type_of_grass = Math.floor((Math.random() * 8));
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/grass.png'));
+                texture.frame = (new PIXI.Rectangle(type_of_grass*320,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+        }
+    }
+    // river
+    bg_stage.addChild(river);
+
+    // Setting top bridge
+    for(let j=3;j<3+bridge_h_unit;j++){
+        for(let i=22;i<22+bridge_w_unit;i++){
+            if(j==3 || j==2+bridge_h_unit){
+                // Draw bridge brick
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/brick.png'));
+                texture.frame = (new PIXI.Rectangle(0,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+            else{
+                // Draw bridge texture
+                let type_of_bridge = Math.floor((Math.random() * 2));
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/bridge_texture.png'));
+                texture.frame = (new PIXI.Rectangle(type_of_bridge*320,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+        }
+    }
+    // Setting down bridge
+    for(let j=13;j<13+bridge_h_unit;j++){
+        for(let i=22;i<22+bridge_w_unit;i++){
+            if(j==13 || j==12+bridge_h_unit){
+                // Draw bridge brick
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/brick.png'));
+                texture.frame = (new PIXI.Rectangle(0,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+            else{
+                // Draw bridge texture
+                let type_of_bridge = Math.floor((Math.random() * 2));
+                let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/bridge_texture.png'));
+                texture.frame = (new PIXI.Rectangle(type_of_bridge*320,0,320,320));
+                let result = new PIXI.Sprite(texture);
+                result.width = x_unit;
+                result.height = y_unit;
+                result.x = i*x_unit;
+                result.y = j*y_unit;
+                bg_stage.addChild(result);
+            }
+        }
+    }
+
     // add them into scene
-    main_stage.addChild(ground);
-    main_stage.addChild(river);
-    main_stage.addChild(bridge_top);
-    main_stage.addChild(bridge_down);
     main_stage.addChild(p1_vicetower_top.obj);
     main_stage.addChild(p1_vicetower_top.hp);
     main_stage.addChild(p1_vicetower_down.obj);
@@ -147,10 +215,7 @@ function setup() {
     main_stage.addChild(p2_maintower.hp);
 
     // set sprite's location
-    ground.position.set(0,0);
     river.position.set(22*x_unit,0);
-    bridge_top.position.set(22*x_unit,3*y_unit);
-    bridge_down.position.set(22*x_unit,13*y_unit);
 
     // Push tower into buildings array
     buildings.push(p1_vicetower_top);

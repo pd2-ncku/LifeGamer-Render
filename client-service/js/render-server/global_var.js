@@ -7,9 +7,11 @@ var p2_current_hand = [];
 // Scene Part
 var wrapper = new PIXI.Container();
 var main_stage = new PIXI.Container();
+var bg_stage = new PIXI.Container();
 var close_stage = new PIXI.Container();
 wrapper.addChild(close_stage);
 wrapper.addChild(main_stage);
+main_stage.addChild(bg_stage);
 close_stage.alpha = 0;
 
 // Setting Global object (Sprite)

@@ -41,9 +41,9 @@ Render part of a game project.
     - Design back ground music of `end-of-game`,`battle`,and `start-of-game`
     - Art work of `human thief`
     - More about H+ : [youtube](https://www.youtube.com/channel/UCPEdLLsXN8wxl-q3Esnq6eg) , [soundcloud](https://soundcloud.com/9xeiexzqbawv)
-- 邱
-    - Art work of `elf archer`
 - 黃
     - Art work of `human priest`
 - Kevin Cyu (kevinbird61@gmail.com)
     - Render engine builder and art design of most piskel character.
+- Anonymous contributor
+    - Art work of `elf archer`
