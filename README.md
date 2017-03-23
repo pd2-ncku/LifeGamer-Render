@@ -27,7 +27,15 @@ Render part of a game project.
 # Usage
 - "<url>/check_connection" : checking all connections in battle.
 - "<url>/replay_list" : Reviewing all available replay log.
-- "<url>/game_start?p1=<p1>&p2=<p2>" : battle room of <p1> & <p2>.
+- "<url>/game_start?p1=pname&p2=pname" : battle room of pname(represent as player's name).
 
 # Reference
 - [Minion Status Intro Page](http://slides.com/kevinbird61/pd2-royale/fullscreen)
+
+# Contribution of Art
+- [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (email: f26401004@gmail.com)
+    - Art work of `human piper`,`elf dancer`,`undead alchemist`
+- [Darkborderman](https://github.com/Darkborderman) (email: )
+    - Art work of new `buildings` and `sgram` piskel version.
+- Kevin Cyu (email: kevinbird61@gmail.com)
+    - Art work of most piskel character.

@@ -25,7 +25,10 @@ PIXI.loader
         "battle_field/water_texture.png",
         "buildings/castle-blue.png",
         "buildings/castle-red.png",
-        "buildings/big_castle.png"
+        "buildings/big_castle.png",
+        "buildings/castle-red-new.png",
+        "buildings/castle-blue-new.png",
+        "buildings/big_castle_new.png"
     ])
     .add([
         "minion/unknown.png"
@@ -109,17 +112,20 @@ function setup() {
     // setting tower
     var x_bound = 7;
     var main_x_bound = 2;
-    var p1_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_top','p1');
+    /* Row the dice to choose which type of castle */
+    let type_of_castle = Math.floor((Math.random() * 2) + 1);
+
+    var p1_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_top','p1',type_of_castle);
     p1_vicetower_top.setpos(x_bound*x_unit,2*y_unit);
-    var p1_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_down','p1');
+    var p1_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p1_down','p1',type_of_castle);
     p1_vicetower_down.setpos(x_bound*x_unit,14*y_unit);
-    var p1_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p1_main','p1');
+    var p1_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p1_main','p1',type_of_castle);
     p1_maintower.setpos((main_x_bound)*x_unit,7*y_unit);
-    var p2_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_top','p2');
+    var p2_vicetower_top = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_top','p2',type_of_castle);
     p2_vicetower_top.setpos((50-x_bound-vice_tower_unit)*x_unit,2*y_unit);
-    var p2_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_down','p2');
+    var p2_vicetower_down = new CASTLE(vice_tower_unit*x_unit,vice_tower_unit*y_unit,'p2_down','p2',type_of_castle);
     p2_vicetower_down.setpos((50-x_bound-vice_tower_unit)*x_unit,14*y_unit);
-    var p2_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p2_main','p2');
+    var p2_maintower = new BIG_CASTLE(main_tower_unit*x_unit,main_tower_unit*y_unit,'p2_main','p2',type_of_castle);
     p2_maintower.setpos((50-main_x_bound-main_tower_unit)*x_unit,7*y_unit);
 
     // add them into scene

@@ -219,64 +219,6 @@ app.post('/game_end', function(req,res){
     battle_recording[player1+player2] = undefined;
 });
 
-// Socket io
-io.sockets.on('connection',function(socket){
-    socket.on("join",function(room_id){
-        console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_id);
-        socket.room = room_id;
-        socket.join('room-'+room_id);
-        // Enroll socket channel
-        var channel_obj = {
-            tag: room_id,
-            ip: socket.request.connection.remoteAddress,
-            timestamp: battle_room[room_id]
-        };
-        // Push it into socket_channel
-        socket_channel.push(channel_obj);
-    });
-    socket.on("disconnect",function(){
-        console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
-        socket.leave('room-'+socket.room);
-        // Enroll socket channel
-        for(var index in socket_channel){
-            if(socket_channel[index].ip == socket.request.connection.remoteAddress && socket_channel[index].tag == socket.room){
-                socket_channel.splice(index,1);
-            }
-        }
-    });
-});
-
-// =============================================== Control io here ===============================================
-var control_io = new IO().listen(process.env.npm_package_config_portcontrol);
-
-// Making an information center
-control_io.sockets.on('connection', function (socket) {
-    // ====================================== Dealing with the user input ======================================
-    socket.on('control',function(data){
-        console.log("[Information Server] Successfully Build manually connection from :" + socket.request.connection.remoteAddress);
-        console.dir(data);
-        // Deliver the message to Mock AI
-        control_io.in('room-'+data.owner).emit('cmd',data);
-    });
-    // ( User input ) Disconnect Event
-    socket.on('disconnect',function(){
-        console.log("[Information Server] Control channel deprecate from : " + socket.request.connection.remoteAddress);
-    })
-
-    // ====================================== Dealing with Mock AI operation ======================================
-    socket.on('fetch_room',function(data){
-        /* Using room to connect with mock AI */
-        console.log("[Information Server] Mock AI join room: " + data.mock_id);
-        socket.join('room-'+data.mock_id);
-    });
-    // ( Mock AI ) Disconnect Event - leaving room
-    socket.on('release',function(data){
-        console.log("[Information Server] Mock AI: "+data.mock_id+" leave room.")
-        socket.leave('room-'+data.mock_id);
-    });
-});
-
-
 // Listen url request
 if(process.env.TRAVIS != "true"){
     server.listen(process.env.npm_package_config_portiorender, function(){
@@ -284,5 +226,62 @@ if(process.env.TRAVIS != "true"){
         var port = server.address().port;
         // logger.record('io.render',"[io.render] Example app listening at "+host+" : "+port);
         console.log("[io.render] io.render server listening at "+host+" : "+port);
+    });
+
+    // Render channel
+    io.sockets.on('connection',function(socket){
+        socket.on("join",function(room_id){
+            console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_id);
+            socket.room = room_id;
+            socket.join('room-'+room_id);
+            // Enroll socket channel
+            var channel_obj = {
+                tag: room_id,
+                ip: socket.request.connection.remoteAddress,
+                timestamp: battle_room[room_id]
+            };
+            // Push it into socket_channel
+            socket_channel.push(channel_obj);
+        });
+        socket.on("disconnect",function(){
+            console.log('[io.render] Disconnect from ' + socket.request.connection.remoteAddress);
+            socket.leave('room-'+socket.room);
+            // Enroll socket channel
+            for(var index in socket_channel){
+                if(socket_channel[index].ip == socket.request.connection.remoteAddress && socket_channel[index].tag == socket.room){
+                    socket_channel.splice(index,1);
+                }
+            }
+        });
+    });
+    
+    // =============================================== Control io here ===============================================
+    var control_io = new IO().listen(process.env.npm_package_config_portcontrol);
+
+    // Making an information center
+    control_io.sockets.on('connection', function (socket) {
+        // ====================================== Dealing with the user input ======================================
+        socket.on('control',function(data){
+            console.log("[Information Server] Successfully Build manually connection from :" + socket.request.connection.remoteAddress);
+            console.dir(data);
+            // Deliver the message to Mock AI
+            control_io.in('room-'+data.owner).emit('cmd',data);
+        });
+        // ( User input ) Disconnect Event
+        socket.on('disconnect',function(){
+            console.log("[Information Server] Control channel deprecate from : " + socket.request.connection.remoteAddress);
+        })
+
+        // ====================================== Dealing with Mock AI operation ======================================
+        socket.on('fetch_room',function(data){
+            /* Using room to connect with mock AI */
+            console.log("[Information Server] Mock AI join room: " + data.mock_id);
+            socket.join('room-'+data.mock_id);
+        });
+        // ( Mock AI ) Disconnect Event - leaving room
+        socket.on('release',function(data){
+            console.log("[Information Server] Mock AI: "+data.mock_id+" leave room.")
+            socket.leave('room-'+data.mock_id);
+        });
     });
 }

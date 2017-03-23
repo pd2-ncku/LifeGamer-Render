@@ -4,23 +4,41 @@
     object_No : use to distinguish among buildings object
     belong : distinguish which use own this
 */
-var CASTLE = function(char_w,char_h,object_No,belong){
+var CASTLE = function(char_w,char_h,object_No,belong,type_of_castle){
     /* building constructor */
-    this.src_frame_w = 640;
-    this.src_frame_h = 640;
-    this.picture_frame = 3;
     this.scale = 1;
     this.object_No = object_No;
     /* direction */
     /* Also , Setting which direction the building face : default - p1->right , p2->left */
-    if(belong == 'p1'){
-        /* using texture blue */
-        this.image_src = "buildings/castle-blue.png";
-        this.direction = 0;
-    }else{
-        /* using texture red */
-        this.image_src = "buildings/castle-red.png";
-        this.direction = 1;
+    if(type_of_castle == 1){
+        /* Original */
+        this.src_frame_w = 640;
+        this.src_frame_h = 640;
+        this.picture_frame = 3;
+        if(belong == 'p1'){
+            /* using texture blue */
+            this.image_src = "buildings/castle-blue.png";
+            // Using row 1 to draw
+            this.direction = 0;
+        }else{
+            /* using texture red */
+            this.image_src = "buildings/castle-red.png";
+            this.direction = 1;
+        }
+    }
+    else if(type_of_castle == 2){
+        this.src_frame_w = 320;
+        this.src_frame_h = 320;
+        this.picture_frame = 8;
+        if(belong == 'p1'){
+            /* using texture blue */
+            this.image_src = "buildings/castle-blue-new.png";
+            this.direction = 1;
+        }else{
+            /* using texture red */
+            this.image_src = "buildings/castle-red-new.png";
+            this.direction = 0;
+        }
     }
 
     // sound effect
@@ -49,12 +67,10 @@ CASTLE.prototype.progressing = function(current_tick){
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_src));
     /* let's draw! */
     if(this.direction == 0){
-        // face right
         texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),0,this.src_frame_w,this.src_frame_h));
         this.obj.setTexture(texture);
     }
     else{
-        // face right
         texture.frame = (new PIXI.Rectangle((this.src_frame_w)*(current_tick%this.picture_frame),this.src_frame_h,this.src_frame_w,this.src_frame_h));
         this.obj.setTexture(texture);
     }

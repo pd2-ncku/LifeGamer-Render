@@ -4,22 +4,41 @@
     object_No : use to distinguish among buildings object
     belong : distinguish which use own this
 */
-var BIG_CASTLE = function(char_w,char_h,object_No,belong){
+var BIG_CASTLE = function(char_w,char_h,object_No,belong,type_of_castle){
     /* buildings constructor */
-    this.src_frame_w = 1280;
-    this.src_frame_h = 1280;
-    this.picture_frame = 3;
     this.scale = 1;
     this.object_No = object_No;
-    /* url */
-    this.image_src = "buildings/big_castle.png";
-    /* Also , Setting which direction the building face : default - p1->right , p2->left */
-    if(belong == 'p1'){
-        /* using texture blue */
-        this.direction = 0;
-    }else{
-        /* using texture red */
-        this.direction = 1;
+
+    if(type_of_castle == 1){
+        /* Original */
+        this.src_frame_w = 1280;
+        this.src_frame_h = 1280;
+        this.picture_frame = 3;
+        /* url */
+        this.image_src = "buildings/big_castle.png";
+        /* Also , Setting which direction the building face : default - p1->right , p2->left */
+        if(belong == 'p1'){
+            /* using texture blue */
+            this.direction = 0;
+        }else{
+            /* using texture red */
+            this.direction = 1;
+        }
+    }
+    else if(type_of_castle == 2){
+        this.src_frame_w = 640;
+        this.src_frame_h = 640;
+        this.picture_frame = 3;
+        /* url */
+        this.image_src = "buildings/big_castle_new.png";
+        /* Also , Setting which direction the building face : default - p1->right , p2->left */
+        if(belong == 'p1'){
+            /* using texture blue */
+            this.direction = 1;
+        }else{
+            /* using texture red */
+            this.direction = 0;
+        }
     }
 
     // sound effect
