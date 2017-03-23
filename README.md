@@ -33,9 +33,17 @@ Render part of a game project.
 - [Minion Status Intro Page](http://slides.com/kevinbird61/pd2-royale/fullscreen)
 
 # Contribution of Art
-- [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (email: f26401004@gmail.com)
+- [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (f26401004@gmail.com)
     - Art work of `human piper`,`elf dancer`,`undead alchemist`
-- [Darkborderman](https://github.com/Darkborderman) (email: )
+- [Darkborderman](https://github.com/Darkborderman)
     - Art work of new `buildings` and `sgram` piskel version.
-- Kevin Cyu (email: kevinbird61@gmail.com)
-    - Art work of most piskel character.
+- [H+](https://soundcloud.com/9xeiexzqbawv) (hplus840426@gmail.com)
+    - Design back ground music of `end-of-game`,`battle`,and `start-of-game`
+    - Art work of `human thief`
+    - More about H+ : [youtube](https://www.youtube.com/channel/UCPEdLLsXN8wxl-q3Esnq6eg) , [soundcloud](https://soundcloud.com/9xeiexzqbawv)
+- 邱
+    - Art work of `elf archer`
+- 黃
+    - Art work of `human priest`
+- Kevin Cyu (kevinbird61@gmail.com)
+    - Render engine builder and art design of most piskel character.

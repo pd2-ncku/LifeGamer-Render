@@ -69,6 +69,6 @@ var bg = new Howl({
 });
 bg.play();
 var eog = new Howl({
-    src: ['endofgame.mp3'],
+    src: ['endofgame.wav'],
     loop: false
 });

@@ -59,16 +59,16 @@ var SGRAM = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_y ){
     this.velocity_rate = 1;
     this.obj = result;
     /* Setting character direction in image source location */
-    this.left = 2;
-    this.right = 0;
-    this.top = 2;
-    this.down = 0;
-    this.left_top = 2;
-    this.left_down = 2;
-    this.right_top = 0;
-    this.right_down = 0;
-    this.left_atk = 3;
-    this.right_atk = 1;
+    this.left = 0;
+    this.right = 2;
+    this.top = 0;
+    this.down = 2;
+    this.left_top = 0;
+    this.left_down = 0;
+    this.right_top = 2;
+    this.right_down = 2;
+    this.left_atk = 1;
+    this.right_atk = 3;
 }
 
 SGRAM.prototype.walking = function(current_tick){
