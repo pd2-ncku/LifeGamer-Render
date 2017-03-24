@@ -33,11 +33,11 @@ var CASTLE = function(char_w,char_h,object_No,belong,type_of_castle){
         if(belong == 'p1'){
             /* using texture blue */
             this.image_src = "buildings/castle-blue-new.png";
-            this.direction = 1;
+            this.direction = 0;
         }else{
             /* using texture red */
             this.image_src = "buildings/castle-red-new.png";
-            this.direction = 0;
+            this.direction = 1;
         }
     }
 

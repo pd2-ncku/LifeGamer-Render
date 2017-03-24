@@ -40,7 +40,6 @@ var BIG_CASTLE = function(char_w,char_h,object_No,belong,type_of_castle){
             this.direction = 0;
         }
     }
-
     // sound effect
     this.dstry_sound = new Howl({
         src: ['buildings/building_destroy.mp3'],
