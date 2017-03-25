@@ -81,13 +81,13 @@ function command_parser(cmd_obj){
         if(current_minion_list.length > 0 ){
             /* Do new checking */
             if(minion.length == 0){
-                /* TODO Notice that this user need to replot the battle field */
                 // Using for loop instead of forEach
                 for(var index in current_minion_list){
-                    // FIXME: using add_minion here, and create "recover detection"
+                    // using add_minion here, using "status" in here
                     var current_minion = current_minion_list[index];
-                    add_minion(current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
+                    add_minion(1,current_minion.belong,current_minion.name,current_minion.type,current_minion.status,current_minion.move,current_minion.loc_x,current_minion.loc_y);
                 }
+
             }
             else{
                 /* Control those minion */
@@ -101,7 +101,7 @@ function command_parser(cmd_obj){
             /* Add new minion */
             for(var index in new_minion_list){
                 var new_minion = new_minion_list[index];
-                add_minion(new_minion.belong,new_minion.name,new_minion.type,100,new_minion.move,new_minion.loc_x,new_minion.loc_y);
+                add_minion(0,new_minion.belong,new_minion.name,new_minion.type,100,new_minion.move,new_minion.loc_x,new_minion.loc_y);
             }
         }
         if(tower_list.length > 0){
@@ -140,7 +140,7 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
             console.log("Before-> Minion HP: " + minion[index].hp.outer.width);
             minion[index].set_status(status);
             console.log("After-> Minion HP: " + minion[index].hp.outer.width);
-            if(Math.floor(minion[index].hp.outer.width) <= 2){
+            if(Math.floor(minion[index].hp.outer.width) <= 7){
                 // Remove this object from battle field
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
@@ -155,7 +155,7 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
     }
 }
 
-function add_minion(belong,name,type,status,direction,loc_x,loc_y){
+function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
     /* Merge Recover in here */
     if(parseInt(status) <= 0){
         // this minion no need to recover
@@ -170,6 +170,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 sgram.change_direction(parseInt(direction));
                 sgram.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 sgram.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    sgram.set_status(status);
+                }
                 main_stage.addChild(sgram.obj);
                 main_stage.addChild(sgram.hp);
                 minion.push(sgram);
@@ -180,6 +183,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 elf_archer.change_direction(parseInt(direction));
                 elf_archer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_archer.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    elf_archer.set_status(status);
+                }
                 main_stage.addChild(elf_archer.obj);
                 main_stage.addChild(elf_archer.hp);
                 minion.push(elf_archer);
@@ -189,6 +195,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 elf_wisp.change_direction(parseInt(direction));
                 elf_wisp.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_wisp.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    elf_wisp.set_status(status);
+                }
                 main_stage.addChild(elf_wisp.obj);
                 main_stage.addChild(elf_wisp.hp);
                 minion.push(elf_wisp);
@@ -198,9 +207,24 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 elf_giant.change_direction(parseInt(direction));
                 elf_giant.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 elf_giant.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    elf_giant.set_status(status);
+                }
                 main_stage.addChild(elf_giant.obj);
                 main_stage.addChild(elf_giant.hp);
                 minion.push(elf_giant);
+                break;
+            case 'elf_dancer':
+                var elf_dancer = new ELF_DANCER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
+                elf_dancer.change_direction(parseInt(direction));
+                elf_dancer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                elf_dancer.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    elf_dancer.set_status(status);
+                }
+                main_stage.addChild(elf_dancer.obj);
+                main_stage.addChild(elf_dancer.hp);
+                minion.push(elf_dancer);
                 break;
             // Human force
             case 'human_thief':
@@ -208,6 +232,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 human_thief.change_direction(parseInt(direction));
                 human_thief.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_thief.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    human_thief.set_status(status);
+                }
                 main_stage.addChild(human_thief.obj);
                 main_stage.addChild(human_thief.hp);
                 minion.push(human_thief);
@@ -217,6 +244,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 human_knight.change_direction(parseInt(direction));
                 human_knight.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_knight.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    human_knight.set_status(status);
+                }
                 main_stage.addChild(human_knight.obj);
                 main_stage.addChild(human_knight.hp);
                 minion.push(human_knight);
@@ -226,6 +256,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 human_priest.change_direction(parseInt(direction));
                 human_priest.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_priest.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    human_priest.set_status(status);
+                }
                 main_stage.addChild(human_priest.obj);
                 main_stage.addChild(human_priest.hp);
                 minion.push(human_priest);
@@ -235,6 +268,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 human_piper.change_direction(parseInt(direction));
                 human_piper.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 human_piper.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    human_piper.set_status(status);
+                }
                 main_stage.addChild(human_piper.obj);
                 main_stage.addChild(human_piper.hp);
                 minion.push(human_piper);
@@ -245,6 +281,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 undead_samurai.change_direction(parseInt(direction));
                 undead_samurai.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 undead_samurai.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    undead_samurai.set_status(status);
+                }
                 main_stage.addChild(undead_samurai.obj);
                 main_stage.addChild(undead_samurai.hp);
                 minion.push(undead_samurai);
@@ -254,6 +293,9 @@ function add_minion(belong,name,type,status,direction,loc_x,loc_y){
                 undead_alchemist.change_direction(parseInt(direction));
                 undead_alchemist.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
                 undead_alchemist.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    undead_alchemist.set_status(status);
+                }
                 main_stage.addChild(undead_alchemist.obj);
                 main_stage.addChild(undead_alchemist.hp);
                 minion.push(undead_alchemist);

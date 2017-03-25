@@ -14,12 +14,12 @@ var HUMAN_PIPER = function(char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_
     });
     summon.play();
     this.sound = new Howl({
-        src: ['human/human_knight_walking.mp3'],
+        src: ['human/human_priest_walking.mp3'],
         loop: true,
         volume: 0.5
     });
     this.atk_sound = new Howl({
-        src: ['human/human_knight_attack.mp3'],
+        src: ['human/human_piper_attack.mp3'],
         loop: true,
         volume: 0.5
     });

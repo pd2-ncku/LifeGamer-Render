@@ -244,7 +244,7 @@ function play(){
     // And moving the Character
     for(var index in minion){
         // Using 0,1 to control minion moving mechanism
-        minion[index].move(0);
+        minion[index].move(1);
         minion[index].check_boundary();
     }
 }
