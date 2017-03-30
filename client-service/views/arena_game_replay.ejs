@@ -10,6 +10,8 @@
 </head>
 <body>
     <!-- Give replay page an channel -->
+    <input id="control_port" type="hidden" value="null">
+    <input id="c_player" type="hidden" value="null">
     <input id="room_name" type="hidden" value="<%= script %>">
     <div class="p1_current_card" id="p1_hand">
     <div class="text-center">
@@ -27,6 +29,7 @@
 <script type="text/javascript" src="render-server/minion/elf/elf_archer.js"></script>
 <script type="text/javascript" src="render-server/minion/elf/elf_wisp.js"></script>
 <script type="text/javascript" src="render-server/minion/elf/elf_giant.js"></script>
+<script type="text/javascript" src="render-server/minion/elf/elf_dancer.js"></script>
 <script type="text/javascript" src="render-server/minion/human/human_thief.js"></script>
 <script type="text/javascript" src="render-server/minion/human/human_knight.js"></script>
 <script type="text/javascript" src="render-server/minion/human/human_priest.js"></script>
@@ -34,8 +37,9 @@
 <script type="text/javascript" src="render-server/minion/undead/undead_samurai.js"></script>
 <script type="text/javascript" src="render-server/minion/undead/undead_alchemist.js"></script>
 <script type="text/javascript" src="render-server/minion/healthbar.js"></script>
+<script type="text/javascript" src="render-server/control_channel.js"></script>
 <script type="text/javascript" src="render-server/player_hand.js"></script>
-<script type="text/javascript" src="render-server/global_battle_field.js"></script>
-<script type="text/javascript" src="render-server/channel.js"></script>
-<script type="text/javascript" src="render-server/arena.js"></script>
+<script type="text/javascript" src="render-server/global_var.js"></script>
+<script type="text/javascript" src="render-server/render_channel.js"></script>
+<script type="text/javascript" src="render-server/main.js"></script>
 </body>

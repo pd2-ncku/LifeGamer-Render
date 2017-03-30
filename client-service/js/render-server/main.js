@@ -10,8 +10,12 @@ var y_unit = max_h/map_h_unit;
 // Battle field Background variable
 var river_w_unit = 6;
 var river_h_unit = 20;
+// Bridge
 var bridge_w_unit = 6;
-var bridge_h_unit = 4;
+var bridge_h_unit = 7;
+var bridge_loc_x = 22;
+var bridge_loc_y_top = 2;
+var bridge_loc_y_down = 11;
 
 // Fundamental structure ( cube )
 var main_tower_unit = 6;
@@ -45,7 +49,11 @@ PIXI.loader
         "minion/elf/elf_archer.png",
         "minion/elf/elf_archer_p2.png",
         "minion/elf/elf_archer_mugshot.png",
-        "minion/elf/elf_archer.gif"
+        "minion/elf/elf_archer.gif",
+        "minion/elf/elf_dancer.png",
+        "minion/elf/elf_dancer_p2.png",
+        "minion/elf/elf_dancer_mugshot.png",
+        "minion/elf/elf_dancer.gif"
     ])
     .add([
         "minion/human/human_priest.png",
@@ -144,9 +152,9 @@ function setup() {
     bg_stage.addChild(river);
 
     // Setting top bridge
-    for(let j=3;j<3+bridge_h_unit;j++){
-        for(let i=22;i<22+bridge_w_unit;i++){
-            if(j==3 || j==2+bridge_h_unit){
+    for(let j=bridge_loc_y_top;j<bridge_loc_y_top+bridge_h_unit;j++){
+        for(let i=bridge_loc_x;i<bridge_loc_x+bridge_w_unit;i++){
+            if(j==bridge_loc_y_top || j==bridge_loc_y_top-1+bridge_h_unit){
                 // Draw bridge brick
                 let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/brick.png'));
                 texture.frame = (new PIXI.Rectangle(0,0,320,320));
@@ -172,9 +180,9 @@ function setup() {
         }
     }
     // Setting down bridge
-    for(let j=13;j<13+bridge_h_unit;j++){
-        for(let i=22;i<22+bridge_w_unit;i++){
-            if(j==13 || j==12+bridge_h_unit){
+    for(let j=bridge_loc_y_down;j<bridge_loc_y_down+bridge_h_unit;j++){
+        for(let i=bridge_loc_x;i<bridge_loc_x+bridge_w_unit;i++){
+            if(j==bridge_loc_y_down || j==bridge_loc_y_down-1+bridge_h_unit){
                 // Draw bridge brick
                 let texture = new PIXI.Texture(PIXI.BaseTexture.fromImage('battle_field/brick.png'));
                 texture.frame = (new PIXI.Rectangle(0,0,320,320));

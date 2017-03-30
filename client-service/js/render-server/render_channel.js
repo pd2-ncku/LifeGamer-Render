@@ -215,6 +215,7 @@ function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(elf_giant);
                 break;
             case 'elf_dancer':
+                console.log("Dancer show==============================================");
                 var elf_dancer = new ELF_DANCER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 elf_dancer.change_direction(parseInt(direction));
                 elf_dancer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);

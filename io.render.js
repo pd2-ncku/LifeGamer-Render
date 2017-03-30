@@ -122,12 +122,12 @@ app.get('/go_replay',function(req,res){
                 console.log("[io.render][Error Read log]: " + battle_record_storage+'/'+target);
             }
             else {
-                // using replay message deliver
-                io.in('room-'+target).emit('replay',battle_log);
                 // send total log , using player_channel
                 res.render('arena_game_replay',{
                     script: target
                 });
+                // using replay message deliver
+                io.in('room-'+target).emit('replay',battle_log);
             }
         });
     }
@@ -215,6 +215,8 @@ app.post('/game_end', function(req,res){
             }
         });
     });
+    // send end command
+    res.end('OK');
     // Release the battle recording buffer
     battle_recording[player1+player2] = undefined;
 });
@@ -254,7 +256,7 @@ if(process.env.TRAVIS != "true"){
             }
         });
     });
-    
+
     // =============================================== Control io here ===============================================
     var control_io = new IO().listen(process.env.npm_package_config_portcontrol);
 
