@@ -22,10 +22,29 @@ socket.on('replay',function(data){
     /* Replay log receive */
     var record = data.content;
     var index = 0;
-    var command_push_rate = 1000;
+    var command_push_rate = 100;
+    console.dir(record);
     /* And then push those command in verify tick */
     var command_pusher = setInterval(function(){
         if(index >= record.length){
+            /* Go to end */
+            // And break down channel
+            console.log("End of Game received! Hope you enjoy this game!");
+            // bg fade out
+            bg.fade(1.0,0.0,1000);
+            eog.play();
+            // Disable all element in minion
+            for(let r_index in minion){
+                minion[r_index].kill();
+                main_stage.removeChild(minion.obj);
+                main_stage.removeChild(minion.hp);
+            }
+            // setup close_stage
+            var endText = new PIXI.Text('Thank for watching replay of this battle!', font_style);
+            endText.x = (size_adapter.offsetWidth - endText.width)/2;
+            endText.y = (size_adapter.offsetHeight - endText.height)/2;
+            close_stage.addChild(endText);
+            state = closegame;
             clearInterval(command_pusher);
         }
         else{

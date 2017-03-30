@@ -38,8 +38,7 @@ var P2_carddeck_handler = new PLAYER_HAND('p2',p2_hand_size_adapter.offsetWidth,
 document.getElementById("arena").appendChild(renderer.view);
 document.getElementById("p1_hand").appendChild(p1_hand_renderer.view);
 document.getElementById("p2_hand").appendChild(p2_hand_renderer.view);
-// Create channel
-var control_channel = new CONTROL_CHANNEL();
+
 
 // Close stage
 var font_style = new PIXI.TextStyle({

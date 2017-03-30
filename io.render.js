@@ -124,10 +124,13 @@ app.get('/go_replay',function(req,res){
             else {
                 // send total log , using player_channel
                 res.render('arena_game_replay',{
-                    script: target
+                    script: target,
+                    log: battle_log
                 });
-                // using replay message deliver
-                io.in('room-'+target).emit('replay',battle_log);
+
+                setTimeout(function(){
+                    io.in('room-'+target).emit('replay',battle_log);
+                },3000);
             }
         });
     }
