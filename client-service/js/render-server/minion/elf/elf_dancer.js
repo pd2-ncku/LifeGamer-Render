@@ -6,15 +6,15 @@ var ELF_DANCER = function(char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_y
     this.src_frame_w = 640;
     this.src_frame_h = 640;
     // How does this object look (size)
-    this.scale = 2;
+    this.scale = 1.5;
     // Sound Effect , FIXME : using own sound effect
     var summon = new Howl({
-        src: ['human/human_knight_summon.mp3'],
+        src: ['elf/elf_archer_summon.mp3'],
         loop: false
     });
     summon.play();
     this.sound = new Howl({
-        src: ['human/human_knight_walking.mp3'],
+        src: ['elf/elf_archer_walking.mp3'],
         loop: true,
         volume: 0.5
     });

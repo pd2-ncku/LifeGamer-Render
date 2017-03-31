@@ -4,7 +4,8 @@ var UNDEAD_SAMURAI = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,
     this.src_frame_w = 640;
     this.src_frame_h = 640;
     this.picture_frame = 6;
-    this.scale = 2;
+    // Adjust size
+    this.scale = 4;
     this.boundary_x = max_w;
     this.boundary_y = max_h;
     this.direction = -1; // Stop

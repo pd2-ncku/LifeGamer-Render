@@ -92,6 +92,8 @@ app.get('/check_connection', function(req,res){
 /* Replay mechanism */
 app.get('/replay_list',function(req,res){
     /* Fetch replay directory */
+    // If query is empty , show all
+    var list_info = url.parse(req.url , true);
     fs.readdir(battle_record_storage,function(err,files){
         if(err){
             console.log("[io.render][Error readdir] : " + battle_record_storage);
@@ -103,7 +105,8 @@ app.get('/replay_list',function(req,res){
                 col1: '戰鬥時間',
                 col2: '對戰人員1',
                 col3: '對戰人員2',
-                content: files
+                content: files,
+                filter: list_info.query.search
             });
         }
     });
@@ -124,12 +127,12 @@ app.get('/go_replay',function(req,res){
             else {
                 // send total log , using player_channel
                 res.render('arena_game_replay',{
-                    script: target,
+                    script: target+req.connection.remoteAddress,
                     log: battle_log
                 });
-
+                // Using client address to distinguish room
                 setTimeout(function(){
-                    io.in('room-'+target).emit('replay',battle_log);
+                    io.in('room-'+target+req.connection.remoteAddress).emit('replay',battle_log);
                 },3000);
             }
         });

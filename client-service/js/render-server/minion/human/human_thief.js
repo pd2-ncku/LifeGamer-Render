@@ -4,7 +4,8 @@ var HUMAN_THIEF = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc
     this.src_frame_w = 320;
     this.src_frame_h = 320;
     this.picture_frame = 6;
-    this.scale = 2;
+    // Adjust size
+    this.scale = 1.5;
     this.boundary_x = max_w;
     this.boundary_y = max_h;
     this.direction = -1; // Stop

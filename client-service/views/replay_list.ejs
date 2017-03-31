@@ -32,14 +32,16 @@
                     </thead>
                     <tbody>
                         <% for(var index in content){ %>
-                            <% var detail = content[index].split('_'); %>
-                            <tr>
-                            <th scope="row"><%= index %></th>
-                            <td><%= detail[0] %></td>
-                            <td><%= detail[1] %></td>
-                            <td><%= detail[2] %></td>
-                            <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
-                            </tr>
+                            <% if(content[index].includes(filter)){ %>
+                                <% var detail = content[index].split('_'); %>
+                                <tr>
+                                <th scope="row"><%= index %></th>
+                                <td><%= detail[0] %></td>
+                                <td><%= detail[1] %></td>
+                                <td><%= detail[2] %></td>
+                                <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
+                                </tr>
+                            <% } %>
                         <% } %>
                     </tbody>
                 </table>

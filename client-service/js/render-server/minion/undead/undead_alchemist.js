@@ -9,17 +9,17 @@ var UNDEAD_ALCHEMIST = function(char_w,char_h,object_No,max_w,max_h,belong,loc_x
     this.scale = 2;
     // Sound Effect , FIXME : using own sound effect
     var summon = new Howl({
-        src: ['human/human_knight_summon.mp3'],
+        src: ['undead/undead_samurai_summon.mp3'],
         loop: false
     });
     summon.play();
     this.sound = new Howl({
-        src: ['human/human_knight_walking.mp3'],
+        src: ['undead/undead_samurai_walking.mp3'],
         loop: true,
         volume: 0.5
     });
     this.atk_sound = new Howl({
-        src: ['human/human_knight_attack.mp3'],
+        src: ['undead/undead_samurai_attack.mp3'],
         loop: true,
         volume: 0.5
     });
