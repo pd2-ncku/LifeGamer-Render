@@ -27,6 +27,7 @@ Render part of a game project.
 # Usage
 - "<url>/check_connection" : checking all connections in battle.
 - "<url>/replay_list" : Reviewing all available replay log.
+    - "<url>/replay_list?search=filter" : Filtering the replay log you want.
 - "<url>/game_start?p1=pname&p2=pname" : battle room of pname(represent as player's name).
 
 # Reference

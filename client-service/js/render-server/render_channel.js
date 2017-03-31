@@ -23,13 +23,13 @@ socket.on('replay',function(data){
     var record = data.content;
     var index = 0;
     var command_push_rate = 100;
-    console.dir(record);
     /* And then push those command in verify tick */
     var command_pusher = setInterval(function(){
         if(index >= record.length){
             /* Go to end */
             // And break down channel
             console.log("End of Game received! Hope you enjoy this game!");
+            clearInterval(command_pusher);
             // bg fade out
             bg.fade(1.0,0.0,1000);
             eog.play();
@@ -39,13 +39,61 @@ socket.on('replay',function(data){
                 main_stage.removeChild(minion.obj);
                 main_stage.removeChild(minion.hp);
             }
+            // Find things in buildings
+            var winner = '',p1_t=0,p1_main=0,p2_t=0,p2_main=0;
+            for(let bu_index in buildings){
+                if(buildings[bu_index].object_No.includes('p1')){
+                    p1_t++;
+                    if(buildings[bu_index].object_No == 'p1_main'){
+                        p1_main = 1;
+                    }
+                }
+                else if(buildings[bu_index].object_No.includes('p2')){
+                    p2_t++;
+                    if(buildings[bu_index].object_No == 'p2_main'){
+                        p2_main = 1;
+                    }
+                }
+            }
+            if(p1_t == p2_t){
+                if(p1_main == p2_main){
+                    winner = 'Tie';
+                }
+                else if(p1_main > p2_main){
+                    winner = "p1";
+                }
+                else if(p1_main < p2_main){
+                    winner = "p2";
+                }
+            }
+            else if(p1_t > p2_t){
+                if(p1_main == p2_main){
+                    winner = 'p1';
+                }
+                else if(p1_main > p2_main){
+                    winner = "p1";
+                }
+                else if(p1_main < p2_main){
+                    winner = "p2";
+                }
+            }
+            else if(p1_t < p2_t){
+                if(p1_main == p2_main){
+                    winner = 'p2';
+                }
+                else if(p1_main > p2_main){
+                    winner = "p1";
+                }
+                else if(p1_main < p2_main){
+                    winner = "p2";
+                }
+            }
             // setup close_stage
-            var endText = new PIXI.Text('Thank for watching replay of this battle!', font_style);
+            var endText = new PIXI.Text('Thank for watching replay of this battle!\nCongratulate Winner: '+winner, font_style);
             endText.x = (size_adapter.offsetWidth - endText.width)/2;
             endText.y = (size_adapter.offsetHeight - endText.height)/2;
             close_stage.addChild(endText);
             state = closegame;
-            clearInterval(command_pusher);
         }
         else{
             command_parser(record[index]);
@@ -70,7 +118,7 @@ socket.on('EOG',function(battle_info){
         main_stage.removeChild(minion.hp);
     }
     // setup close_stage
-    var endText = new PIXI.Text('Thank for playing !\nAnd Congratulate winner :'+ battle_info.winner, font_style);
+    var endText = new PIXI.Text('Thank for playing !\nAnd Congratulate winner :'+ battle_info.winner+'\nP1 destroy: '+battle_info.tower_p1_take+'\nP2 destroy: '+battle_info.tower_p2_take, font_style);
     endText.x = (size_adapter.offsetWidth - endText.width)/2;
     endText.y = (size_adapter.offsetHeight - endText.height)/2;
     close_stage.addChild(endText);

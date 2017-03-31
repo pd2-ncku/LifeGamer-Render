@@ -199,7 +199,9 @@ app.post('/game_end', function(req,res){
     battle_room[player1+player2] = undefined;
     // Break down the channel , inform by server
     var end_match = {
-        winner: req.body.winner
+        winner: req.body.winner,
+        tower_p1_take: req.body.p1_destroy,
+        tower_p2_take: req.body.p2_destroy
     }
     io.in('room-'+player1+player2).emit('EOG',end_match);
     // Write record into file
