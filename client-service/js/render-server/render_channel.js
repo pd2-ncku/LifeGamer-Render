@@ -237,6 +237,19 @@ function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(sgram.hp);
                 minion.push(sgram);
                 break;
+            case 'engineering_vehicle':
+                /* Summon new sgram car */
+                var eng_veh = new ENGINEERING_VEHICLE(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
+                eng_veh.change_direction(parseInt(direction));
+                eng_veh.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                eng_veh.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    sgram.set_status(status);
+                }
+                main_stage.addChild(eng_veh.obj);
+                main_stage.addChild(eng_veh.hp);
+                minion.push(eng_veh);
+                break;
             // Elf force
             case 'elf_archer':
                 var elf_archer = new ELF_ARCHER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);

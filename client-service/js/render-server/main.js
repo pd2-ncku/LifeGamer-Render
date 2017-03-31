@@ -73,6 +73,9 @@ PIXI.loader
         "minion/siege/sgram.png",
         "minion/siege/sgram_p2.png",
         "minion/siege/sgram_mugshot.png",
+        "minion/siege/engineering_vehicle.png",
+        "minion/siege/engineering_vehicle_p2.png",
+        "minion/siege/engineering_vehicle_mugshot.png"
     ])
     .add([
         "minion/undead/undead_samurai.png",
