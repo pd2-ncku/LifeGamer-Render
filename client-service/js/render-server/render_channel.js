@@ -3,8 +3,7 @@
 const socket = io();
 // Send join to server
 var room_name = document.getElementById('room_name').value;
-var player1_name = document.getElementById('c_player').value;
-var player2_name = document.getElementById('n_player').value;
+
 socket.emit('join',room_name);
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
@@ -161,19 +160,19 @@ function command_parser(cmd_obj){
     }
     // Update mana info - p1
     if(mana_p1 == undefined){
-        p1_mana.setText(player1_name+" Mana:5");
+        p1_mana.setText("P1 Mana:5");
     }
     else{
-        p1_mana.setText(player1_name+" Mana:"+mana_p1.toString());
+        p1_mana.setText("P2 Mana:"+mana_p1.toString());
     }
     // Update mana info - p2(with location)
     if(mana_p2 == undefined){
-        p2_mana.setText(player2_name+" Mana:5");
+        p2_mana.setText("P2 Mana:5");
         p2_mana.x = max_w - p2_mana.width;
         p2_mana.y = 0;
     }
     else{
-        p2_mana.setText(player2_name+" Mana:"+mana_p2.toString());
+        p2_mana.setText("P2 Mana:"+mana_p2.toString());
         p2_mana.x = max_w - p2_mana.width;
         p2_mana.y = 0;
     }

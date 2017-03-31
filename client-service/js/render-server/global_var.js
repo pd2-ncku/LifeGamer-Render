@@ -19,6 +19,8 @@ var river;
 var battle_timer; // Pixi Text
 var p1_mana; // Pixi Text
 var p2_mana; // Pixi Text
+var p1_name; // Pixi Text
+var p2_name; // Pixi Text
 
 // Render Battlefield part
 var size_adapter = document.getElementById('arena');

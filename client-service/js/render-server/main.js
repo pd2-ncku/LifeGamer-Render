@@ -236,10 +236,22 @@ function setup() {
     p2_mana = new PIXI.Text("P2 Mana:",font_style);
     p2_mana.x = max_w - p2_mana.width;
     p2_mana.y = 0;
+
+    let player1_name = document.getElementById('c_player').value;
+    let player2_name = document.getElementById('n_player').value;
+    p1_name = new PIXI.Text(player1_name,font_style);
+    p1_name.x = 0;
+    p1_name.y = max_h - p1_name.height;
+    p2_name = new PIXI.Text(player2_name,font_style);
+    p2_name.x = max_w - p2_name.width;
+    p2_name.y = max_h - p2_name.height;
+
     // Push Them into background container
     bg_stage.addChild(battle_timer);
     bg_stage.addChild(p1_mana);
     bg_stage.addChild(p2_mana);
+    bg_stage.addChild(p1_name);
+    bg_stage.addChild(p2_name);
     // Push tower into buildings array
     buildings.push(p1_vicetower_top);
     buildings.push(p1_vicetower_down);
