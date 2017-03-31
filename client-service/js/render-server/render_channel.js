@@ -143,6 +143,10 @@ function command_parser(cmd_obj){
     var current_minion_list = cmd_obj.current_minion;
     var new_minion_list = cmd_obj.new_minion;
     var tower_list = cmd_obj.buildings;
+    /* Battle Info */
+    var current_time = cmd_obj.current_time;
+    var mana_p1 = cmd_obj.current_mana_p1;
+    var mana_p2 = cmd_obj.current_mana_p2;
     // Start parsing
     if(cmd_type == "battle"){
         /* Battle field Ongoing */
@@ -183,6 +187,37 @@ function command_parser(cmd_obj){
     // And then we should update player card deck
     P1_carddeck_handler.update(cmd_obj.current_hand_p1);
     P2_carddeck_handler.update(cmd_obj.current_hand_p2);
+    // Update battle info - time (with location)
+    if(current_time == undefined){
+        battle_timer.setText("3:00");
+        battle_timer.x = max_w/2 - battle_timer.width/2;
+        battle_timer.y = 0;
+    }
+    else{
+        var min = Math.floor(current_time/60);
+        var sec = current_time%60;
+        battle_timer.setText(min.toString()+":"+sec.toString());
+        battle_timer.x = max_w/2 - battle_timer.width/2;
+        battle_timer.y = 0;
+    }
+    // Update mana info - p1
+    if(mana_p1 == undefined){
+        p1_mana.setText("P1 Mana:5");
+    }
+    else{
+        p1_mana.setText("P1 Mana:"+mana_p1.toString());
+    }
+    // Update mana info - p2(with location)
+    if(mana_p2 == undefined){
+        p2_mana.setText("P2 Mana:5");
+        p2_mana.x = max_w - p2_mana.width;
+        p2_mana.y = 0;
+    }
+    else{
+        p2_mana.setText("P2 Mana:"+mana_p2.toString());
+        p2_mana.x = max_w - p2_mana.width;
+        p2_mana.y = 0;
+    }
 }
 
 function control_building(tower_name,tower_status){

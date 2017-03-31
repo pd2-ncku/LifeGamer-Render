@@ -148,6 +148,7 @@ app.post('/game_cmd',function(req,res){
     var player1 = req.body.p1;
     var player2 = req.body.p2;
     var c_minion_list,n_minion_list,b_list,p1_cur_hand_list,p2_cur_hand_list;
+    var battle_time = req.body.current_time,p1_mana = req.body.current_mana_p1,p2_mana = req.body.current_mana_p2;
 
     if(typeof req.body.current_minion == 'string'){
         // if sending data are type string, do parse (only need one variable to detect)
@@ -172,7 +173,10 @@ app.post('/game_cmd',function(req,res){
         new_minion: n_minion_list,
         buildings: b_list,
         current_hand_p1: p1_cur_hand_list,
-        current_hand_p2: p2_cur_hand_list
+        current_hand_p2: p2_cur_hand_list,
+        current_time: battle_time,
+        current_mana_p1: p1_mana,
+        current_mana_p2: p2_mana
     }
 
     /* Broadcast message through these connection channel */

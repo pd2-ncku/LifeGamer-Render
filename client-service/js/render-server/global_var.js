@@ -15,10 +15,10 @@ main_stage.addChild(bg_stage);
 close_stage.alpha = 0;
 
 // Setting Global object (Sprite)
-var ground;
-var bridge_top;
-var bridge_down;
 var river;
+var battle_timer; // Pixi Text
+var p1_mana; // Pixi Text
+var p2_mana; // Pixi Text
 
 // Render Battlefield part
 var size_adapter = document.getElementById('arena');

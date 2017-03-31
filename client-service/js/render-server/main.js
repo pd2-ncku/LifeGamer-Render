@@ -225,6 +225,21 @@ function setup() {
     // set sprite's location
     river.position.set(22*x_unit,0);
 
+    // Add Timer and mana
+    battle_timer = new PIXI.Text("Min:Sec",font_style);
+    battle_timer.x = max_w/2 - battle_timer.width/2;
+    battle_timer.y = 0;
+    // Add mana
+    p1_mana = new PIXI.Text("P1 Mana:",font_style);
+    p1_mana.x = 0;
+    p1_mana.y = 0;
+    p2_mana = new PIXI.Text("P2 Mana:",font_style);
+    p2_mana.x = max_w - p2_mana.width;
+    p2_mana.y = 0;
+    // Push Them into background container
+    bg_stage.addChild(battle_timer);
+    bg_stage.addChild(p1_mana);
+    bg_stage.addChild(p2_mana);
     // Push tower into buildings array
     buildings.push(p1_vicetower_top);
     buildings.push(p1_vicetower_down);
