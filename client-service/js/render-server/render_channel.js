@@ -55,37 +55,38 @@ socket.on('replay',function(data){
                     }
                 }
             }
+            var raw_script_detail = document.getElementById('room_name').value.split('_');
             if(p1_t == p2_t){
                 if(p1_main == p2_main){
                     winner = 'Tie';
                 }
                 else if(p1_main > p2_main){
-                    winner = "p1";
+                    winner = raw_script_detail[1];
                 }
                 else if(p1_main < p2_main){
-                    winner = "p2";
+                    winner = raw_script_detail[2];
                 }
             }
             else if(p1_t > p2_t){
                 if(p1_main == p2_main){
-                    winner = 'p1';
+                    winner = raw_script_detail[1];
                 }
                 else if(p1_main > p2_main){
-                    winner = "p1";
+                    winner = raw_script_detail[1];
                 }
                 else if(p1_main < p2_main){
-                    winner = "p2";
+                    winner = raw_script_detail[2];
                 }
             }
             else if(p1_t < p2_t){
                 if(p1_main == p2_main){
-                    winner = 'p2';
+                    winner = raw_script_detail[2];
                 }
                 else if(p1_main > p2_main){
-                    winner = "p1";
+                    winner = raw_script_detail[1];
                 }
                 else if(p1_main < p2_main){
-                    winner = "p2";
+                    winner = raw_script_detail[2];
                 }
             }
             // setup close_stage
@@ -204,10 +205,9 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
     for(var index in minion){
         if(minion[index].object_No == obj_name){
             // Remove this minion from the battle field
-            console.log("Before-> Minion HP: " + minion[index].hp.outer.width);
             minion[index].set_status(status);
-            console.log("After-> Minion HP: " + minion[index].hp.outer.width);
-            if(Math.floor(minion[index].hp.outer.width) <= 7){
+            // Take range 10 as remove threshold
+            if(Math.floor(minion[index].hp.outer.width) <= 10){
                 // Remove this object from battle field
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);

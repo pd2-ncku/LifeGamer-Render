@@ -288,15 +288,19 @@ ELF_ARCHER.prototype.move = function(control){
     }
     else{
         // Using position (caus low fps)
-        this.obj.position.set(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
-        this.hp.position.set(this.pre_x*this.x_unit+(this.obj.width)/2-(this.hp.width)/2,this.pre_y*this.y_unit-(this.obj.height/4));
+        /*this.obj.position.set(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
+        this.hp.position.set(this.pre_x*this.x_unit+(this.obj.width)/2-(this.hp.width)/2,this.pre_y*this.y_unit-(this.obj.height/4));*/
+        this.setpos(this.pre_x*this.x_unit,this.pre_y*this.y_unit);
     }
 }
 
 ELF_ARCHER.prototype.setpos = function( x,y ){
-    this.obj.position.set(x,y);
+    //this.obj.position.set(x,y);
     // Because of being center , hp bar x must be (loc_x_obj + w_obj/2 - w_hp/2)
-    this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
+    //this.hp.position.set(x+(this.obj.width)/2-(this.hp.width)/2,y-(this.obj.height/4));
+    this.obj.position.set(x-this.obj.width/2,y-this.obj.height/2);
+    // Because of being center , hp bar x must be (loc_x_obj + w_obj/2 - w_hp/2)
+    this.hp.position.set(x-(this.hp.width)/2,y-(3*this.obj.height/4));
 }
 
 ELF_ARCHER.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
