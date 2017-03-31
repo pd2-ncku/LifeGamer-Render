@@ -32,7 +32,16 @@
                     </thead>
                     <tbody>
                         <% for(var index in content){ %>
-                            <% if(content[index].includes(filter)){ %>
+                            <% if(content[index].includes(filter) && filter != undefined){ %>
+                                <% var detail = content[index].split('_'); %>
+                                <tr>
+                                <th scope="row"><%= index %></th>
+                                <td><%= detail[0] %></td>
+                                <td><%= detail[1] %></td>
+                                <td><%= detail[2] %></td>
+                                <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
+                                </tr>
+                            <% }else if(filter == undefined){ %>
                                 <% var detail = content[index].split('_'); %>
                                 <tr>
                                 <th scope="row"><%= index %></th>
