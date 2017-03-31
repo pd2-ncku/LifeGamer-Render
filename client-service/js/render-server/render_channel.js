@@ -3,6 +3,8 @@
 const socket = io();
 // Send join to server
 var room_name = document.getElementById('room_name').value;
+var player1_name = document.getElementById('c_player').value;
+var player2_name = document.getElementById('n_player').value;
 socket.emit('join',room_name);
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
@@ -40,57 +42,9 @@ socket.on('replay',function(data){
                 main_stage.removeChild(minion.hp);
             }
             // Find things in buildings
-            var winner = '',p1_t=0,p1_main=0,p2_t=0,p2_main=0;
-            for(let bu_index in buildings){
-                if(buildings[bu_index].object_No.includes('p1')){
-                    p1_t++;
-                    if(buildings[bu_index].object_No == 'p1_main'){
-                        p1_main = 1;
-                    }
-                }
-                else if(buildings[bu_index].object_No.includes('p2')){
-                    p2_t++;
-                    if(buildings[bu_index].object_No == 'p2_main'){
-                        p2_main = 1;
-                    }
-                }
-            }
             var raw_script_detail = document.getElementById('room_name').value.split('_');
-            if(p1_t == p2_t){
-                if(p1_main == p2_main){
-                    winner = 'Tie';
-                }
-                else if(p1_main > p2_main){
-                    winner = raw_script_detail[1];
-                }
-                else if(p1_main < p2_main){
-                    winner = raw_script_detail[2];
-                }
-            }
-            else if(p1_t > p2_t){
-                if(p1_main == p2_main){
-                    winner = raw_script_detail[1];
-                }
-                else if(p1_main > p2_main){
-                    winner = raw_script_detail[1];
-                }
-                else if(p1_main < p2_main){
-                    winner = raw_script_detail[2];
-                }
-            }
-            else if(p1_t < p2_t){
-                if(p1_main == p2_main){
-                    winner = raw_script_detail[2];
-                }
-                else if(p1_main > p2_main){
-                    winner = raw_script_detail[1];
-                }
-                else if(p1_main < p2_main){
-                    winner = raw_script_detail[2];
-                }
-            }
             // setup close_stage
-            var endText = new PIXI.Text('Thank for watching replay of this battle!\nCongratulate Winner: '+winner, font_style);
+            var endText = new PIXI.Text('Thank for watching replay of this battle!\nCongratulate Winner: '+raw_script_detail[3], font_style);
             endText.x = (size_adapter.offsetWidth - endText.width)/2;
             endText.y = (size_adapter.offsetHeight - endText.height)/2;
             close_stage.addChild(endText);
@@ -196,25 +150,30 @@ function command_parser(cmd_obj){
     else{
         var min = Math.floor(current_time/60);
         var sec = current_time%60;
-        battle_timer.setText(min.toString()+":"+sec.toString());
+        if(sec < 10){
+            battle_timer.setText(min.toString()+":0"+sec.toString());
+        }
+        else if(sec >= 10){
+            battle_timer.setText(min.toString()+":"+sec.toString());
+        }
         battle_timer.x = max_w/2 - battle_timer.width/2;
         battle_timer.y = 0;
     }
     // Update mana info - p1
     if(mana_p1 == undefined){
-        p1_mana.setText("P1 Mana:5");
+        p1_mana.setText(player1_name+" Mana:5");
     }
     else{
-        p1_mana.setText("P1 Mana:"+mana_p1.toString());
+        p1_mana.setText(player1_name+" Mana:"+mana_p1.toString());
     }
     // Update mana info - p2(with location)
     if(mana_p2 == undefined){
-        p2_mana.setText("P2 Mana:5");
+        p2_mana.setText(player2_name+" Mana:5");
         p2_mana.x = max_w - p2_mana.width;
         p2_mana.y = 0;
     }
     else{
-        p2_mana.setText("P2 Mana:"+mana_p2.toString());
+        p2_mana.setText(player2_name+" Mana:"+mana_p2.toString());
         p2_mana.x = max_w - p2_mana.width;
         p2_mana.y = 0;
     }

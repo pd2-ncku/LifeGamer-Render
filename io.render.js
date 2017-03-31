@@ -105,6 +105,7 @@ app.get('/replay_list',function(req,res){
                 col1: '戰鬥時間',
                 col2: '對戰人員1',
                 col3: '對戰人員2',
+                col4: '勝利者',
                 content: files,
                 filter: list_info.query.search
             });
@@ -218,7 +219,7 @@ app.post('/game_end', function(req,res){
             return;
         }
         /* When we finish log file,change this file name */
-        fs.rename(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_.battlelog',function(err_rename){
+        fs.rename(battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2,battle_record_storage+'/'+battle_t+'_'+player1+'_'+player2+'_'+req.body.winner+'_.battlelog',function(err_rename){
             if(err_rename){
                 // Rename failure
                 console.log('[io.render][I/O Error] Battle log renaming failed , log_Name : ' + battle_t+'_'+player1+'_'+player2);

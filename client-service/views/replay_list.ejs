@@ -27,6 +27,7 @@
                         <th><%= col1 %></th>
                         <th><%= col2 %></th>
                         <th><%= col3 %></th>
+                        <th><%= col4 %></th>
                         <th>選擇播放</th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                                 <td><%= detail[0] %></td>
                                 <td><%= detail[1] %></td>
                                 <td><%= detail[2] %></td>
+                                <td><%= detail[3] %></td>
                                 <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
                                 </tr>
                             <% }else if(filter == undefined){ %>
@@ -48,6 +50,7 @@
                                 <td><%= detail[0] %></td>
                                 <td><%= detail[1] %></td>
                                 <td><%= detail[2] %></td>
+                                <td><%= detail[3] %></td>
                                 <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
                                 </tr>
                             <% } %>

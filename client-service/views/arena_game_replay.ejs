@@ -11,7 +11,8 @@
 <body>
     <!-- Give replay page an channel -->
     <input id="control_port" type="hidden" value="null">
-    <input id="c_player" type="hidden" value="null">
+    <input id="c_player" type="hidden" value="<%= script.split('_')[1] %>">
+    <input id="n_player" type="hidden" value="<%= script.split('_')[2] %>">
     <input id="room_name" type="hidden" value="<%= script %>">
     <div class="p1_current_card" id="p1_hand">
     <div class="text-center">
