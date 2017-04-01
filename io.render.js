@@ -186,7 +186,17 @@ app.post('/game_cmd',function(req,res){
     // Record the battle command in battle_recording
     if(battle_recording[player1+player2] == undefined){
         console.log("[io.render][Error] Haven't has any players summon this battle room yet!");
-        res.end("Nope, command need to resend again!");
+        // Build a room for this pair
+        let create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
+        battle_room[player1+player2] = create_time;
+        var record_data = {
+            content:[]
+        };
+        record_data.content.push(json_obj);
+        battle_recording[player1+player2] = record_data;
+        
+        console.log('[io.render][Create Battle Room] Player 1: ' + player1 +"; Player 2:" + player2);
+        res.end("Open room for user (which doesn't open an room for it)");
     }
     else{
         battle_recording[player1+player2].content.push(json_obj);

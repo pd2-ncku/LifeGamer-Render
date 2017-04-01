@@ -43,7 +43,7 @@
                                 <td><%= detail[3] %></td>
                                 <td><button id="<%= content[index] %>" type="button" class="btn btn-success" onclick="go_replay(this.id)">播放</button><td>
                                 </tr>
-                            <% }else if(filter == undefined){ %>
+                            <% }else if(content[index].includes('undefined') == false && filter == undefined){ %>
                                 <% var detail = content[index].split('_'); %>
                                 <tr>
                                 <th scope="row"><%= index %></th>
