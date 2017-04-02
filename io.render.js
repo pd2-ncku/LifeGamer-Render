@@ -80,7 +80,6 @@ app.get('/streaming', function(req,res){
     // using get parameter
     let players = url.parse(req.url , true);
     /* If there have no room , create one for it */
-    let streaming_room = players.query.room;
     console.log('[io.render][Streaming room] Open at :' + req.connection.remoteAddress);
     res.render('arena_game',{
         p1: players.query.p1,

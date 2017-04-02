@@ -27,9 +27,9 @@
                         <th><%= col1 %></th>
                         <th><%= col2 %></th>
                         <th><%= col3 %></th>
-                        <th><%= col4 %></th>
                         <th><%= col5 %></th>
                         <th><%= col6 %></th>
+                        <th><%= col4 %></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,10 +52,10 @@
     <script type="text/javascript">
         // For manually redirect
         function go_streaming(pathname){
-            // window.location = '/game_start?' + pathname;
-            var p1 = document.getElementbyId(pathname+'_p1').innerHTML;
-            var p2 = document.getElementbyId(pathname+'_p2').innerHTML;
-            alert("Streaming p1:"+p1+", p2:"+p2);
+            var p1 = document.getElementById(pathname+'_p1').innerHTML;
+            var p2 = document.getElementById(pathname+'_p2').innerHTML;
+            // go to streaming page 
+            window.location = '/streamingt?p1='+p1+'&p2='+p2;
         }
     </script>
 </html>
