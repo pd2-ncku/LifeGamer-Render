@@ -75,6 +75,20 @@ app.get('/game_start', function(req,res){
     });
 });
 
+// Get Streaming 
+app.get('/streaming', function(req,res){
+    // using get parameter
+    let players = url.parse(req.url , true);
+    /* If there have no room , create one for it */
+    let streaming_room = players.query.room;
+    console.log('[io.render][Streaming room] Open at :' + req.connection.remoteAddress);
+    res.render('arena_game',{
+        p1: players.query.p1,
+        p2: players.query.p2,
+        port: process.env.npm_package_config_portcontrol
+    });
+});
+
 /* Check connection status */
 app.get('/check_connection', function(req,res){
     /* Update connection list */
@@ -85,6 +99,9 @@ app.get('/check_connection', function(req,res){
         col1: '標籤',
         col2: 'IP位置',
         col3: '建立時間',
+        col4: '觀賞直播',
+        col5: 'player 1',
+        col6: 'player 2',
         content: socket_channel
     });
 });
@@ -255,15 +272,17 @@ if(process.env.TRAVIS != "true"){
 
     // Render channel
     io.sockets.on('connection',function(socket){
-        socket.on("join",function(room_id){
-            console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_id);
-            socket.room = room_id;
-            socket.join('room-'+room_id);
+        socket.on("join",function(room_info){
+            console.log('[io.render] Join Room request send from : ' + socket.request.connection.remoteAddress+" ; With Room ID :" + room_info.room_name);
+            socket.room = room_info.room_name;
+            socket.join('room-'+room_info.room_name);
             // Enroll socket channel
             var channel_obj = {
-                tag: room_id,
+                tag: room_info.room_name,
                 ip: socket.request.connection.remoteAddress,
-                timestamp: battle_room[room_id]
+                p1: room_info.p1,
+                p2: room_info.p2,
+                timestamp: battle_room[room_info.room_name]
             };
             // Push it into socket_channel
             socket_channel.push(channel_obj);

@@ -3,8 +3,14 @@
 const socket = io();
 // Send join to server
 var room_name = document.getElementById('room_name').value;
-
-socket.emit('join',room_name);
+let c_player = document.getElementById('c_player').value;
+let n_player = document.getElementById('n_player').value;
+// FIXME: Add player 1 & player 2 ID
+socket.emit('join',{
+    room_name : room_name,
+    p1: c_player,
+    p2: n_player
+});
 // disconnect from server
 window.addEventListener("beforeunload", function(e){
     socket.emit('disconnect');
