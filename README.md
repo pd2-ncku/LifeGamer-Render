@@ -35,12 +35,12 @@ Render part of a game project.
 
 # Contribution of Art
 - [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (f26401004@gmail.com)
-    - Art work of `human piper`,`elf dancer`,`undead alchemist`
+    - Art work of `human piper`,`elf dancer`,`undead alchemist`,`human_rifleman`
     - More about 先行者 : [pixiv](http://www.pixiv.net/member_illust.php?id=5997957)
 - [Darkborderman](https://github.com/Darkborderman)
     - Art work of new `buildings` and `sgram` piskel version.
 - [H+](https://soundcloud.com/9xeiexzqbawv) (hplus840426@gmail.com)
-    - Design back ground music of `end-of-game`,`battle`,and `start-of-game`
+    - Design back ground music of `end-of-game`,`battle`(designing),and `start-of-game`(designing)
     - Art work of `human thief`
     - More about H+ : [youtube](https://www.youtube.com/channel/UCPEdLLsXN8wxl-q3Esnq6eg) , [soundcloud](https://soundcloud.com/9xeiexzqbawv)
 - Kevin Cyu (kevinbird61@gmail.com)

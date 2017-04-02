@@ -23,8 +23,10 @@ var PLAYER_HAND = function(belong,max_w,max_h,battle_stage){
     this.texture_map['human_priest'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_priest_mugshot.png"));
     this.texture_map['human_thief'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_thief_mugshot.png"));
     this.texture_map['human_piper'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_piper_mugshot.png"));
+    this.texture_map['human_rifleman'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_rifleman_mugshot.png"));
     // Load siege
     this.texture_map['sgram'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/siege/sgram_mugshot.png"));
+    this.texture_map['engineering_vehicle'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/siege/engineering_vehicle_mugshot.png"));
     // Load undead
     this.texture_map['undead_samurai'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_samurai_mugshot.png"));
     this.texture_map['undead_alchemist'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_alchemist_mugshot.png"));
@@ -38,16 +40,17 @@ var PLAYER_HAND = function(belong,max_w,max_h,battle_stage){
     walking_texture['human_piper'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_piper.gif"));
     walking_texture['human_priest'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_priest.gif"));
     walking_texture['human_theif'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_thief.gif"));
+    walking_texture['human_rifleman'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/human/human_rifleman.gif"));
     walking_texture['sgram'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/siege/sgram.gif"));
     walking_texture['undead_samurai'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_samurai.gif"));
     walking_texture['undead_alchemist'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/undead/undead_alchemist.gif"));
     walking_texture['unknown'] = new PIXI.Texture(PIXI.BaseTexture.fromImage("minion/unknown.png"));
     /* Create 4 sprite */
     this.sprite = {};
-    this.sprite[0] = this.init_obj(belong,0,max_w,max_h,'human_priest',walking_texture,battle_stage);
+    this.sprite[0] = this.init_obj(belong,0,max_w,max_h,'human_rifleman',walking_texture,battle_stage);
     this.sprite[1] = this.init_obj(belong,1,max_w,max_h,'elf_archer',walking_texture,battle_stage);
     this.sprite[2] = this.init_obj(belong,2,max_w,max_h,'undead_samurai',walking_texture,battle_stage);
-    this.sprite[3] = this.init_obj(belong,3,max_w,max_h,'sgram',walking_texture,battle_stage);
+    this.sprite[3] = this.init_obj(belong,3,max_w,max_h,'engineering_vehicle',walking_texture,battle_stage);
 
     this.stage.addChild(this.sprite[0].obj);
     this.stage.addChild(this.sprite[1].obj);
