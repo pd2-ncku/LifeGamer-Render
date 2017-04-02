@@ -294,7 +294,6 @@ function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
                 minion.push(elf_giant);
                 break;
             case 'elf_dancer':
-                console.log("Dancer show==============================================");
                 var elf_dancer = new ELF_DANCER(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
                 elf_dancer.change_direction(parseInt(direction));
                 elf_dancer.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
@@ -354,6 +353,18 @@ function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
                 main_stage.addChild(human_piper.obj);
                 main_stage.addChild(human_piper.hp);
                 minion.push(human_piper);
+            break;
+            case 'human_rifleman':
+                var human_rifleman = new HUMAN_RIFLEMAN(x_unit,y_unit,name,max_w,max_h,belong,loc_x,loc_y);
+                human_rifleman.change_direction(parseInt(direction));
+                human_rifleman.set_basicV(x_unit/unit_pieces,y_unit/unit_pieces);
+                human_rifleman.setpos(x_unit*parseInt(loc_x),y_unit*parseInt(loc_y));
+                if(state == 1){
+                    human_rifleman.set_status(status);
+                }
+                main_stage.addChild(human_rifleman.obj);
+                main_stage.addChild(human_rifleman.hp);
+                minion.push(human_rifleman);
             break;
             // Undead force
             case 'undead_samurai':

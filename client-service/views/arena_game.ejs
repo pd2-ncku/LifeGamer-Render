@@ -2,11 +2,7 @@
 <meta charset="utf-8">
 <title>Welcome to Arena ! <%= p1 %> v.s <%= p2 %></title>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="arena.css">
+    <% include ../elements/header %>
 </head>
 <body>
   <!-- Give an text-center div for the battlefield -->
@@ -20,28 +16,5 @@
     </div>
     <div class="p2_current_card" id="p2_hand">
 <!-- Js library -->
-<script src="lib/socket.io-1.4.5.js"></script>
-<script src="lib/pixi.min.js"></script>
-<script src="lib/howler.min.js"></script>
-<script type="text/javascript" src="render-server/minion/minion.js"></script>
-<script type="text/javascript" src="render-server/buildings/castle.js"></script>
-<script type="text/javascript" src="render-server/buildings/big_castle.js"></script>
-<script type="text/javascript" src="render-server/minion/siege/sgram.js"></script>
-<script type="text/javascript" src="render-server/minion/elf/elf_archer.js"></script>
-<script type="text/javascript" src="render-server/minion/elf/elf_wisp.js"></script>
-<script type="text/javascript" src="render-server/minion/elf/elf_giant.js"></script>
-<script type="text/javascript" src="render-server/minion/elf/elf_dancer.js"></script>
-<script type="text/javascript" src="render-server/minion/human/human_thief.js"></script>
-<script type="text/javascript" src="render-server/minion/human/human_knight.js"></script>
-<script type="text/javascript" src="render-server/minion/human/human_priest.js"></script>
-<script type="text/javascript" src="render-server/minion/human/human_piper.js"></script>
-<script type="text/javascript" src="render-server/minion/undead/undead_samurai.js"></script>
-<script type="text/javascript" src="render-server/minion/undead/undead_alchemist.js"></script>
-<script type="text/javascript" src="render-server/minion/healthbar.js"></script>
-<script type="text/javascript" src="render-server/control_channel.js"></script>
-<script type="text/javascript" src="render-server/streaming.js"></script>
-<script type="text/javascript" src="render-server/player_hand.js"></script>
-<script type="text/javascript" src="render-server/global_var.js"></script>
-<script type="text/javascript" src="render-server/render_channel.js"></script>
-<script type="text/javascript" src="render-server/main.js"></script>
+<% include ../elements/gamedev_lib %>
 </body>

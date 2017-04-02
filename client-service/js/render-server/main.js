@@ -68,6 +68,9 @@ PIXI.loader
         "minion/human/human_piper.png",
         "minion/human/human_piper_p2.png",
         "minion/human/human_piper_mugshot.png",
+        "minion/human/human_rifleman.png",
+        "minion/human/human_rifleman_p2.png",
+        "minion/human/human_rifleman_mugshot.png"
     ])
     .add([
         "minion/siege/sgram.png",
