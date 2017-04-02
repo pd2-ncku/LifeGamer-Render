@@ -41,7 +41,7 @@
                             <td><%= content[index].timestamp %></td>
                             <td id="<%= content[index].tag %>_p1"><%= content[index].p1 %></td>
                             <td id="<%= content[index].tag %>_p2"><%= content[index].p2 %></td>
-                            <td><td><button id="<%= content[index].tag %>" type="button" class="btn btn-success" onclick="go_streaming(this.id)">播放</button><td>
+                            <td><td><button id="<%= content[index].tag %>" type="button" class="btn btn-success" onclick="go_streaming(this.id)">Streaming!</button><td>
                             </tr>
                         <% } %>
                     </tbody>
@@ -55,7 +55,7 @@
             var p1 = document.getElementById(pathname+'_p1').innerHTML;
             var p2 = document.getElementById(pathname+'_p2').innerHTML;
             // go to streaming page 
-            window.location = '/streamingt?p1='+p1+'&p2='+p2;
+            window.location = '/streaming?p1='+p1+'&p2='+p2;
         }
     </script>
 </html>

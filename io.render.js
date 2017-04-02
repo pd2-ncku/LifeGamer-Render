@@ -75,7 +75,7 @@ app.get('/game_start', function(req,res){
     });
 });
 
-// Get Streaming 
+// Get Streaming page
 app.get('/streaming', function(req,res){
     // using get parameter
     let players = url.parse(req.url , true);
