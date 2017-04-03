@@ -203,7 +203,7 @@ app.post('/game_cmd',function(req,res){
     if(battle_recording[player1+player2] == undefined){
         console.log("[io.render][Error] Haven't has any players summon this battle room yet!");
         // Build a room for this pair
-        let create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
+        const create_time = moment().format('YYYY-MM-DD-hh-mm-ss-a');
         battle_room[player1+player2] = create_time;
         var record_data = {
             content:[]
