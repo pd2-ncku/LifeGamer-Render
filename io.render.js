@@ -78,7 +78,7 @@ app.get('/game_start', function(req,res){
 // Get Streaming page
 app.get('/streaming', function(req,res){
     // using get parameter
-    let players = url.parse(req.url , true);
+    const players = url.parse(req.url , true);
     /* If there have no room , create one for it */
     console.log('[io.render][Streaming room] Open at :' + req.connection.remoteAddress);
     res.render('arena_game',{
@@ -210,7 +210,7 @@ app.post('/game_cmd',function(req,res){
         };
         record_data.content.push(json_obj);
         battle_recording[player1+player2] = record_data;
-        
+
         console.log('[io.render][Create Battle Room] Player 1: ' + player1 +"; Player 2:" + player2);
         res.end("Open room for user (which doesn't open an room for it)");
     }
