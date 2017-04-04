@@ -18,13 +18,18 @@
     var timepoint_total = [[]];
 
     // Create 2D
-    for(var i=1; i <= 31 ; i++){
-        timepoint_total[i] = ['Day_'+i.toString(),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    for(var i=1; i <=2 ; i++){
+        timepoint_total[i] = ['Day '+i.toString(),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     }
 
+    // Create timepoint array to keep the data frequency
     for(var index in log){
         var raw_time = log[index].split('_')[0];
         var day = raw_time.split('-')[2];
+        // If current day has not created , create one for it
+        if(timepoint_total[parseInt(day)] == undefined){
+            timepoint_total[parseInt(day)] = ['Day '+parseInt(day),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        }
         var hour = raw_time.split('-')[3];
         var apm = raw_time.split('-')[6];
         if(apm == "pm"){
@@ -32,12 +37,13 @@
         }
         else{
             if(hour == '12'){
-                hour = 0;
+                hour = 1;
             }
             else{
                 hour = parseInt(hour);
             }
         }
+        // Let specific time counter plus one
         timepoint_total[parseInt(day)][hour]++;
     }
 </script>

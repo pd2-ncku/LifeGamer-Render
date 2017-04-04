@@ -11,6 +11,8 @@ render-server
 
 Render part of a game project.
 
+###### version - 0.0.1
+
 # How does it work ?
 - Sign up : User sign up with our website
 - Prepare : User can upload their code for ai / or using keyboard to play
@@ -35,13 +37,14 @@ Render part of a game project.
 - "<url>/replay_list" : Reviewing all available replay log.
     - "<url>/replay_list?search=filter" : Filtering the replay log you want.
 - "<url>/game_start?p1=pname&p2=pname" : battle room of pname(represent as player's name).
+- "<url>/dv" : show the frequency of battle event occur.
 
 # Reference
 - [Minion Status Intro Page](http://slides.com/kevinbird61/pd2-royale/fullscreen)
 
 # Contribution of Art
 - [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (f26401004@gmail.com)
-    - Art work of `human piper`,`elf dancer`,`undead alchemist`,`human_rifleman`
+    - Art work of `human piper`,`elf dancer`,`undead alchemist`,`human_rifleman`,`engineering_vehicle`
     - More about 先行者 : [pixiv](http://www.pixiv.net/member_illust.php?id=5997957)
 - [Darkborderman](https://github.com/Darkborderman)
     - Art work of new `buildings` and `sgram` piskel version.

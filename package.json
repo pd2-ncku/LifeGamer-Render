@@ -1,6 +1,7 @@
 {
     "name": "render-server",
     "main": "io.render.js",
+    "version": "v0.0.1",
     "config":  {
         "portiorender": 3001,
         "portcontrol": 3002
