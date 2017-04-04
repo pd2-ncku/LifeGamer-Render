@@ -2,7 +2,6 @@ render-server
 =====
 
 ![travis-status](https://travis-ci.org/pd2-ncku/LifeGamer-Render.svg?branch=master)
-
 <img src="http://i.imgur.com/80EVYSy.gif" width="75">
 <img src="http://i.imgur.com/VUD6zyZ.gif" width="75">
 <img src="http://i.imgur.com/BfGXhS8.gif" width="75">
