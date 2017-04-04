@@ -27,11 +27,18 @@
         var day = raw_time.split('-')[2];
         var hour = raw_time.split('-')[3];
         var apm = raw_time.split('-')[6];
-        if(apm == 'pm'){
+        if(apm == "pm"){
             hour = parseInt(hour) + 12;
         }
+        else{
+            if(hour == '12'){
+                hour = 0;
+            }
+            else{
+                hour = parseInt(hour);
+            }
+        }
         timepoint_total[parseInt(day)][hour]++;
-        console.log(hour);
     }
 </script>
 <script type="text/javascript" src="datavisual/battle_occur.js"></script>
