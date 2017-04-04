@@ -29,7 +29,7 @@ class DataVisual {
             }
             else {
                 /* Render choosing page */
-                res.render('datavisual_record',{
+                res.render('datavisual_battle_frequency',{
                     title: 'Data visualization Page',
                     content: files
                 });
