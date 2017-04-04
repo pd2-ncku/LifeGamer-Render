@@ -13,6 +13,8 @@ const IO = require('socket.io');
 /* core */
 const config = jsfs.readFileSync(__dirname+"/config.json");
 var battle_record_storage;
+const {DataVisual} = require('./server-core/datavisual');
+DataVisual.init(app);
 // var logger = require('./server-service/core/logger.js');
 
 /* Use for battle recording

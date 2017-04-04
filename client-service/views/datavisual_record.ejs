@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+    <% include ../elements/header_bootstraptype %>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+</head>
+<!-- Data display area -->
+<body>
+    <div id="chart"></div>
+</body>
+<!-- DV library -->
+<script>
+    var log =  <%- JSON.stringify(content) %>;
+    // Parsing from the record data
+    var timepoint_total = [[]];
+
+    // Create 2D
+    for(var i=1; i <= 31 ; i++){
+        timepoint_total[i] = ['Day_'+i.toString(),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    }
+
+    for(var index in log){
+        var raw_time = log[index].split('_')[0];
+        var day = raw_time.split('-')[2];
+        var hour = raw_time.split('-')[3];
+        var apm = raw_time.split('-')[6];
+        if(apm == 'pm'){
+            hour = parseInt(hour) + 12;
+        }
+        timepoint_total[parseInt(day)][hour]++;
+        console.log(hour);
+    }
+</script>
+<script type="text/javascript" src="datavisual/battle_occur.js"></script>
+</html>
