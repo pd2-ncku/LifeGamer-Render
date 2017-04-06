@@ -5,13 +5,15 @@ var buildings = [];
 var p1_current_hand = [];
 var p2_current_hand = [];
 // Scene Part
-var wrapper = new PIXI.Container();
-var main_stage = new PIXI.Container();
-var bg_stage = new PIXI.Container();
-var close_stage = new PIXI.Container();
+var wrapper = new PIXI.Container(); // using as global scene
+var main_stage = new PIXI.Container(); // using as character scene
+var bg_stage = new PIXI.Container(); // using as background item scene
+var close_stage = new PIXI.Container(); // using as closing scene(when game comes to an end)
+var bullet_stage = new PIXI.Container(); // using as character bullet container
 wrapper.addChild(close_stage);
 wrapper.addChild(main_stage);
 main_stage.addChild(bg_stage);
+main_stage.addChild(bullet_stage);
 close_stage.alpha = 0;
 
 // Setting Global object (Sprite)

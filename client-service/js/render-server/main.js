@@ -40,6 +40,10 @@ PIXI.loader
         "minion/unknown.png"
     ])
     .add([
+        "bullet/arrow-left.png",
+        "bullet/arrow-right.png"
+    ])
+    .add([
         "minion/elf/elf_rock_giant.png",
         "minion/elf/elf_rock_giant_p2.png",
         "minion/elf/elf_rock_giant_mugshot.png",

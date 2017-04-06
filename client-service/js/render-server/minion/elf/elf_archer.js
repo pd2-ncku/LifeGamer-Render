@@ -53,6 +53,7 @@ var ELF_ARCHER = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_
         /* FIXME: setting path to p2 image */
         this.image_url = "minion/elf/elf_archer_p2.png";
     }
+    // Character view
     var texture = new PIXI.Texture(PIXI.BaseTexture.fromImage(this.image_url));
     texture.frame = (new PIXI.Rectangle(0,0,this.src_frame_w,this.src_frame_h));
     var result = new PIXI.Sprite(texture);
@@ -64,6 +65,20 @@ var ELF_ARCHER = function( char_w,char_h,object_No,max_w,max_h,belong,loc_x,loc_
     this.basic_velocity_y = 0.5;
     this.velocity_rate = 3;
     this.obj = result;
+    // Bullet create
+    this.bullet_left_texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("bullet/arrow-left.png"));
+    this.bullet_right_texture = new PIXI.Texture(PIXI.BaseTexture.fromImage("bullet/arrow-right.png"));
+    this.bullet = new PIXI.Sprite(this.bullet_left_texture); // set initial
+    this.bullet.visible = false;
+    this.bullet.width = char_w;
+    this.bullet.height = char_h;
+    this.bullet.dest_x = 100;
+    this.bullet.dest_y = 100;
+    this.bullet.x = 0;
+    this.bullet.y = 0;
+    this.bullet.vx = 0.1;
+    this.bullet.vy = 0.1;
+    this.bullet.motion = 0;
     /* Setting character direction in image source location */
     this.left = 1;
     this.right = 0;
@@ -167,6 +182,14 @@ ELF_ARCHER.prototype.walking = function(current_tick){
             // change velocity
             this.vx = 0;
             this.vy = 0;
+            // moving arrow
+            this.bullet.x += this.bullet.vx;
+            this.bullet.y += this.bullet.vy;
+            if(this.bullet.x <= this.bullet.dest_x || this.bullet.y >= this.bullet.dest_y){
+                // reset
+                this.bullet.x = this.obj.x;
+                this.bullet.y = this.obj.y;
+            }
             // sound
             this.sound_effect(0);
             break;
@@ -177,6 +200,14 @@ ELF_ARCHER.prototype.walking = function(current_tick){
             // change velocity
             this.vx = 0;
             this.vy = 0;
+            // moving arrow
+            this.bullet.x += this.bullet.vx;
+            this.bullet.y += this.bullet.vy;
+            if(this.bullet.x >= this.bullet.dest_x || this.bullet.y >= this.bullet.dest_y){
+                // reset
+                this.bullet.x = this.obj.x;
+                this.bullet.y = this.obj.y;
+            }
             // sound
             this.sound_effect(0);
             break;
@@ -308,6 +339,41 @@ ELF_ARCHER.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
     // Judging by these two x,y
     // And if status is attack or stop , priority are highest
     if(direction == 8 || direction == 9 || direction == 10 || direction == 11 ){
+        // Setup the bullet destination
+        if(direction == 8){
+            // left, set dest pos
+            this.bullet.setTexture(this.bullet_left_texture);
+            this.bullet.dest_x = next_x*this.x_unit - 3*this.x_unit;
+            this.bullet.dest_y = next_y*this.y_unit + 3*this.y_unit;
+            // set v
+            this.bullet.vx = -(this.x_unit/2);
+            this.bullet.vy = this.y_unit/10;
+            // visible = true
+            this.bullet.visible = true;
+            if(this.bullet.motion == 0){
+                // drag arrow to current place
+                this.bullet.x = this.obj.x;
+                this.bullet.y = this.obj.y;
+                this.bullet.motion = 1;
+            }
+        }
+        else if(direction == 9){
+            // right , set dest pos
+            this.bullet.setTexture(this.bullet_right_texture);
+            this.bullet.dest_x = next_x*this.x_unit + 3*this.x_unit;
+            this.bullet.dest_y = next_y*this.y_unit + 3*this.y_unit;
+            // set v
+            this.bullet.vx = this.x_unit/2;
+            this.bullet.vy = this.y_unit/10;
+            // visible = true
+            this.bullet.visible = true;
+            if(this.bullet.motion == 0){
+                // drag arrow to current place
+                this.bullet.x = this.obj.x;
+                this.bullet.y = this.obj.y;
+                this.bullet.motion = 1;
+            }
+        }
         this.change_direction(direction);
     }
     else{
@@ -337,7 +403,10 @@ ELF_ARCHER.prototype.set_loc_by_xy = function( next_x,next_y,direction ){
             // go down
             this.change_direction(3);
         }
+        this.bullet.visible = false;
+        this.bullet.motion = 0;
     }
+
     // Pass this pair of x,y to previous
     this.pre_x = next_x;
     this.pre_y = next_y;

@@ -210,6 +210,9 @@ function control_minion(obj_name,status,direction,loc_x,loc_y){
                 // Remove this object from battle field
                 main_stage.removeChild(minion[index].obj);
                 main_stage.removeChild(minion[index].hp);
+                if(minion[index].bullet != undefined){
+                    bullet_stage.removeChild(minion[index].bullet);
+                }
                 minion[index].kill();
                 minion.splice(index,1);
             }
@@ -267,6 +270,7 @@ function add_minion(state,belong,name,type,status,direction,loc_x,loc_y){
                 }
                 main_stage.addChild(elf_archer.obj);
                 main_stage.addChild(elf_archer.hp);
+                bullet_stage.addChild(elf_archer.bullet);
                 minion.push(elf_archer);
                 break;
             case 'elf_wisp':
