@@ -40,6 +40,7 @@ Render part of a game project.
 
 # Reference
 - [Minion Status Intro Page](http://slides.com/kevinbird61/pd2-royale/fullscreen)
+- [Entire Game System video](https://www.youtube.com/watch?v=e-x1l53ZEKk)
 
 # Contribution of Art
 - [先行者](http://www.pixiv.net/member_illust.php?id=5997957) (f26401004@gmail.com)
