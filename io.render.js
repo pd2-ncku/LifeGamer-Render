@@ -13,6 +13,8 @@ const IO = require('socket.io');
 /* core */
 const config = jsfs.readFileSync(__dirname+"/config.json");
 var battle_record_storage;
+var ssl_privkey = config.ssl_privkey;
+var ssl_fullchain = config.ssl_fullchain;
 const {DataVisual} = require('./server-core/datavisual');
 DataVisual.init(app);
 // var logger = require('./server-service/core/logger.js');
@@ -48,7 +50,13 @@ app.use(bodyParser.json());
 /* Setting view engine as ejs */
 app.set('view engine','ejs');
 
-const server = require('http').createServer(app);
+var privateKey  = fs.readFileSync(ssl_privkey, 'utf8');
+var certificate = fs.readFileSync(ssl_fullchain, 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+const server = require('https').createServer(credentials, app);
+// const server = require('http').createServer(app);
 var io = new IO().listen(server);
 
 /* Get start Command */

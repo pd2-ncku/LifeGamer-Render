@@ -1,4 +1,6 @@
 {
     "server_root": "server-service",
-    "server_battle_record": "battle-record"
+    "server_battle_record": "battle-record",
+    "ssl_privkey": "/etc/letsencrypt/live/hmkrl.com/privkey.pem",
+    "ssl_fullchain": "/etc/letsencrypt/live/hmkrl.com/fullchain.pem"
 }
